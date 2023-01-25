@@ -1,0 +1,23 @@
+name: "Interactive Pinout Generator"
+description: "Generates interactive pinouts from mappings"
+author: "dave@holdemanenterprises.com"
+
+inputs:
+  mapping_path:
+    required: true
+    description: |
+      Location of mapping file
+      You can use globs to match multiple files, for example:
+      boards/*/connectors/*.yaml
+  warnings:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      or "error" to fail the workflow step.
+    default: "false"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "cpu"
+  color: "orange"
