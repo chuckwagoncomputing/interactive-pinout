@@ -5,5 +5,6 @@ Interactive Pinout Generator
 - name: Generate Pinouts
   uses: chuckwagoncomputing/interactive-pinout
   with:
-    input-files: firmware/config/boards/*/connectors
+    mapping-path: firmware/config/boards/*/connectors
+    warnings: skip
 ```

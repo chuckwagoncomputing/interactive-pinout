@@ -3,7 +3,7 @@ description: "Generates interactive pinouts from mappings"
 author: "dave@holdemanenterprises.com"
 
 inputs:
-  mapping_path:
+  mapping-path:
     required: true
     description: |
       Location of mapping file
@@ -19,7 +19,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   env:
-    MAPPING_PATH: ${{ inputs.mapping_path }}
+    MAPPING_PATH: ${{ inputs.mapping-path }}
     WARNINGS: ${{ inputs.warnings }}
 branding:
   icon: "cpu"
