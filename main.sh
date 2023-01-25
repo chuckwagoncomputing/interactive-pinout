@@ -55,3 +55,5 @@ for c in $CONNECTORS; do
   fi
   ls $DIR
 done
+
+echo "Completed processing $(echo -n "$CONNECTORS" | wc -l) mappings"
