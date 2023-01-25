@@ -18,6 +18,9 @@ inputs:
 runs:
   using: "docker"
   image: "Dockerfile"
+  env:
+    MAPPING_PATH: ${{ inputs.mapping_path }}
+    WARNINGS: ${{ inputs.warnings }}
 branding:
   icon: "cpu"
   color: "orange"
