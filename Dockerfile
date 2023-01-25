@@ -4,9 +4,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
   apt-get install -y wget &&\
   wget https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_amd64 &&\
   chmod a+x yq_linux_amd64 &&\
+  mv yq_linux_amd64 /usr/bin &&\
   apt-get autoremove -y && apt-get clean -y
 
-COPY yq_linux_amd64 /usr/bin/yq
 COPY main.sh /main.sh
 COPY gen.sh /gen.sh
 COPY append.sh /append.sh
