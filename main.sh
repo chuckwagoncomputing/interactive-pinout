@@ -12,11 +12,11 @@ done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
 
 for c in $CONNECTORS; do
-  echo "Processing "$c
+  echo "Processing: "$c
   DIR="pinouts/"$(echo $c | tr '/' '\n' | tail -n +5 | head -n -2 | tr '\n' '/')
-  echo "Target Directory "$DIR
+  echo "Target Directory: "$DIR
   NAME=$(basename $c .yaml)
-  echo "File Name "$NAME
+  echo "File Name: "$NAME
   mkdir -p $DIR
   if [ "$(yq e '.info.id' $c)" == "null" ]; then
     echo "WARNING: Missing yaml id field in info section of $c"
@@ -32,28 +32,26 @@ for c in $CONNECTORS; do
     bash /gen.sh "$(yq -o=json e $c)" $DIR/index.html
   fi
   if [ $? -ne 0 ]; then
-    echo "Failed to generate or append to pinout"
+    echo "WARNING: Failed to generate or append to pinout"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
   fi
-  file $DIR/index.html
   IMG=$(yq e '.info.image.file' $c)
   if [ $? -ne 0 ]; then
-    echo "Missing image"
+    echo "WARNING: Missing image"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
   fi
-  echo "IMG "$IMG
+  echo "Image: "$IMG
   if [ "$IMG" != "null" ]; then
     cp $(dirname $c)/$IMG $DIR
   fi
-  ls $DIR
 done
 
 echo "Completed processing $(echo -n "$CONNECTORS" | wc -l) mappings"
