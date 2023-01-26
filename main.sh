@@ -40,16 +40,15 @@ for c in $CONNECTORS; do
     fi
   fi
   IMG=$(yq e '.info.image.file' $c)
-  if [ $? -ne 0 ]; then
+  if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
     echo "WARNING: Missing image"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
-  fi
-  echo "Image: "$IMG
-  if [ "$IMG" != "null" ]; then
+  else
+    echo "Image: "$IMG
     cp $(dirname $c)/$IMG $DIR
   fi
 done
