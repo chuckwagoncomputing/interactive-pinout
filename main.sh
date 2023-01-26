@@ -1,10 +1,10 @@
 #!/bin/bash
-# $1: yaml(s) path
+# env MAPPING_PATH: yaml(s) path
 # env WARNINGS:
 #   fail if "error"
 #   skip if "skip"
 
-CONNECTORS=$(find -path "$1")
+CONNECTORS=$(find -path "$MAPPING_PATH")
 FILES=$(for f in $CONNECTORS; do
   ORDER=$(yq e '.info.order' $f)
   echo "$f $ORDER"
