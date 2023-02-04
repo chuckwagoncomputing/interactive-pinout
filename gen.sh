@@ -13,9 +13,10 @@ for C in $COLORS; do
   fi
 done
 CSS=$(echo "$CSS" | minify --type css)
-HTML=$(minify $DIR/pinout.html)
-JS=$(minify $DIR/script.js)
-TEXT=$(echo "$HTML" | perl -0pe "s/###JS###/${JS}/" | sed -e "s/\/\/\/DATA\/\/\//\`$(echo ${JSON//\//\\/} | tr -d '\n')\`,\n\/\/\/DATA\/\/\//" | perl -0pe "s/###CSS###/${CSS}/" | perl -0pe "s/\/\/\/COLS\/\/\//${COLS}/" | perl -0pe "s/\/\/\/PRINT_COLS\/\/\//${PRINT_COLS}/")
+
+JS=$(sed -e "s/\/\/\/DATA\/\/\//\`$(echo ${JSON//\//\\/} | tr -d '\n')\`,\n\/\/\/DATA\/\/\//" $DIR/script.js | perl -0pe "s/\/\/\/COLS\/\/\//${COLS}/" | perl -0pe "s/\/\/\/PRINT_COLS\/\/\//${PRINT_COLS}/" | minify --type js)
+
+TEXT=$(minify $DIR/pinout.html | perl -0pe "s/###JS###/${JS}/" | perl -0pe "s/###CSS###/${CSS}/")
 if [ $? -ne 0 ]; then
   echo "Error in gen.sh"
   exit 1;
