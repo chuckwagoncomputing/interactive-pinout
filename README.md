@@ -21,6 +21,8 @@ Interactive Pinout Generator
       ]
     colors: |
       {
+      "12v":"yellow";
+      "12V":"yellow";
       "5v":"red",
       "5V":"red",
       "at":"green",
@@ -37,6 +39,7 @@ Interactive Pinout Generator
       "hs":"indigo",
       "ign":"magenta",
       "inj":"maroon",
+      "ls":"lightgreen",
       "mr":"firebrick",
       "pgnd":"coral",
       "sgnd":"olive",
