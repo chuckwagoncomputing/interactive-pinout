@@ -62,6 +62,7 @@ function getRow(table, pin) {
       el.classList.add("print-column");
     }
     el.textContent = Array.isArray(pin[columns[column]]) ? pin[columns[column]].join(", ") : pin[columns[column]];
+    el.dataset.field = column
     row.appendChild(el);
   }
   clone.querySelector('[data-field="pin"]').dataset.type = pin.type;
