@@ -6,9 +6,9 @@ JSON="$(echo $1 | sed 's/\\/\\\\\\\\/g')"
 CSS=""
 for C in $COLORS; do
   CT=$(echo "$C" | cut -sd ':' -f 1)
-  CC=$(echo "$C" | cut -sd ':' -f 2 | cut -d ',' -f 1)
+  CC=$(echo "$C" | cut -sd ':' -f 2 | cut -d ',' -f 1 | cut -d '"' -f 2)
   if [ -n "$CT" ] && [ -n "$CC" ]; then
-    CSS+=$(echo -e "\n[data-type*=\"$CT\"] {\nborder-color: $CC;\n}")
+    CSS+=$(echo -e "\n[data-type*=$CT] {\nborder-color: $CC;\n}")
   fi
 done
 CSS+=$(cat $DIR/style.css)
