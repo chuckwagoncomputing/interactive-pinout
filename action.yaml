@@ -36,8 +36,8 @@ runs:
   env:
     MAPPING_PATH: ${{ inputs.mapping-path }}
     WARNINGS: ${{ inputs.warnings }}
-    COLUMNS: ${{ inputs.columns }}
-    PRINT_COLUMNS: ${{ inputs.print-columns }}
+    COLS: ${{ inputs.columns }}
+    PRINT_COLS: ${{ inputs.print-columns }}
     COLORS: ${{ inputs.colors }}
 branding:
   icon: "cpu"

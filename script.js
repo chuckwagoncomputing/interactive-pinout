@@ -2,6 +2,10 @@ var connectorData = [
 ///DATA///
 ];
 
+var columns = ///COLS///
+
+var printColumns = ///PRINT_COLS///
+
 function hideEmptyColumns(table) {
   var rows = table.querySelector('tbody').children;
   var tableHead = table.querySelector("thead>tr")
