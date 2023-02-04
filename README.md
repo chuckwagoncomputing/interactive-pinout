@@ -8,19 +8,19 @@ Interactive Pinout Generator
     mapping-path: firmware/config/boards/*/connectors
     warnings: skip
     columns: |
-      [
+      {
       "pin":"Pin Number",
       "ts_name":"TS Name",
       "type":"Type",
       "function":"Typical Function",
       "color":"Pigtail Color"
-      ]
+      }
     print-columns: |
       [
       "function"
       ]
     colors: |
-      [
+      {
       "5v":"red",
       "5V":"red",
       "at":"green",
@@ -42,5 +42,5 @@ Interactive Pinout Generator
       "sgnd":"olive",
       "usb":"lightseagreen",
       "vr":"sienna"
-      ]
+      }
 ```

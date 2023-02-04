@@ -56,12 +56,15 @@ function getRow(table, pin) {
   var template = document.getElementById("table-template");
   var clone = template.content.cloneNode(true);
   var row = clone.querySelector(".data");
-  var cells = row.children;
-  for (var i = 0; i < cells.length; i++) {
-    var cell = cells[i];
-    cell.textContent = Array.isArray(pin[cell.dataset.field]) ? pin[cell.dataset.field].join(", ") : pin[cell.dataset.field];
+  for (const column in columns) {
+    var el = document.createElement("td")
+    if ( printColumns.indexOf(column) !== -1 ) {
+      el.classList.add("print-column");
+    }
+    el.textContent = Array.isArray(pin[columns[column]]) ? pin[columns[column]].join(", ") : pin[columns[column]];
+    row.appendChild(el);
   }
-  clone.querySelector(".pin-data").dataset.type = pin.type;
+  clone.querySelector('[data-field="pin"]').dataset.type = pin.type;
   return clone;
 }
 
@@ -148,8 +151,16 @@ window.addEventListener('load', function() {
       var ptemplate = document.getElementById("pin-template");
       var imgHeight = img.naturalHeight;
       var imgWidth = img.naturalWidth;
-      var table = sdiv.querySelector(".info-table").querySelector("tbody");
+      var infoTable = sdiv.querySelector(".info-table").querySelector("tbody");
+      var infoTableHeader = sdiv.querySelector(".info-table").querySelector("thead");
       var fullTable = sdiv.querySelector(".pinout-table").querySelector("tbody");
+      var fullTableHeader = sdiv.querySelector(".pinout-table").querySelector("thead");
+      for (const column in columns) {
+        var el = document.createElement("th");
+        el.textContent = columns[column];
+        infoTableHeader.appendChild(el);
+        fullTableHeader.appendChild(el);
+      }
       for (var i = 0; i < connector.pins.length; i++) {
         var pin = connector.pins[i];
         if (!pin.pin) {
@@ -183,7 +194,7 @@ window.addEventListener('load', function() {
         pin.pdiv = pdiv;
         pdiv.addEventListener("click", function(table, pin, cid) {
           clickPin(table, pin, cid);
-        }.bind(null, table, pin, cid));
+        }.bind(null, infoTable, pin, cid));
         closest = Math.sqrt(closest);
         var divheight = cdiv.clientHeight;
         var divwidth = cdiv.clientWidth;
