@@ -160,8 +160,8 @@ window.addEventListener('load', function() {
       for (const column in columns) {
         var el = document.createElement("th");
         el.textContent = columns[column];
-        infoTableHeader.appendChild(el);
-        fullTableHeader.appendChild(el);
+        infoTableHeader.appendChild(el.cloneNode(true));
+        fullTableHeader.appendChild(el.cloneNode(true));
       }
       for (var i = 0; i < connector.pins.length; i++) {
         var pin = connector.pins[i];
