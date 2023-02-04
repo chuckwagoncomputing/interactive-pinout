@@ -8,7 +8,7 @@ for C in $COLORS; do
   CT=$(echo "$C" | cut -sd ':' -f 1)
   CC=$(echo "$C" | cut -sd ':' -f 2 | cut -d ',' -f 1)
   if [ -n "$CT" ] && [ -n "$CC" ]; then
-    CSS+=$(echo -e "[data-type*=\"$CT\"] {\nborder-color: $CC;\n}\n")
+    CSS+=$(echo -e "[data-type*=\"$CT\"] {\nborder-color: $CC;\n}\n\n")
   fi
 done
 CSS+=$(cat $DIR/style.css)
