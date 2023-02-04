@@ -15,12 +15,30 @@ inputs:
       Set to "skip" to skip to the next mapping file,
       or "error" to fail the workflow step.
     default: "false"
+  columns:
+    required: true
+    description: |
+      A JSON mapping of column IDs to human-readable names.
+      "pin" column is assumed to be pin numbers
+      "type" column can be used to group pins by type.
+  print-columns:
+    required: true
+    description: |
+      A JSON array of column IDs that will be visible in print mode. Provide at least one.
+      The "pin" column is always visible.
+  colors:
+    required: false
+    description: |
+      A JSON mapping of pin "type" fields to CSS colors.
 runs:
   using: "docker"
   image: "Dockerfile"
   env:
     MAPPING_PATH: ${{ inputs.mapping-path }}
     WARNINGS: ${{ inputs.warnings }}
+    COLUMNS: ${{ inputs.columns }}
+    PRINT_COLUMNS: ${{ inputs.print-columns }}
+    COLORS: ${{ inputs.colors }}
 branding:
   icon: "cpu"
   color: "orange"
