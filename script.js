@@ -153,9 +153,9 @@ window.addEventListener('load', function() {
       var imgHeight = img.naturalHeight;
       var imgWidth = img.naturalWidth;
       var infoTable = sdiv.querySelector(".info-table").querySelector("tbody");
-      var infoTableHeader = sdiv.querySelector(".info-table").querySelector("thead");
+      var infoTableHeader = sdiv.querySelector(".info-table").querySelector("thead>tr");
       var fullTable = sdiv.querySelector(".pinout-table").querySelector("tbody");
-      var fullTableHeader = sdiv.querySelector(".pinout-table").querySelector("thead");
+      var fullTableHeader = sdiv.querySelector(".pinout-table").querySelector("thead>tr");
       for (const column in columns) {
         var el = document.createElement("th");
         el.textContent = columns[column];
