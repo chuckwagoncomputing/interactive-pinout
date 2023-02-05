@@ -17,13 +17,21 @@ function hideEmptyColumns(table) {
   for (var i = 0; i < cols.length; i++) {
     var empty = true;
     for (var ii = 0; ii < rows.length; ii++) {
-      empty = rows[ii].children[i].textContent.length > 0 ? false : empty;
+      // If we find a row with text, the column isn't empty
+      if ( rows[ii].children[i].textContent.length > 0 ) {
+        empty = false;
+        break;
+      }
     }
+    // If the column was empty, we have to hide the header,
+    //   and also loop through the children and hide them.
     if (empty) {
       tableHead.querySelectorAll('th')[i].style.display = 'none';
       for (var ii = 0; ii < rows.length; ii++) {
         rows[ii].children[i].style.display = 'none';
       }
+    // If not, we do the same procedure, but show instead of hide,
+    //   in case they were previously hidden.
     } else {
       tableHead.querySelectorAll('th')[i].style.display = '';
       for (var ii = 0; ii < rows.length; ii++) {
@@ -44,14 +52,15 @@ function addRow(table, pin) {
 function addRow(table, pin, cid) {
   var clone = getRow(table, pin)
   var row = clone.querySelector(".data");
+  // If we've been passed a reference to a pin on the connector view,
+  //    make this row clickable.
+  // This will not be the case:
+  //   - When no x/y coordinates were provided for the pin
+  //   - When there is no image specified in the input YAML
   if (pin.pdiv) {
     row.addEventListener('click', function(table, pin, cid) {
-      var container;
-      for (var elem = table; elem && elem !== document; elem = elem.parentNode) {
-        if (elem.matches(".container")) {
-          var container = elem;
-        };
-      }
+      // Find the container.
+      var container = table.closest(".container");
       clickPin(container.querySelector(".info-table tbody"), pin, cid);
       container.scrollIntoView()
     }.bind(null, table, pin, cid));
