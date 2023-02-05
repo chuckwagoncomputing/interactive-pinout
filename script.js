@@ -13,6 +13,7 @@ function hideEmptyColumns(table) {
   var rows = table.querySelector('tbody').children;
   var tableHead = table.querySelector("thead>tr")
   var cols = tableHead.children
+  // For every column, loop through all the rows and check if the column is empty
   for (var i = 0; i < cols.length; i++) {
     var empty = true;
     for (var ii = 0; ii < rows.length; ii++) {
@@ -147,6 +148,7 @@ function checkImagesLoaded() {
 }
 
 window.addEventListener('load', function() {
+  // Manage history navigation
   window.onpopstate = function(ev) {
     if (event.state) {
       checkparams();
