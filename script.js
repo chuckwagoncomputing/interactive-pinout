@@ -176,6 +176,7 @@ function checkImagesLoaded() {
   }
 }
 
+// This is a butchery and I hate it and never want to touch it again.
 function calcPinSize(pin, cdiv, connector, pinfo) {
   // Find the closest pin, to maximize the pin size for best readability,
   //    without overlapping pins.
