@@ -144,7 +144,7 @@ table th {
     display: flex;
     flex-direction: column;
   }
-  :not(.print-column), thead {
+  td:not(.print-column), thead {
     display: none;
   }
   .connector-container {
