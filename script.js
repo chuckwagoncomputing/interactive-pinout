@@ -61,7 +61,6 @@ function getRow(table, pin) {
     if ( printColumns.indexOf(column) !== -1 || column == "pin" ) {
       el.classList.add("print-column");
     }
-    el.classList.add("pin-data");
     el.textContent = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
     el.dataset.field = column
     row.appendChild(el);
