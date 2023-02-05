@@ -148,7 +148,7 @@ table th {
     display: none;
   }
   .connector-container {
-    flex: 0 1 auto;
+    flex: 0 1 100%;
     height: unset;
     min-height: 2in;
   }
