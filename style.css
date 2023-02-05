@@ -169,7 +169,7 @@ table th {
   td {
     font-size: 10px;
   }
-  td:not(.pin-data) {
+  td:not([data-field="pin"]) {
     border: none !important;
   }
   td.pin-data {
