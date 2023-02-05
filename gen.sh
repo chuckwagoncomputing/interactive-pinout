@@ -3,8 +3,7 @@
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
 JSON="$(echo $1 | sed 's/\\/\\\\\\\\/g')"
 
-CSS=""
-CSS+=$(sed 's/@/\\@/g' $DIR/style.css)
+CSS=$(cat $DIR/style.css)
 for C in $COLORS; do
   CT=$(echo "$C" | cut -sd ':' -f 1)
   CC=$(echo "$C" | cut -sd ':' -f 2 | cut -d ',' -f 1 | cut -d '"' -f 2)
