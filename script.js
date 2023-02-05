@@ -258,7 +258,7 @@ window.addEventListener('load', function() {
         closest = Math.sqrt(closest);
         var divheight = cdiv.clientHeight;
         var divwidth = cdiv.clientWidth;
-        var mult = cdiv.querySelector("img").naturalHeight / divheight;
+        var mult = imgHeight / divheight;
         var newheight = (closest / mult)
         var pxheight = divheight * 0.08;
         if (newheight < pxheight) {
