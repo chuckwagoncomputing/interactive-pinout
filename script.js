@@ -59,9 +59,13 @@ function addRow(table, pin, cid) {
   //   - When there is no image specified in the input YAML
   if (pin.pdiv) {
     row.addEventListener('click', function(table, pin, cid) {
-      // Find the container.
+      // Find the closest container up the tree.
+      // We don't know how far it is, because the info and
+      //   main tables are at different depths.
       var container = table.closest(".container");
+      // Handle the click.
       clickPin(container.querySelector(".info-table tbody"), pin, cid);
+      // Scroll so the connector view is visible.
       container.scrollIntoView()
     }.bind(null, table, pin, cid));
   }
@@ -73,30 +77,38 @@ function getRow(table, pin) {
   var template = document.getElementById("table-template");
   var clone = template.content.cloneNode(true);
   var row = clone.querySelector(".data");
+  // Loop through the columns and create a data element for each
   for (const column in columns) {
     var el = document.createElement("td")
+    // If we should print this column (We always print pins)
     if ( printColumns.indexOf(column) !== -1 || column == "pin" ) {
       el.classList.add("print-column");
     }
+    // Sometimes the data is an array instead of a string, so we might need to join it.
     el.textContent = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
     el.dataset.field = column
     row.appendChild(el);
   }
+  // Set the type of the pin so it will be colored in print view.
   clone.querySelector('[data-field="pin"]').dataset.type = pin.type;
   return clone;
 }
 
 // Called when we click on a pin, either in a table or in the connector view
+// table is always the info table
 function clickPin(table, pin, cid) {
-  var container;
-  for (var elem = table; elem && elem !== document; elem = elem.parentNode) {
-    if (elem.matches(".container")) {
-      container = elem;
-    };
-  }
+  // Find the closest container up the tree.
+  // We don't know how far it is, because table rows and
+  //   pins in the connector view are at different depths.
+  var container = table.closest(".container");
+  // Make sure the table is visible.
   table.parentElement.style.display = "table";
+  // Clear the table, then add the row
   table.innerHTML = "";
   addRow(table, pin, cid);
+  // Loop through the pins, and highlight those of the same type,
+  //   remove highlights from any other previously highlighted pins,
+  //   and remove selection from all pins.
   var pins = document.querySelectorAll(".pin-marker");
   for (var i = 0; i < pins.length; i++) {
     if (pins[i].dataset.type == pin.type) {
@@ -106,18 +118,23 @@ function clickPin(table, pin, cid) {
     }
     pins[i].classList.remove("selected");
   }
+  // Select the clicked pin.
   pin.pdiv.classList.add("selected");
+  // Hide empty columns from the table
   hideEmptyColumns(table.parentElement);
+  // If there's a connector id for this pin, go to this pin's URL
   if (typeof(cid) != "undefined") {
     var url = new URL(window.location);
     url.searchParams.set("connector", cid);
     url.searchParams.set("pin", pin.pin);
+    // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
       window.history.pushState({}, "", url)
     }
   } else {
     var url = new URL(window.location);
     url.search = "";
+    // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
       window.history.pushState({}, "", url)
     }
@@ -130,12 +147,15 @@ function checkparams() {
   var params = new URLSearchParams(window.location.search);
   var connector = params.get("connector");
   var pin = params.get("pin");
+  // Loop through the connectors and find if there's one that matches.
   for (var i = 0; i < connectorData.length; i++) {
     var c = connectorData[i];
     if (c.info.id == connector) {
       var table = document.querySelectorAll(".info-table tbody")[i];
+      // Loop through the pins and find if there's one that matches.
       for (var iii = 0; iii < c.pins.length; iii++) {
         if (c.pins[iii].pin == pin) {
+          // Just pretend we clicked on it
           clickPin(table, c.pins[iii], c.info.id);
           return;
         }
