@@ -176,6 +176,44 @@ function checkImagesLoaded() {
   }
 }
 
+function calcPinSize(pin, cdiv, connector, pinfo) {
+  // Find the closest pin, to maximize the pin size for best readability,
+  //    without overlapping pins.
+  var closest = 1000000;
+  for (var ii = 0; ii < connector.info.pins.length; ii++) {
+    var tinfo = connector.info.pins[ii];
+    var distance = Math.pow((tinfo.x - pinfo.x), 2) + Math.pow((tinfo.y - pinfo.y), 2);
+    if (tinfo.pin != pin.pin && (!closest || distance < closest)) {
+      closest = distance;
+    }
+  }
+  // Set the pin's size
+  closest = Math.sqrt(closest);
+  var divheight = cdiv.clientHeight;
+  var divwidth = cdiv.clientWidth;
+  var mult = cdiv.querySelector("img").naturalHeight / divheight;
+  var newheight = (closest / mult)
+  var pxheight = divheight * 0.08;
+  if (newheight < pxheight) {
+    pxheight = newheight;
+  }
+  var height = (pxheight / divheight) * 100;
+  var width = (pxheight / divwidth) * 100;
+  pin.pdiv.style.height = "calc(" + height + "% - 0.21vw)";
+  pin.pdiv.style.width = "calc(" +  width + "% - 0.21vw)";
+  pin.pdiv.style.marginTop = "-" + (width / 2) + "%";
+  pin.pdiv.style.marginLeft = "-" + (width / 2) + "%";
+  pin.pdiv.style.fontSize = (height * 1.8) + "px";
+  pin.pdiv.style.fontSize = (pxheight * 0.5) + "px";
+  // Recalculate the size for printing.
+  window.addEventListener('beforeprint', function(pdiv, width, divwidth, event) {
+    pdiv.style.fontSize = "calc(calc(" + width + "px * min(640, "  + divwidth + ")) * 0.0055)";
+  }.bind(null, pin.pdiv, width, divwidth));
+  window.addEventListener('afterprint', function(pdiv, pxheight, event) {
+    pdiv.style.fontSize = (pxheight * 0.5) + "px";
+  }.bind(null, pin.pdiv, pxheight));
+}
+
 window.addEventListener('load', function() {
   // Manage history navigation
   window.onpopstate = function(ev) {
@@ -232,16 +270,6 @@ window.addEventListener('load', function() {
           addRow(fullTable, connector.pins[i], cid);
           continue;
         }
-        // Find the closest pin, to maximize the pin size for best readability,
-        //    without overlapping pins.
-        var closest = 1000000;
-        for (var ii = 0; ii < connector.info.pins.length; ii++) {
-          var tinfo = connector.info.pins[ii];
-          var distance = Math.pow((tinfo.x - pinfo.x), 2) + Math.pow((tinfo.y - pinfo.y), 2);
-          if (tinfo.pin != pin.pin && (!closest || distance < closest)) {
-            closest = distance;
-          }
-        }
         // Create the pin element and set its position and type
         var pclone = ptemplate.content.cloneNode(true);
         var pdiv = pclone.querySelector("div");
@@ -254,31 +282,11 @@ window.addEventListener('load', function() {
         pdiv.addEventListener("click", function(table, pin, cid) {
           clickPin(table, pin, cid);
         }.bind(null, infoTable, pin, cid));
-        // Set the pin's size
-        closest = Math.sqrt(closest);
-        var divheight = cdiv.clientHeight;
-        var divwidth = cdiv.clientWidth;
-        var mult = imgHeight / divheight;
-        var newheight = (closest / mult)
-        var pxheight = divheight * 0.08;
-        if (newheight < pxheight) {
-          pxheight = newheight;
-        }
-        var height = (pxheight / divheight) * 100;
-        var width = (pxheight / divwidth) * 100;
-        pdiv.style.height = "calc(" + height + "% - 0.21vw)";
-        pdiv.style.width = "calc(" +  width + "% - 0.21vw)";
-        pdiv.style.marginTop = "-" + (width / 2) + "%";
-        pdiv.style.marginLeft = "-" + (width / 2) + "%";
-        pdiv.style.fontSize = (height * 1.8) + "px";
-        pdiv.style.fontSize = (pxheight * 0.5) + "px";
-        // Recalculate the size for printing.
-        window.addEventListener('beforeprint', function(pdiv, width, divwidth, event) {
-          pdiv.style.fontSize = "calc(calc(" + width + "px * min(640, "  + divwidth + ")) * 0.0055)";
-        }.bind(null, pdiv, width, divwidth));
-        window.addEventListener('afterprint', function(pdiv, pxheight, event) {
-          pdiv.style.fontSize = (pxheight * 0.5) + "px";
-        }.bind(null, pdiv, pxheight));
+        calcPinSize(pin, cdiv, connector, pinfo)
+        // Recalculate the size when the window is resized.
+        window.addEventListener("resize", function(pin, cdiv, connector, pinfo) {
+          calcPinSize(pin, cdiv, connector, pinfo)
+        }.bind(null, pin, cdiv, connector, pinfo));
         cdiv.appendChild(pdiv);
         addRow(fullTable, pin, cid);
       }
