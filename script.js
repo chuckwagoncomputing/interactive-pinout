@@ -58,7 +58,7 @@ function getRow(table, pin) {
   var row = clone.querySelector(".data");
   for (const column in columns) {
     var el = document.createElement("td")
-    if ( printColumns.indexOf(column) !== -1 ) {
+    if ( printColumns.indexOf(column) !== -1 || column == "pin" ) {
       el.classList.add("print-column");
     }
     el.classList.add("pin-data");
