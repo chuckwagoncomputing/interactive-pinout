@@ -144,7 +144,7 @@ table th {
     display: flex;
     flex-direction: column;
   }
-  td:not(.print-column), .info-table, thead {
+  td:not(.print-column), .info-table, thead, #board-link {
     display: none;
   }
   .connector-container {
@@ -192,8 +192,5 @@ table th {
   }
   table, tbody, tr {
     display: block;
-  }
-  #board-link {
-    display: none;
   }
 }
