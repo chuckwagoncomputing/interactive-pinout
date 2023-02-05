@@ -144,7 +144,7 @@ window.addEventListener('load', function() {
     var template = document.getElementById("connector-template");
     var clone = template.content.cloneNode(true);
     document.body.appendChild(clone);
-    var sdiv = document.body.lastChild.previousSibling;
+    var sdiv = document.body.lastElementChild;
     var img = sdiv.querySelector(".connector-img");
     images += 1;
     img.addEventListener('load', function(connector, sdiv, img) {
