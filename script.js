@@ -102,11 +102,15 @@ function clickPin(table, pin, cid) {
     var url = new URL(window.location);
     url.searchParams.set("connector", cid);
     url.searchParams.set("pin", pin.pin);
-    window.history.pushState({}, "", url)
+    if ( url.toString() != new URL(window.location).toString() ) {
+      window.history.pushState({}, "", url)
+    }
   } else {
     var url = new URL(window.location);
     url.search = "";
-    window.history.pushState({}, "", url)
+    if ( url.toString() != new URL(window.location).toString() ) {
+      window.history.pushState({}, "", url)
+    }
   }
   container.scrollIntoView()
 }
