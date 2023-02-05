@@ -1,11 +1,14 @@
+// gen.sh and append.sh replace ///DATA/// with the JSON of a connector
 var connectorData = [
 ///DATA///
 ];
 
+// gen.sh replaces ///COLS/// and ///PRINT_COLS/// with the apropriate JSON objects
 var columns = ///COLS///
 
 var printColumns = ///PRINT_COLS///
 
+// We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
   var rows = table.querySelector('tbody').children;
   var tableHead = table.querySelector("thead>tr")
@@ -29,11 +32,14 @@ function hideEmptyColumns(table) {
   }
 }
 
+// Add a row to a table
 function addRow(table, pin) {
   var clone = getRow(table, pin)
   table.appendChild(clone);
 }
 
+// Add a row to a table, with an associated connector,
+//    so we can scroll the connector into view
 function addRow(table, pin, cid) {
   var clone = getRow(table, pin)
   var row = clone.querySelector(".data");
@@ -52,6 +58,7 @@ function addRow(table, pin, cid) {
   table.appendChild(clone);
 }
 
+// Build a row to add to a table
 function getRow(table, pin) {
   var template = document.getElementById("table-template");
   var clone = template.content.cloneNode(true);
@@ -69,6 +76,7 @@ function getRow(table, pin) {
   return clone;
 }
 
+// Called when we click on a pin, either in a table or in the connector view
 function clickPin(table, pin, cid) {
   var container;
   for (var elem = table; elem && elem !== document; elem = elem.parentNode) {
@@ -103,6 +111,7 @@ function clickPin(table, pin, cid) {
   container.scrollIntoView()
 }
 
+// Check URL parameters for a selected pin
 function checkparams() {
   var params = new URLSearchParams(window.location.search);
   var connector = params.get("connector");
@@ -122,8 +131,10 @@ function checkparams() {
   }
 }
 
+// Keep track of how many images need to be loaded
 var images = 0;
-
+// If all images are loaded, check the params for a selected pin.
+// We don't want to try to select a pin before the image is loaded.
 function checkImagesLoaded() {
   images -= 1;
   if (images == 0) {
