@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
-export JSON="$(echo $1 | minify --type json)"
+export JSON="$(echo $1 | minify --type json | sed 's/\\/\\\\/g')"
 
 CSS=$(cat $DIR/style.css)
 for C in $COLORS; do
