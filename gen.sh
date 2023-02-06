@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
-JSON="$(echo $1 | sed 's/\\/\\\\\\\\/g')"
+export JSON="$(echo $1 | minify --type json)"
 
 CSS=$(cat $DIR/style.css)
 for C in $COLORS; do
@@ -13,9 +13,9 @@ for C in $COLORS; do
 done
 export CSS=$(echo "$CSS" | minify --type css)
 
-export JS=$(sed -e "s/\/\/\/DATA\/\/\//\`$(echo ${JSON//\//\\/} | tr -d '\n')\`,\n\/\/\/DATA\/\/\//" $DIR/script.js | perl -0pe "s/\/\/\/COLS\/\/\//${COLS}/" | perl -0pe "s/\/\/\/PRINT_COLS\/\/\//${PRINT_COLS}/" | minify --type js)
+export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' $DIR/script.js | minify --type js | perl -0pe 's/}`,];/}`,\/\*DATA\*\/];/;')
 
-TEXT=$(minify $DIR/pinout.html | perl -0pe 's/###JS###/$ENV{JS}/' | perl -0pe 's/###CSS###/$ENV{CSS}/')
+TEXT=$(minify $DIR/pinout.html | perl -0pe 's/###JS###/$ENV{JS}/;' -pe 's/###CSS###/$ENV{CSS}/;')
 if [ $? -ne 0 ]; then
   echo "Error in gen.sh"
   exit 1;

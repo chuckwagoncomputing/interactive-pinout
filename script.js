@@ -1,6 +1,6 @@
 // gen.sh and append.sh replace DATA with the JSON of a connector
 var connectorData = [
-///DATA///
+/*DATA*/
 ];
 
 // gen.sh replaces COLS and PRINT_COLS with the apropriate JSON objects
