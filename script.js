@@ -1,3 +1,4 @@
+;(function() {
 // gen.sh and append.sh replace DATA with the JSON of a connector
 var connectorData = [
 /*DATA*/
@@ -326,3 +327,4 @@ window.addEventListener('load', function() {
     }
   }
 });
+})()

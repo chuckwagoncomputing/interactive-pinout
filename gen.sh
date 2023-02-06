@@ -11,11 +11,11 @@ for C in $COLORS; do
     CSS+=$(echo -e "\n[data-type*=$CT] {\nborder-color: $CC;\n}")
   fi
 done
-export CSS=$(echo "$CSS" | minify --type css)
+export CSS
 
-export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' $DIR/script.js | minify --type js | perl -0pe 's/}`,];/}`,\/\*DATA\*\/];/;')
+export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' $DIR/script.js)
 
-TEXT=$(minify $DIR/pinout.html | perl -0pe 's/###JS###/$ENV{JS}/;' -pe 's/###CSS###/$ENV{CSS}/;')
+TEXT=$(perl -0pe 's/###JS###/$ENV{JS}/;' -pe 's/###CSS###/$ENV{CSS}/;' $DIR/pinout.html | minify --type html | perl -0pe 's/}`]/}`,\/\*DATA\*\/]/;')
 if [ $? -ne 0 ]; then
   echo "Error in gen.sh"
   exit 1;
