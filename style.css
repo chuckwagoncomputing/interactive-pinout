@@ -40,6 +40,8 @@
   position: relative;
   z-index: 0;
   width: max-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .connector-img {
