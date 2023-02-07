@@ -2,10 +2,10 @@
   position: absolute;
   z-index: 1;
   border-radius: 50%;
-  background-color: white;
-  border: 0.21vw black solid;
+  background-color: #eee;
+  border: 0.21vw #111 solid;
   cursor: pointer;
-  color: black;
+  color: #111;
   text-align: center;
   line-height: 200%;
 }
@@ -25,7 +25,7 @@
 
 .pin-marker.selected {
   background-color: #f15a24;
-  color: white;
+  color: #eee;
 }
 
 .connector-container {
@@ -73,12 +73,12 @@ table tbody tr {
 
 @media screen {
   td[data-field="pin"] {
-    border-color: black;
+    border-color: #333;
   }
 }
 
 table td, table th {
-    border: 1px solid black;
+  border: 1px solid #333;
   padding: 8px;
 }
 
@@ -95,7 +95,7 @@ table th {
   padding-bottom: 12px;
   text-align: left;
   background-color: #f15a24;
-  color: black;
+  color: #111;
 }
 
 .info-table {
@@ -104,25 +104,25 @@ table th {
 
 @media (prefers-color-scheme: dark) {
   html {
-    background-color: black;
-    color: white;
+    background-color: #111;
+    color: #eee;
   }
 
   td[data-field="pin"] {
-    border: 1px solid #ddd;
+    border: 1px solid #aaa;
   }
 
   table td, table th {
-    border: 1px solid #ddd;
+    border: 1px solid #aaa;
   }
 
   table th {
-    color: white;
+    color: #eee;
   }
 
   table tr:nth-child(even){
     background-color: #230c00;
-    color: white;
+    color: #eee;
   }
 
   table tr:hover {
@@ -180,8 +180,8 @@ table th {
     padding: 0px;
   }
   html, tr {
-    background-color: white !important;
-    color: black !important;
+    background-color: #eee !important;
+    color: #111 !important;
   }
   table {
     width: auto;
