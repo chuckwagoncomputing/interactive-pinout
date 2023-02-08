@@ -28,6 +28,48 @@ The 'info' section contains information which is used to generate the interactiv
 |name     |contains a human-readable name for the connector|
 |order    |contains an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
 
+### Example YAML
+
+```
+pins:
+  - pin: 1
+    type: 12V
+    function: 12V Supply from main relay output
+
+  - pin: 2
+    type: pgnd
+    function: Power GND
+
+  - pin: 3
+    type: ls
+    function: Idle solenoid
+
+  - pin: 4
+    type: etb
+    function: ETB+
+
+info:
+  title: Big Black Box
+  name: Main Connector
+  board_url: https://example.com/documentation
+  id: c1
+  image:
+    file: connector.jpg
+  pins:
+    - pin: 1
+      x: 1508
+      y: 958
+    - pin: 2
+      x: 1508
+      y: 787
+    - pin: 3
+      x: 1508
+      y: 616
+    - pin: 4
+      x: 1508
+      y: 445
+```
+
 ## Using this Action in Your Workflow
 
 Here is an example workflow step:
@@ -78,3 +120,5 @@ Here is an example workflow step:
       "vr":"sienna"
       }
 ```
+
+The results will be in a folder named "pinouts".
