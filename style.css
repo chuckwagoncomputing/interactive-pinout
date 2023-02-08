@@ -12,7 +12,15 @@ body {
   color: #111;
   text-align: center;
   box-sizing: border-box;
-  text-shadow: 0 0 2px #eee, 2px 2px 2px #eee, -2px -2px 2px #eee, 2px -2px 2px #eee, -2px 2px 2px #eee;
+  text-shadow:
+    -1px -1px 0 #eee,
+     0   -1px 0 #eee,
+     1px -1px 0 #eee,
+     1px  0   0 #eee,
+     1px  1px 0 #eee,
+     0    1px 0 #eee,
+    -1px  1px 0 #eee,
+    -1px  0   0 #eee;
 }
 
 #board-link {
@@ -37,7 +45,15 @@ body {
 .pin-marker.selected {
   background-color: #f15a24;
   color: #eee;
-  text-shadow: 0 0 3px #111, 2px 2px 3px #111, -2px -2px 3px #111, 2px -2px 3px #111, -2px 2px 3px #111;
+  text-shadow:
+    -1px -1px 0 #111,
+     0   -1px 0 #111,
+     1px -1px 0 #111,
+     1px  0   0 #111,
+     1px  1px 0 #111,
+     0    1px 0 #111,
+    -1px  1px 0 #111,
+    -1px  0   0 #111;
 }
 
 .connector-container {
