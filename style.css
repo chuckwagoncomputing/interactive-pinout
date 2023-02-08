@@ -37,6 +37,7 @@ body {
 .pin-marker.selected {
   background-color: #f15a24;
   color: #eee;
+  text-shadow: 0 0 3px #111, 2px 2px 3px #111, -2px -2px 3px #111, 2px -2px 3px #111, -2px 2px 3px #111;
 }
 
 .connector-container {
