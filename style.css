@@ -2,6 +2,11 @@ body {
   font-family: sans-serif;
 }
 
+.table-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .pin-marker {
   position: absolute;
   z-index: 1;
@@ -69,6 +74,10 @@ table {
 @media (min-width: 1000px) {
   table {
     font-size: 1rem;
+  }
+
+  .table-wrapper {
+    max-width: 1366px;
   }
 }
 
