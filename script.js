@@ -201,8 +201,8 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   }
   var height = (pxheight / divheight) * 100;
   var width = (pxheight / divwidth) * 100;
-  pin.pdiv.style.height = "calc(" + height + "% - 0.21vw)";
-  pin.pdiv.style.width = "calc(" +  width + "% - 0.21vw)";
+  pin.pdiv.style.height = "calc(" + height + "%)";
+  pin.pdiv.style.width = "calc(" +  width + "%)";
   pin.pdiv.style.marginTop = "-" + (width / 2) + "%";
   pin.pdiv.style.marginLeft = "-" + (width / 2) + "%";
   pin.pdiv.style.fontSize = (height * 1.8) + "px";

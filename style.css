@@ -11,7 +11,7 @@ body {
   cursor: pointer;
   color: #111;
   text-align: center;
-  line-height: 200%;
+  box-sizing: border-box;
 }
 
 #board-link {
