@@ -12,6 +12,7 @@ body {
   color: #111;
   text-align: center;
   box-sizing: border-box;
+  text-shadow: 0 0 2px #eee, 2px 2px 2px #eee, -2px -2px 2px #eee, 2px -2px 2px #eee, -2px 2px 2px #eee;
 }
 
 #board-link {
