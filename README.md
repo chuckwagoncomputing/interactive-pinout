@@ -5,6 +5,17 @@ Generating pinouts requires:
 - ECU connector photo (.jpg)
 - pinout metadata file in [YAML](https://en.wikipedia.org/wiki/YAML) format
 
+Multiple .yaml files within a directory are put into the same index.html page.  
+The results will be in a folder named "pinouts".  
+If you include the `directory` field within the `info` section of the yaml, the page will be placed within that subdirectory of the "pinouts" directory.  
+If none of the .yaml files within a directory have the field, they will be placed in a subdirectory structure matching that from which the action was run.  
+
+Example:  
+Suppose you have two .yaml files at `foo/bar/baz/`  
+You run the action from `foo/`  
+If one or both of the files has the `directory` field set to `quux`, the index.html will be found at `pinouts/quux/index.html`  
+If neither files has the `directory` field set, the index.html will be found at `pinouts/bar/baz/index.html`  
+
 ## Syntax of Connector YAML
 
 Each YAML file contains two sections: 'pins' and 'info'
@@ -20,13 +31,14 @@ The 'info' section contains information which is used to generate the interactiv
 
 |field    |description|
 |---------|-----------|
-|id       |contains a short name for the connector, to be used in the URL when linking to a particular pin|
+|id       |a short name for the connector, to be used in the URL when linking to a particular pin|
 |image    |subsection which contains a single field, 'file', which contains the filename of the image, which is stored in the same directory as the YAML|
 |pins     |subsection with a list of the pins' locations on the image. Its fields are 'pin', which matches to an 'id' in the main 'pins' section, 'x' and 'y', which are the coordinates on the image|
-|title    |contains the title for the page. Only one connector for a particular board needs this field|
-|board_url|contains a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
-|name     |contains a human-readable name for the connector|
-|order    |contains an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
+|title    |the title for the page. Only one connector for a particular board needs this field|
+|directory|the target directory for the page. Only one connector for a particular board needs this field|
+|board_url|a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
+|name     |a human-readable name for the connector|
+|order    |an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
 
 ### Example YAML
 
@@ -49,7 +61,8 @@ pins:
     function: ETB+
 
 info:
-  title: Big Black Box
+  title: Big Magic Box
+  directory: big_magic
   name: Main Connector
   board_url: https://example.com/documentation
   id: c1
@@ -120,5 +133,3 @@ Here is an example workflow step:
       "vr":"sienna"
       }
 ```
-
-The results will be in a folder named "pinouts".
