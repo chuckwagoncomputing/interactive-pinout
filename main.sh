@@ -11,13 +11,35 @@ FILES=$(for f in $CONNECTORS; do
 done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
 
+mkdir -p pinoutstmp
+
 for c in $CONNECTORS; do
   echo "Processing: "$c
-  DIR="pinouts/"$(echo $c | tr '/' '\n' | tail -n +5 | head -n -2 | tr '\n' '/')
+  DIRECTORY=$(yq e '.info.directory' $c)
+  DIR="pinoutstmp/"$(dirname $c | sed -e 's/^\.\///' -e 's/^\///')
+  if [ "$DIRECTORY" != "null" ]; then
+    echo "Connector Directory: $DIRECTORY"
+    if [ ! -d "pinouts/$DIRECTORY" ]; then
+      mkdir -p "pinouts/$DIRECTORY"
+      if [ -d "$DIR" ]; then
+        mv "$DIR"* "pinouts/$DIRECTORY"
+        rmdir "$DIR"
+      fi
+      mkdir -p $(dirname "$DIR")
+      ln -rs "pinouts/$DIRECTORY" "$DIR"
+    fi
+  else
+    echo "WARNING: Missing yaml directory field in info section of $c"
+    if [ "$WARNINGS" = "error" ]; then
+      exit 1;
+    elif [ "$WARNINGS" = "skip" ]; then
+      continue
+    fi
+    mkdir -p "$DIR"
+  fi
   echo "Target Directory: "$DIR
   NAME=$(basename $c .yaml)
   echo "File Name: "$NAME
-  mkdir -p $DIR
   if [ "$(yq e '.info.id' $c)" == "null" ]; then
     echo "WARNING: Missing yaml id field in info section of $c"
     if [ "$WARNINGS" = "error" ]; then
@@ -52,5 +74,9 @@ for c in $CONNECTORS; do
     cp $(dirname $c)/$IMG $DIR
   fi
 done
+
+find pinoutstmp -type l -delete
+find pinoutstmp -type d -empty -delete
+cp -r pinoutstmp/* pinouts/
 
 echo "Completed processing $(echo -n "$CONNECTORS" | wc -l) mappings"
