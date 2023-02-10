@@ -8,13 +8,15 @@ Generating pinouts requires:
 Multiple .yaml files within a directory are put into the same index.html page.  
 The results will be in a folder named "pinouts".  
 If you include the `directory` field within the `info` section of the yaml, the page will be placed within that subdirectory of the "pinouts" directory.  
-If none of the .yaml files within a directory have the field, they will be placed in a subdirectory structure matching that from which the action was run.  
+If none of the .yaml files within a directory have the `directory` field, the `title` field will be used instead.
+If none of the .yaml files within a directory have either field, they will be placed in a subdirectory structure matching that from which the action was run.  
 
 Example:  
 Suppose you have two .yaml files at `foo/bar/baz/`  
 You run the action from `foo/`  
 If one or both of the files has the `directory` field set to `quux`, the index.html will be found at `pinouts/quux/index.html`  
-If neither files has the `directory` field set, the index.html will be found at `pinouts/bar/baz/index.html`  
+If neither file has the `directory` field set, but one or both has the `title` field set to `Magic Board`, the index.html will be found at `pinouts/Magic Board/index.html`  
+If neither file has either field set, the index.html will be found at `pinouts/bar/baz/index.html`  
 
 ## Syntax of Connector YAML
 
