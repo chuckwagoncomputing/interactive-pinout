@@ -233,8 +233,6 @@ window.addEventListener('load', function() {
     document.body.appendChild(clone);
     var sdiv = document.body.lastElementChild;
     var img = sdiv.querySelector(".connector-img");
-    // Increment "images we need to load" counter
-    images += 1;
     // When the image is loaded, then handle the pins
     img.addEventListener('load', function(connector, sdiv, img) {
       var cdiv = sdiv.querySelector(".connector-div");
@@ -315,6 +313,8 @@ window.addEventListener('load', function() {
     // Add the image to load it
     if (typeof(connector.info) != "undefined" && typeof(connector.info.image) != "undefined") {
       img.src = connector.info.image.file;
+      // Increment "images we need to load" counter
+      images += 1;
     // If there's no image, just build the table.
     } else {
       img.parentElement.parentElement.style.height = 0;
