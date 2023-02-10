@@ -16,17 +16,39 @@ mkdir -p pinoutstmp
 for c in $CONNECTORS; do
   echo "Processing: "$c
   DIRECTORY=$(yq e '.info.directory' $c)
+  TITLE=$(yq e '.info.title' $c)
   DIR="pinoutstmp/"$(dirname $c | sed -e 's/^\.\///' -e 's/^\///')
   if [ "$DIRECTORY" != "null" ]; then
-    echo "Connector Directory: $DIRECTORY"
-    if [ ! -d "pinouts/$DIRECTORY" ]; then
-      mkdir -p "pinouts/$DIRECTORY"
-      if [ -d "$DIR" ]; then
+    if [ -d "$DIR" ]; then
+      if [ ! -L "$DIR" ]; then
+        mkdir -p "pinouts/$DIRECTORY"
         mv "$DIR"/* "pinouts/$DIRECTORY"
         rmdir "$DIR"
+        ln -rs "pinouts/$DIRECTORY" "$DIR"
+      elif TARGET=$(readlink "$DIR") && [ "$TARGET" != "pinouts/$DIRECTORY" ]; then
+        mkdir -p "pinouts/$DIRECTORY"
+        mv $(readlink "$DIR")/* "pinouts/$DIRECTORY"
+        rmdir $(readlink "$DIR")
+        rm "$DIR"
+        ln -rs "pinouts/$DIRECTORY" "$DIR"
       fi
+    else
+      mkdir -p "pinouts/$DIRECTORY"
       mkdir -p $(dirname "$DIR")
       ln -rs "pinouts/$DIRECTORY" "$DIR"
+    fi
+  elif [ "$TITLE" != "null" ]; then
+    if [ -d "$DIR" ]; then
+      if [ ! -L "$DIR" ]; then
+        mkdir -p "pinouts/$TITLE"
+        mv "$DIR"/* "pinouts/$TITLE"
+        rmdir "$DIR"
+        ln -rs "pinouts/$TITLE" "$DIR"
+      fi
+    else
+      mkdir -p "pinouts/$TITLE"
+      mkdir -p $(dirname "$DIR")
+      ln -rs "pinouts/$TITLE" "$DIR"
     fi
   else
     echo "WARNING: Missing yaml directory field in info section of $c"
