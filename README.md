@@ -31,7 +31,7 @@ The 'info' section contains information which is used to generate the interactiv
 
 |field    |description|
 |---------|-----------|
-|id       |a short name for the connector, to be used in the URL when linking to a particular pin|
+|cid       |a short name for the connector, to be used in the URL when linking to a particular pin|
 |image    |subsection which contains a single field, 'file', which contains the filename of the image, which is stored in the same directory as the YAML|
 |pins     |subsection with a list of the pins' locations on the image. Its fields are 'pin', which matches to an 'id' in the main 'pins' section, 'x' and 'y', which are the coordinates on the image|
 |title    |the title for the page. Only one connector for a particular board needs this field|
@@ -65,7 +65,7 @@ info:
   directory: big_magic
   name: Main Connector
   board_url: https://example.com/documentation
-  id: c1
+  cid: c1
   image:
     file: connector.jpg
   pins:

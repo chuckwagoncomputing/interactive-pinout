@@ -40,8 +40,8 @@ for c in $CONNECTORS; do
   echo "Target Directory: "$DIR
   NAME=$(basename $c .yaml)
   echo "File Name: "$NAME
-  if [ "$(yq e '.info.id' $c)" == "null" ]; then
-    echo "WARNING: Missing yaml id field in info section of $c"
+  if [ "$(yq e '.info.cid' $c)" == "null" ]; then
+    echo "WARNING: Missing yaml cid field in info section of $c"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
     elif [ "$WARNINGS" = "skip" ]; then

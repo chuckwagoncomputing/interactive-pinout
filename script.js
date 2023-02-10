@@ -151,13 +151,13 @@ function checkparams() {
   // Loop through the connectors and find if there's one that matches.
   for (var i = 0; i < connectorData.length; i++) {
     var c = connectorData[i];
-    if (c.info.id == connector) {
+    if (c.info.cid == connector) {
       var table = document.querySelectorAll(".info-table tbody")[i];
       // Loop through the pins and find if there's one that matches.
       for (var iii = 0; iii < c.pins.length; iii++) {
         if (c.pins[iii].pin == pin) {
           // Just pretend we clicked on it
-          clickPin(table, c.pins[iii], c.info.id);
+          clickPin(table, c.pins[iii], c.info.cid);
           return;
         }
       }
@@ -238,7 +238,7 @@ window.addEventListener('load', function() {
     // When the image is loaded, then handle the pins
     img.addEventListener('load', function(connector, sdiv, img) {
       var cdiv = sdiv.querySelector(".connector-div");
-      var cid = connector.info.id;
+      var cid = connector.info.cid;
       var ptemplate = document.getElementById("pin-template");
       var imgHeight = img.naturalHeight;
       var imgWidth = img.naturalWidth;
