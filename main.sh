@@ -38,8 +38,8 @@ for c in $CONNECTORS; do
         # Make specified directory
         mkdir -p "pinouts/$DIRECTORY"
         # Move the contents of the directory the link points to, and remove that directory
-        mv $(readlink "$DIR")/* "pinouts/$DIRECTORY"
-        rmdir $(readlink "$DIR")
+        mv "$(readlink "$DIR")"/* "pinouts/$DIRECTORY"
+        rmdir "$(readlink "$DIR")"
         # Link to specified directory
         rm "$DIR"
         ln -rs "pinouts/$DIRECTORY" "$DIR"
@@ -66,7 +66,7 @@ for c in $CONNECTORS; do
     # If it doesn't exist, create it at title field and link it
     else
       mkdir -p "pinouts/$TITLE"
-      mkdir -p $(dirname "$DIR")
+      mkdir -p "$(dirname "$DIR")"
       ln -rs "pinouts/$TITLE" "$DIR"
     fi
   else
