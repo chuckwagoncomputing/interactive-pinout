@@ -298,8 +298,6 @@ window.addEventListener('load', function() {
     }.bind(null, connector, sdiv, img));
     // If there's info, use it.
     if (typeof(connector.info) != "undefined") {
-      // Add the image to load it
-      img.src = connector.info.image.file;
       // Set the document title
       if (document.title.length == 0 && typeof(connector.info.title) != "undefined") {
         document.title = connector.info.title;
@@ -313,7 +311,11 @@ window.addEventListener('load', function() {
       if (typeof(connector.info.name) != "undefined") {
         sdiv.querySelector(".connector-name").innerText = connector.info.name;
       }
-    // If there's no info, just build the table.
+    }
+    // Add the image to load it
+    if (typeof(connector.info) != "undefined" && typeof(connector.info.image) != "undefined") {
+      img.src = connector.info.image.file;
+    // If there's no image, just build the table.
     } else {
       img.parentElement.parentElement.style.height = 0;
       for (var i = 0; i < connector.pins.length; i++) {

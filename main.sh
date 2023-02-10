@@ -22,7 +22,7 @@ for c in $CONNECTORS; do
     if [ ! -d "pinouts/$DIRECTORY" ]; then
       mkdir -p "pinouts/$DIRECTORY"
       if [ -d "$DIR" ]; then
-        mv "$DIR"* "pinouts/$DIRECTORY"
+        mv "$DIR"/* "pinouts/$DIRECTORY"
         rmdir "$DIR"
       fi
       mkdir -p $(dirname "$DIR")
