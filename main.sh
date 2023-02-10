@@ -118,4 +118,6 @@ find pinoutstmp -type d -empty -delete
 # This will get everything that didn't have a directory or title specified.
 cp -r pinoutstmp/* pinouts/
 
+rm -r pinoutstmp
+
 echo "Completed processing $(echo -n "$CONNECTORS" | wc -l) mappings"
