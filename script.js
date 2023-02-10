@@ -318,14 +318,22 @@ window.addEventListener('load', function() {
     // If there's no image, just build the table.
     } else {
       img.parentElement.parentElement.style.height = 0;
+      var fullTable = sdiv.querySelector(".pinout-table").querySelector("tbody");
+      var fullTableHeader = sdiv.querySelector(".pinout-table").querySelector("thead>tr");
       for (var i = 0; i < connector.pins.length; i++) {
         var pin = connector.pins[i];
         if (!pin.pin) {
           continue;
         }
-        var fullTable = sdiv.querySelector(".pinout-table").querySelector("tbody");
         addRow(fullTable, pin);
       }
+      // Loop through our columns and add the headers for the main table
+      for (const column in columns) {
+        var el = document.createElement("th");
+        el.textContent = columns[column];
+        fullTableHeader.appendChild(el.cloneNode(true));
+      }
+      hideEmptyColumns(sdiv.querySelector(".pinout-table"));
     }
   }
 });
