@@ -5,9 +5,9 @@
 #   skip if "skip"
 
 # Sort all the yaml files by the order field they may contain.
-CONNECTORS=$(find -path "$MAPPING_PATH")
+CONNECTORS=$(find . -path "$MAPPING_PATH")
 FILES=$(for f in $CONNECTORS; do
-  ORDER=$(yq e '.info.order' $f)
+  ORDER=$(yq e '.info.order' "$f")
   echo "$f $ORDER"
 done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
@@ -16,12 +16,12 @@ CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
 mkdir -p pinoutstmp
 
 for c in $CONNECTORS; do
-  echo "Processing: "$c
+  echo "Processing: $c"
   # Get the directory and title, if they exist
-  DIRECTORY=$(yq e '.info.directory' $c)
-  TITLE=$(yq e '.info.title' $c)
+  DIRECTORY=$(yq e '.info.directory' "$c")
+  TITLE=$(yq e '.info.title' "$c")
   # Build the temp path, removing leading ./ and /
-  DIR="pinoutstmp/"$(dirname $c | sed -e 's/^\.\///' -e 's/^\///')
+  DIR="pinoutstmp/"$(dirname "$c" | sed -e 's/^\.\///' -e 's/^\///')
   # If we have a directory field
   if [ "$DIRECTORY" != "null" ]; then
     # If temp dir exists
@@ -47,7 +47,7 @@ for c in $CONNECTORS; do
     # If it doesn't exist, create specified directory and link it
     else
       mkdir -p "pinouts/$DIRECTORY"
-      mkdir -p $(dirname "$DIR")
+      mkdir -p "$(dirname "$DIR")"
       ln -rs "pinouts/$DIRECTORY" "$DIR"
     fi
   # If we have a title field but not directory
@@ -73,10 +73,10 @@ for c in $CONNECTORS; do
     # Fallback to creating normal directory
     mkdir -p "$DIR"
   fi
-  echo "Target Directory: "$DIR
-  NAME=$(basename $c .yaml)
-  echo "File Name: "$NAME
-  if [ "$(yq e '.info.cid' $c)" == "null" ]; then
+  echo "Target Directory: $DIR"
+  NAME=$(basename "$c" .yaml)
+  echo "File Name: $NAME"
+  if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
     echo "WARNING: Missing yaml cid field in info section of $c"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
@@ -84,10 +84,10 @@ for c in $CONNECTORS; do
       continue
     fi
   fi
-  if [ -f $DIR/index.html ]; then
-    bash /append.sh "$(yq -o=json e $c)" $DIR/index.html
+  if [ -f "$DIR/index.html" ]; then
+    bash /append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
   else
-    bash /gen.sh "$(yq -o=json e $c)" $DIR/index.html
+    bash /gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
   fi
   if [ $? -ne 0 ]; then
     echo "WARNING: Failed to generate or append to pinout"
@@ -97,7 +97,7 @@ for c in $CONNECTORS; do
       continue
     fi
   fi
-  IMG=$(yq e '.info.image.file' $c)
+  IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
     echo "WARNING: Missing image"
     if [ "$WARNINGS" = "error" ]; then
@@ -106,8 +106,8 @@ for c in $CONNECTORS; do
       continue
     fi
   else
-    echo "Image: "$IMG
-    cp $(dirname $c)/$IMG $DIR
+    echo "Image: $IMG"
+    cp "$(dirname "$c")/$IMG" "$DIR"
   fi
 done
 
