@@ -1,4 +1,4 @@
-;(function() {
+(function() {
 // gen.sh and append.sh replace DATA with the JSON of a connector
 var connectorData = [
 /*DATA*/
@@ -11,9 +11,9 @@ var printColumns = ///PRINT_COLS///
 
 // We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
-  var rows = table.querySelector('tbody').children;
-  var tableHead = table.querySelector("thead>tr")
-  var cols = tableHead.children
+  var rows = table.querySelector("tbody").children;
+  var tableHead = table.querySelector("thead>tr");
+  var cols = tableHead.children;
   // For every column, loop through all the rows and check if the column is empty
   for (var i = 0; i < cols.length; i++) {
     var empty = true;
@@ -27,16 +27,16 @@ function hideEmptyColumns(table) {
     // If the column was empty, we have to hide the header,
     //   and also loop through the children and hide them.
     if (empty) {
-      tableHead.querySelectorAll('th')[i].style.display = 'none';
+      tableHead.querySelectorAll("th")[i].style.display = "none";
       for (var ii = 0; ii < rows.length; ii++) {
-        rows[ii].children[i].style.display = 'none';
+        rows[ii].children[i].style.display = "none";
       }
     // If not, we do the same procedure, but show instead of hide,
     //   in case they were previously hidden.
     } else {
-      tableHead.querySelectorAll('th')[i].style.display = '';
+      tableHead.querySelectorAll("th")[i].style.display = "";
       for (var ii = 0; ii < rows.length; ii++) {
-        rows[ii].children[i].style.display = '';
+        rows[ii].children[i].style.display = "";
       }
     }
   }
@@ -59,7 +59,7 @@ function addRow(table, pin, cid) {
   //   - When no x/y coordinates were provided for the pin
   //   - When there is no image specified in the input YAML
   if (pin.pdiv) {
-    row.addEventListener('click', function(table, pin, cid) {
+    row.addEventListener("click", function(table, pin, cid) {
       // Find the closest container up the tree.
       // We don't know how far it is, because the info and
       //   main tables are at different depths.
@@ -208,15 +208,15 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   pin.pdiv.style.fontSize = (height * 1.8) + "px";
   pin.pdiv.style.fontSize = (pxheight * 0.5) + "px";
   // Recalculate the size for printing.
-  window.addEventListener('beforeprint', function(pdiv, width, divwidth, event) {
+  window.addEventListener("beforeprint", function(pdiv, width, divwidth, event) {
     pdiv.style.fontSize = "calc(calc(" + width + "px * min(640, "  + divwidth + ")) * 0.0055)";
   }.bind(null, pin.pdiv, width, divwidth));
-  window.addEventListener('afterprint', function(pdiv, pxheight, event) {
+  window.addEventListener("afterprint", function(pdiv, pxheight, event) {
     pdiv.style.fontSize = (pxheight * 0.5) + "px";
   }.bind(null, pin.pdiv, pxheight));
 }
 
-window.addEventListener('load', function() {
+window.addEventListener("load", function() {
   // Manage history navigation
   window.onpopstate = function(ev) {
     if (event.state) {
@@ -234,7 +234,7 @@ window.addEventListener('load', function() {
     var sdiv = document.body.lastElementChild;
     var img = sdiv.querySelector(".connector-img");
     // When the image is loaded, then handle the pins
-    img.addEventListener('load', function(connector, sdiv, img) {
+    img.addEventListener("load", function(connector, sdiv, img) {
       var cdiv = sdiv.querySelector(".connector-div");
       var cid = connector.info.cid;
       var ptemplate = document.getElementById("pin-template");
@@ -290,7 +290,7 @@ window.addEventListener('load', function() {
         cdiv.appendChild(pdiv);
         addRow(fullTable, pin, cid);
       }
-      hideEmptyColumns(sdiv.querySelector('.pinout-table'));
+      hideEmptyColumns(sdiv.querySelector(".pinout-table"));
       // Check if we have loaded all the images.
       checkImagesLoaded();
     }.bind(null, connector, sdiv, img));
