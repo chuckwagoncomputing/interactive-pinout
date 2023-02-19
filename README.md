@@ -87,7 +87,16 @@ info:
 
 ## Using this Action in Your Workflow
 
-Here is an example workflow step:
+### Handling Warnings
+
+There is a `warnings` option to set how warnings are handled, and more options to give finer control over certain types of warnings.
+|field|trigger|
+|-----|-------|
+|`warning-no-cid`|A missing `cid` field in the `info` section|
+|`warning-no-image`|A missing `file` field in the `image` subsection of the `info` section|
+|`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
+
+### Example Workflow Step
 
 ```
 - name: Generate Pinouts
