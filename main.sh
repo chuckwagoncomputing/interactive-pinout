@@ -8,6 +8,10 @@
 # env WARNING_NO_IMAGE
 #   same options as WARNINGS
 
+echo "WARNINGS: $WARNINGS"
+echo "WARNING_NO_CID: $WARNING_NO_CID"
+echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
+
 # Sort all the yaml files by the order field they may contain.
 CONNECTORS=$(find . -path "$MAPPING_PATH")
 FILES=$(for f in $CONNECTORS; do
