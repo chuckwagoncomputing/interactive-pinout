@@ -22,14 +22,14 @@ inputs:
       Set to "skip" to skip to the next mapping file,
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
-    default: ""
+    default: "unset"
   warning-no-image:
     required: false
     description: |
       Set to "skip" to skip to the next mapping file,
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
-    default: ""
+    default: "unset"
   columns:
     required: true
     description: |
