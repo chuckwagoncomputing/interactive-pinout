@@ -222,9 +222,11 @@ window.addEventListener("load", function() {
       checkparams();
     }
   };
+  // @ifdef DEBUG
   if (debug) {
     console.log(connectorData.length + " connectors")
   }
+  // @endif
   // For every connector...
   for (var c = 0; c < connectorData.length; c++) {
     // Parse the JSON, add connector to document body

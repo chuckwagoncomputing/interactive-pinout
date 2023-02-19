@@ -22,7 +22,7 @@ export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\/
 if [ "$DEBUG" = "true" ]; then
   export JS=$'var debug = true;\n'"$JS"
 else
-  export JS=$(echo '(function() {'"$JS"'})()' | perl -0pe 's/if \(debug\) \{.*?\}//s;')
+  export JS=$(echo '(function() {'"$JS"'})()' | perl -0pe 's/\/\/ \@ifdef DEBUG.*?\/\/ \@endif//s;')
 fi
 
 if [ "$DEBUG" = "true" ]; then
