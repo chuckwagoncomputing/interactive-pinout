@@ -13,6 +13,22 @@ echo "WARNINGS: $WARNINGS"
 echo "WARNING_NO_CID: $WARNING_NO_CID"
 echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
 
+handle_warning ()
+{
+  if [ "$WARNINGS" = "error" ] && [ "$1" = "unset" ] || [ "$1" = "error" ]; then
+    echo "::error:: $2"
+    exit 1;
+  elif [ "$WARNINGS" = "notice" ] && [ "$1" = "unset" ] || [ "$1" = "notice" ]; then
+    echo "::notice:: $2"
+  elif [ "$WARNINGS" = "skip" ] && [ "$1" = "unset" ] || [ "$1" = "skip" ]; then
+    echo "$2"
+    return 1
+  else
+    echo "$2"
+  fi
+  return 0
+}
+
 # Sort all the yaml files by the order field they may contain.
 CONNECTORS=$(find . -path "$MAPPING_PATH")
 FILES=$(for f in $CONNECTORS; do
@@ -26,20 +42,9 @@ mkdir -p pinoutstmp
 
 for c in $CONNECTORS; do
   echo "Processing: $c"
-  DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d)
+  DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d | tr -d '\n')
   if [ -n "$DUPES" ]; then
-    MSG="WARNING: Duplicate pins in $c: $DUPES"
-    if [ "$WARNINGS" = "error" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "error" ]; then
-      echo "::error:: "$MSG
-      exit 1;
-    elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "notice" ]; then
-      echo "::notice:: "$MSG
-    elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "skip" ]; then
-      echo $MSG
-      continue
-    else
-      echo $MSG
-    fi
+    if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pins in $c: $DUPES"; then continue; fi
   fi
   # Get the directory and title, if they exist
   DIRECTORY=$(yq e '.info.directory' "$c")
@@ -101,18 +106,7 @@ for c in $CONNECTORS; do
   NAME=$(basename "$c" .yaml)
   echo "File Name: $NAME"
   if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
-    MSG="WARNING: Missing yaml cid field in info section of $c"
-    if [ "$WARNINGS" = "error" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "error" ]; then
-      echo "::error:: $MSG"
-      exit 1;
-    elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "notice" ]; then
-      echo "::notice:: $MSG"
-    elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "skip" ]; then
-      echo "$MSG"
-      continue
-    else
-      echo "$MSG"
-    fi
+    if ! handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c"; then continue; fi
   fi
   if [ -f "$DIR/index.html" ]; then
     bash /append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
@@ -120,29 +114,11 @@ for c in $CONNECTORS; do
     bash /gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
   fi
   if [ $? -ne 0 ]; then
-    echo "WARNING: Failed to generate or append to pinout"
-    if [ "$WARNINGS" = "error" ]; then
-      exit 1;
-    elif [ "$WARNINGS" = "notice" ]; then
-      echo "::notice:: Failed to generate or append to pinout $c"
-    elif [ "$WARNINGS" = "skip" ]; then
-      continue
-    fi
+    if ! handle_warning "unset" "WARNING: Failed to generate or append to pinout"; then continue; fi
   fi
   IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
-    MSG="WARNING: $c issing image"
-    if [ "$WARNINGS" = "error" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "error" ]; then
-      echo "::error:: $MSG"
-      exit 1;
-    elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "notice" ]; then
-      echo "::notice:: $MSG"
-    elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "skip" ]; then
-      echo "$MSG"
-      continue
-    else
-      echo "$MSG"
-    fi
+    if ! handle_warning "$WARNING_NO_IMAGE" "WARNING: $c missing image"; then continue; fi
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
