@@ -1,6 +1,7 @@
 #!/bin/bash
 # env MAPPING_PATH: yaml(s) path
 # env WARNINGS:
+#   print more visible notice if "notice"
 #   fail if "error"
 #   skip if "skip"
 
@@ -80,6 +81,8 @@ for c in $CONNECTORS; do
     echo "WARNING: Missing yaml cid field in info section of $c"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
+    elif [ "$WARNINGS" = "notice" ]; then
+      echo "::notice:: Missing yaml cid field in info section of $c"
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
@@ -93,6 +96,8 @@ for c in $CONNECTORS; do
     echo "WARNING: Failed to generate or append to pinout"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
+    elif [ "$WARNINGS" = "notice" ]; then
+      echo "::notice:: Failed to generate or append to pinout $c"
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
@@ -102,6 +107,8 @@ for c in $CONNECTORS; do
     echo "WARNING: Missing image"
     if [ "$WARNINGS" = "error" ]; then
       exit 1;
+    elif [ "$WARNINGS" = "notice" ]; then
+      echo "::notice:: $c Missing image"
     elif [ "$WARNINGS" = "skip" ]; then
       continue
     fi
