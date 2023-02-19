@@ -9,9 +9,11 @@
 # env WARNING_DUPE
 #   same options as WARNINGS
 
-echo "WARNINGS: $WARNINGS"
-echo "WARNING_NO_CID: $WARNING_NO_CID"
-echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
+if [ "$DEBUG" = "true" ]; then
+  echo "WARNINGS: $WARNINGS"
+  echo "WARNING_NO_CID: $WARNING_NO_CID"
+  echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
+fi
 
 handle_warning ()
 {
@@ -102,9 +104,13 @@ for c in $CONNECTORS; do
     # Fallback to creating normal directory
     mkdir -p "$DIR"
   fi
-  echo "Target Directory: $DIR"
+  if [ "$DEBUG" = "true" ]; then
+    echo "Target Directory: $DIR"
+  fi
   NAME=$(basename "$c" .yaml)
-  echo "File Name: $NAME"
+  if [ "$DEBUG" = "true" ]; then
+    echo "File Name: $NAME"
+  fi
   if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
     if ! handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c"; then continue; fi
   fi
