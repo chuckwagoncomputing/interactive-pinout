@@ -52,6 +52,11 @@ inputs:
     required: false
     description: |
       A JSON mapping of pin "type" fields to CSS colors.
+  debug:
+    required: false
+    description: |
+      Don't minify, and add some logging to the JS
+    default: "false"
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -64,6 +69,7 @@ runs:
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
     COLORS: ${{ inputs.colors }}
+    DEBUG: ${{ inputs.debug }}
 branding:
   icon: "cpu"
   color: "orange"

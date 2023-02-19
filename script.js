@@ -1,4 +1,3 @@
-(function() {
 // gen.sh and append.sh replace DATA with the JSON of a connector
 var connectorData = [
 /*DATA*/
@@ -223,6 +222,9 @@ window.addEventListener("load", function() {
       checkparams();
     }
   };
+  if (debug) {
+    console.log(connectorData.length + " connectors")
+  }
   // For every connector...
   for (var c = 0; c < connectorData.length; c++) {
     // Parse the JSON, add connector to document body
@@ -337,4 +339,3 @@ window.addEventListener("load", function() {
     }
   }
 });
-})()
