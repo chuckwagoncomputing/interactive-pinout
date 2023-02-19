@@ -28,13 +28,17 @@ for c in $CONNECTORS; do
   echo "Processing: $c"
   DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d)
   if [ -n "$DUPES" ]; then
-    echo "WARNING: Duplicate pins "$DUPES
+    MSG="WARNING: Duplicate pins in $c: $DUPES"
     if [ "$WARNINGS" = "error" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "error" ]; then
+      echo "::error:: "$MSG
       exit 1;
     elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "notice" ]; then
-      echo "::notice:: Duplicate pins in $c: "$DUPES
+      echo "::notice:: "$MSG
     elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "skip" ]; then
+      echo $MSG
       continue
+    else
+      echo $MSG
     fi
   fi
   # Get the directory and title, if they exist
@@ -97,13 +101,17 @@ for c in $CONNECTORS; do
   NAME=$(basename "$c" .yaml)
   echo "File Name: $NAME"
   if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
-    echo "WARNING: Missing yaml cid field in info section of $c"
+    MSG="WARNING: Missing yaml cid field in info section of $c"
     if [ "$WARNINGS" = "error" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "error" ]; then
+      echo "::error:: $MSG"
       exit 1;
     elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "notice" ]; then
-      echo "::notice:: Missing yaml cid field in info section of $c"
+      echo "::notice:: $MSG"
     elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_NO_CID" = "unset" ] || [ "$WARNING_NO_CID" = "skip" ]; then
+      echo "$MSG"
       continue
+    else
+      echo "$MSG"
     fi
   fi
   if [ -f "$DIR/index.html" ]; then
@@ -123,13 +131,17 @@ for c in $CONNECTORS; do
   fi
   IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
-    echo "WARNING: Missing image"
+    MSG="WARNING: $c issing image"
     if [ "$WARNINGS" = "error" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "error" ]; then
+      echo "::error:: $MSG"
       exit 1;
     elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "notice" ]; then
-      echo "::notice:: $c Missing image"
+      echo "::notice:: $MSG"
     elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_NO_IMAGE" = "unset" ] || [ "$WARNING_NO_IMAGE" = "skip" ]; then
+      echo "$MSG"
       continue
+    else
+      echo "$MSG"
     fi
   else
     echo "Image: $IMG"
