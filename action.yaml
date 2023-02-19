@@ -16,6 +16,20 @@ inputs:
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
     default: "false"
+  warning-no-cid:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      "notice" to warn on the Actions page,
+      or "error" to fail the workflow step.
+    default: ""
+  warning-no-image:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      "notice" to warn on the Actions page,
+      or "error" to fail the workflow step.
+    default: ""
   columns:
     required: true
     description: |
@@ -37,6 +51,8 @@ runs:
   env:
     MAPPING_PATH: ${{ inputs.mapping-path }}
     WARNINGS: ${{ inputs.warnings }}
+    WARNING_NO_CID: ${{ inputs.warning-no-cid }}
+    WARNING_NO_IMAGE: ${{ inputs.warning-no-image }}
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
     COLORS: ${{ inputs.colors }}

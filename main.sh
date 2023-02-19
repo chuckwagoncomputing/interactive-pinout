@@ -4,6 +4,9 @@
 #   print more visible notice if "notice"
 #   fail if "error"
 #   skip if "skip"
+# env WARNING_NO_CID
+# env WARNING_NO_IMAGE
+#   same options as WARNINGS
 
 # Sort all the yaml files by the order field they may contain.
 CONNECTORS=$(find . -path "$MAPPING_PATH")
@@ -79,11 +82,11 @@ for c in $CONNECTORS; do
   echo "File Name: $NAME"
   if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
     echo "WARNING: Missing yaml cid field in info section of $c"
-    if [ "$WARNINGS" = "error" ]; then
+    if [ "$WARNINGS" = "error" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "error" ]; then
       exit 1;
-    elif [ "$WARNINGS" = "notice" ]; then
+    elif [ "$WARNINGS" = "notice" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "notice" ]; then
       echo "::notice:: Missing yaml cid field in info section of $c"
-    elif [ "$WARNINGS" = "skip" ]; then
+    elif [ "$WARNINGS" = "skip" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "skip" ]; then
       continue
     fi
   fi
@@ -105,11 +108,11 @@ for c in $CONNECTORS; do
   IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
     echo "WARNING: Missing image"
-    if [ "$WARNINGS" = "error" ]; then
+    if [ "$WARNINGS" = "error" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "error" ]; then
       exit 1;
-    elif [ "$WARNINGS" = "notice" ]; then
+    elif [ "$WARNINGS" = "notice" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "notice" ]; then
       echo "::notice:: $c Missing image"
-    elif [ "$WARNINGS" = "skip" ]; then
+    elif [ "$WARNINGS" = "skip" ] && [ -z "WARNING_NO_CID" ] || [ "$WARNING_NO_CID" = "skip" ]; then
       continue
     fi
   else
