@@ -6,6 +6,7 @@
 #   skip if "skip"
 # env WARNING_NO_CID
 # env WARNING_NO_IMAGE
+# env WARNING_DUPE
 #   same options as WARNINGS
 
 echo "WARNINGS: $WARNINGS"
@@ -25,6 +26,17 @@ mkdir -p pinoutstmp
 
 for c in $CONNECTORS; do
   echo "Processing: $c"
+  DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d)
+  if [ -n "$DUPES" ]; then
+    echo "WARNING: Duplicate pins "$DUPES
+    if [ "$WARNINGS" = "error" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "error" ]; then
+      exit 1;
+    elif [ "$WARNINGS" = "notice" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "notice" ]; then
+      echo "::notice:: Duplicate pins in $c: "$DUPES
+    elif [ "$WARNINGS" = "skip" ] && [ "$WARNING_DUPE" = "unset" ] || [ "$WARNING_DUPE" = "skip" ]; then
+      continue
+    fi
+  fi
   # Get the directory and title, if they exist
   DIRECTORY=$(yq e '.info.directory' "$c")
   TITLE=$(yq e '.info.title' "$c")

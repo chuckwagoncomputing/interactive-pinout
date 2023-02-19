@@ -30,6 +30,13 @@ inputs:
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
     default: "unset"
+  warning-dupe:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      "notice" to warn on the Actions page,
+      or "error" to fail the workflow step.
+    default: "unset"
   columns:
     required: true
     description: |
@@ -53,6 +60,7 @@ runs:
     WARNINGS: ${{ inputs.warnings }}
     WARNING_NO_CID: ${{ inputs.warning-no-cid }}
     WARNING_NO_IMAGE: ${{ inputs.warning-no-image }}
+    WARNING_DUPE: ${{ inputs.warning-dupe }}
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
     COLORS: ${{ inputs.colors }}
