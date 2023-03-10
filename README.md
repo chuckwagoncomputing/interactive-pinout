@@ -1,5 +1,8 @@
 # Interactive Pinout Generator
 
+Example (click to view):  
+[![microRusEFI connector screenshot](mre.png)](https://rusefi.com/docs/pinouts/microrusefi)
+
 Generating pinouts requires:
 
 - ECU connector photo (.jpg)
