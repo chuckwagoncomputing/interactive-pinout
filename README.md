@@ -5,8 +5,8 @@ Example (click to view):
 
 Generating pinouts requires:
 
-- ECU connector photo (.jpg)
-- pinout metadata file in [YAML](https://en.wikipedia.org/wiki/YAML) format
+- Device connector photo (.jpg)
+- Pinout metadata file in [YAML](https://en.wikipedia.org/wiki/YAML) format
 
 Multiple .yaml files within a directory are put into the same index.html page.  
 The results will be in a folder named "pinouts".  
