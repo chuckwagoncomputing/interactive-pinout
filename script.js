@@ -148,7 +148,7 @@ function checkparams() {
   var params = new URLSearchParams(window.location.search);
   var connector = params.get("connector");
   var pin = params.get("pin");
-  if (typeof(pin) == "undefined") {
+  if (pin == null) {
     return;
   }
   var c;
