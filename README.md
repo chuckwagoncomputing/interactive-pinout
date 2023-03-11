@@ -109,7 +109,7 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
 - name: Generate Pinouts
   uses: chuckwagoncomputing/interactive-pinout
   with:
-    mapping-path: ./firmware/config/boards/*/connectors
+    mapping-path: ./firmware/config/boards/*/connectors/*.yaml
     warnings: skip
     columns: |
       {
