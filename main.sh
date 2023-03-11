@@ -15,6 +15,8 @@ if [ "$DEBUG" = "true" ]; then
   echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
 fi
 
+SCRIPTDIR=$(dirname "$0")
+
 handle_warning ()
 {
   if [ "$WARNINGS" = "error" ] && [ "$1" = "unset" ] || [ "$1" = "error" ]; then
@@ -115,9 +117,9 @@ for c in $CONNECTORS; do
     if ! handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c"; then continue; fi
   fi
   if [ -f "$DIR/index.html" ]; then
-    bash /append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+    bash "$SCRIPTDIR"/append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
   else
-    bash /gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+    bash "$SCRIPTDIR"/gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
   fi
   if [ $? -ne 0 ]; then
     if ! handle_warning "unset" "WARNING: Failed to generate or append to pinout"; then continue; fi
