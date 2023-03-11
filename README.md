@@ -92,6 +92,10 @@ info:
 
 ## Using this Action in Your Workflow
 
+### Parameters
+
+Look at [action.yaml](action.yaml) for a list and description of inputs to interactive-pinout.
+
 ### Handling Warnings
 
 There is a `warnings` option to set how warnings are handled, and more options to give finer control over certain types of warnings.
