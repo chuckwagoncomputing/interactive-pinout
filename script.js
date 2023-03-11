@@ -148,16 +148,18 @@ function checkparams() {
   var params = new URLSearchParams(window.location.search);
   var connector = params.get("connector");
   var pin = params.get("pin");
-  var c = function(){
-    // Loop through the connectors and find if there's one that matches.
-    for (var i = 0; i < connectorData.length; i++) {
-      if (typeof(connectorData[i].info.cid) != "undefined" && connectorData[i].info.cid == connector) {
-        return i;
-      } else if (i == connectorData.length - 1){
-        return 0;
-      }
+  if (typeof(pin) == "undefined") {
+    return;
+  }
+  var c;
+  // Loop through the connectors and find if there's one that matches.
+  for (var i = 0; i < connectorData.length; i++) {
+    if (typeof(connectorData[i].info.cid) != "undefined" && connectorData[i].info.cid == connector) {
+      c = i;
+    } else if (i == connectorData.length - 1){
+      c = 0;
     }
-  }();
+  }
   var cdata = connectorData[c];
   var table = document.querySelectorAll(".info-table tbody")[c];
   // Loop through the pins and find if there's one that matches.
