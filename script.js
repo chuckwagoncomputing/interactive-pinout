@@ -151,7 +151,7 @@ function checkparams() {
   var c = function(){
     // Loop through the connectors and find if there's one that matches.
     for (var i = 0; i < connectorData.length; i++) {
-      if (typeof(c.info.cid) != "undefined" && c.info.cid == connector) {
+      if (typeof(connectorData[i].info.cid) != "undefined" && connectorData[i].info.cid == connector) {
         return i;
       } else if (i == connectorData.length - 1){
         return 0;
