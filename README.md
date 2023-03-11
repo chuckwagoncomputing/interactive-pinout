@@ -151,3 +151,22 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
       "vr":"sienna"
       }
 ```
+
+## Using as a stand-alone script, without Github Actions
+
+The parameters in the workflow can also be passed to main.sh as environment variables instead.
+Here is the complete list of variables:
+
+```
+MAPPING_PATH
+WARNINGS
+WARNING_NO_CID
+WARNING_NO_IMAGE
+WARNING_DUPE
+COLS
+PRINT_COLS
+COLORS
+DEBUG
+```
+
+After exporting these environmnet variables, execute main.sh.
