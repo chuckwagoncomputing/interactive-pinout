@@ -134,6 +134,7 @@ function clickPin(table, pin, cid) {
   } else {
     var url = new URL(window.location);
     url.search = "";
+    url.searchParams.set("pin", pin.pin);
     // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
       window.history.pushState({}, "", url)
@@ -147,19 +148,22 @@ function checkparams() {
   var params = new URLSearchParams(window.location.search);
   var connector = params.get("connector");
   var pin = params.get("pin");
+  var c;
   // Loop through the connectors and find if there's one that matches.
   for (var i = 0; i < connectorData.length; i++) {
-    var c = connectorData[i];
-    if (c.info.cid == connector) {
-      var table = document.querySelectorAll(".info-table tbody")[i];
-      // Loop through the pins and find if there's one that matches.
-      for (var iii = 0; iii < c.pins.length; iii++) {
-        if (c.pins[iii].pin == pin) {
-          // Just pretend we clicked on it
-          clickPin(table, c.pins[iii], c.info.cid);
-          return;
-        }
-      }
+    c = connectorData[i];
+    if (typeof(c.info.cid) != "undefined" && c.info.cid == connector) {
+      break;
+    } else if (i == connectorData.length - 1){
+      c = connectorData[0]
+    }
+  }
+  var table = document.querySelectorAll(".info-table tbody")[i];
+  // Loop through the pins and find if there's one that matches.
+  for (var iii = 0; iii < c.pins.length; iii++) {
+    if (c.pins[iii].pin == pin) {
+      // Just pretend we clicked on it
+      clickPin(table, c.pins[iii], c.info.cid);
       return;
     }
   }
