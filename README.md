@@ -47,6 +47,8 @@ The 'info' section contains information which is used to generate the interactiv
 
 ### Example YAML
 
+You can find the YAML files that generated the example image above [at this link](https://github.com/rusefi/rusefi/tree/master/firmware/config/boards/microrusefi/connectors).
+
 ```
 pins:
   - pin: 1
@@ -100,6 +102,8 @@ There is a `warnings` option to set how warnings are handled, and more options t
 |`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
 
 ### Example Workflow Step
+
+For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/master/.github/workflows/gen-pinouts.yaml) uses interactive-pinouts in Github Actions.
 
 ```
 - name: Generate Pinouts
