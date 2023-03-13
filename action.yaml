@@ -8,7 +8,7 @@ inputs:
     description: |
       Location of mapping file
       You can use globs to match multiple files, for example:
-      boards/*/connectors/*.yaml
+      ./boards/*/connectors/*.yaml
   warnings:
     required: false
     description: |
