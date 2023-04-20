@@ -103,7 +103,7 @@ table {
   }
 }
 
-table tbody tr {
+table.pinout-table tbody tr {
   cursor: pointer;
 }
 
