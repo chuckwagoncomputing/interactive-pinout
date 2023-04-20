@@ -49,7 +49,8 @@ function addRow(table, pin) {
 
 // Add a row to a table, with an associated connector,
 //    so we can scroll the connector into view
-function addRow(table, pin, cid) {
+function addRow(table, pin, cid, click) {
+  click = typeof click !== 'undefined' ? click : true;
   var clone = getRow(table, pin)
   var row = clone.querySelector(".data");
   // If we've been passed a reference to a pin on the connector view,
@@ -57,7 +58,7 @@ function addRow(table, pin, cid) {
   // This will not be the case:
   //   - When no x/y coordinates were provided for the pin
   //   - When there is no image specified in the input YAML
-  if (pin.pdiv) {
+  if (pin.pdiv && click) {
     row.addEventListener("click", function(table, pin, cid) {
       // Find the closest container up the tree.
       // We don't know how far it is, because the info and
@@ -105,7 +106,7 @@ function clickPin(table, pin, cid) {
   table.parentElement.style.display = "table";
   // Clear the table, then add the row
   table.innerHTML = "";
-  addRow(table, pin, cid);
+  addRow(table, pin, cid, false);
   // Loop through the pins, and highlight those of the same type,
   //   remove highlights from any other previously highlighted pins,
   //   and remove selection from all pins.
