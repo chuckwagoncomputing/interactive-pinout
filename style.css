@@ -37,6 +37,17 @@ body {
   transform: scale(2);
   z-index: 2;
   line-height: unset !important;
+  height: unset !important;
+  width: unset !important;
+  border-radius: 10px;
+}
+
+.pin-marker .pin-info {
+  display: none;
+}
+
+.pin-marker:hover .pin-info {
+  display: unset;
 }
 
 .pin-marker.highlight {

@@ -251,6 +251,7 @@ window.addEventListener("load", function() {
       var cdiv = sdiv.querySelector(".connector-div");
       var cid = connector.info.cid;
       var ptemplate = document.getElementById("pin-template");
+      var pitemplate = document.getElementById("pin-info-template");
       var imgHeight = img.naturalHeight;
       var imgWidth = img.naturalWidth;
       var infoTable = sdiv.querySelector(".info-table").querySelector("tbody");
@@ -287,6 +288,10 @@ window.addEventListener("load", function() {
         var pclone = ptemplate.content.cloneNode(true);
         var pdiv = pclone.querySelector("div");
         pdiv.textContent = pinfo.pin;
+        var piclone = pitemplate.content.cloneNode(true);
+        var pidiv = piclone.querySelector(".pin-info");
+        pidiv.textContent = pin.type;
+        pdiv.appendChild(piclone);
         pdiv.style.top = ((pinfo.y / imgHeight) * 100) + "%";
         pdiv.style.left = ((pinfo.x / imgWidth) * 100) + "%";
         pdiv.dataset.type = pin.type;
