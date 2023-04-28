@@ -48,6 +48,10 @@ inputs:
     description: |
       A JSON array of column IDs that will be visible in print mode. Provide at least one.
       The "pin" column is always visible.
+  info-column:
+    required: false
+    description: |
+      A column whose value will be displayed when hovering over a pin.
   colors:
     required: false
     description: |
@@ -68,6 +72,7 @@ runs:
     WARNING_DUPE: ${{ inputs.warning-dupe }}
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
+    INFO_COL: ${{ inputs.info-column }}
     COLORS: ${{ inputs.colors }}
     DEBUG: ${{ inputs.debug }}
 branding:

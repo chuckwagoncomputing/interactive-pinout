@@ -17,7 +17,7 @@ for C in $COLORS; do
 done
 export CSS
 
-export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' $DIR/script.js)
+export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' -pe 's/\/\/\/INFO_COL\/\/\//$ENV{INFO_COL}/;' $DIR/script.js)
 
 if [ "$DEBUG" = "true" ]; then
   export JS=$'var debug = true;\n'"$JS"

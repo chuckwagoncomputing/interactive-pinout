@@ -8,6 +8,8 @@ var columns = ///COLS///
 
 var printColumns = ///PRINT_COLS///
 
+var infoColumn = "///INFO_COLS///";
+
 // We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
   var rows = table.querySelector("tbody").children;
@@ -290,7 +292,7 @@ window.addEventListener("load", function() {
         pdiv.textContent = pinfo.pin;
         var piclone = pitemplate.content.cloneNode(true);
         var pidiv = piclone.querySelector(".pin-info");
-        pidiv.textContent = pin.type;
+        pidiv.textContent = pin[infoColumn];
         pdiv.appendChild(piclone);
         pdiv.style.top = ((pinfo.y / imgHeight) * 100) + "%";
         pdiv.style.left = ((pinfo.x / imgWidth) * 100) + "%";
