@@ -210,6 +210,7 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   var width = (pxheight / divwidth) * 100;
   pin.pdiv.style.height = "calc(" + height + "%)";
   pin.pdiv.style.width = "calc(" +  width + "%)";
+  pin.pdiv.style.lineHeight = "calc(" + pxheight + "px - 0.21vw)";
   pin.pdiv.style.marginTop = "-" + (width / 2) + "%";
   pin.pdiv.style.marginLeft = "-" + (width / 2) + "%";
   pin.pdiv.style.fontSize = (height * 1.8) + "px";

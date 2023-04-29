@@ -36,6 +36,7 @@ body {
 .pin-marker:hover {
   transform: scale(2);
   z-index: 2;
+  line-height: unset !important;
 }
 
 .pin-marker.highlight {
