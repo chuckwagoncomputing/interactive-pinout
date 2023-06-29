@@ -159,6 +159,7 @@ function checkparams() {
   for (var i = 0; i < connectorData.length; i++) {
     if (typeof(connectorData[i].info.cid) != "undefined" && connectorData[i].info.cid == connector) {
       c = i;
+      break;
     } else if (i == connectorData.length - 1){
       c = 0;
     }
