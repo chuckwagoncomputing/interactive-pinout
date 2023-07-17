@@ -130,6 +130,7 @@ for c in $CONNECTORS; do
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
+    # Patch legacy YAMLs by moving .info.pins to .info.image.pins
     yq --inplace e '.info.image.pins = .info.pins' "$c"
     yq --inplace e 'del(.info.pins)' "$c"
   fi
