@@ -116,14 +116,6 @@ for c in $CONNECTORS; do
   if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
     if ! handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c"; then continue; fi
   fi
-  if [ -f "$DIR/index.html" ]; then
-    bash "$SCRIPTDIR"/append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
-  else
-    bash "$SCRIPTDIR"/gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
-  fi
-  if [ $? -ne 0 ]; then
-    if ! handle_warning "unset" "WARNING: Failed to generate or append to pinout"; then continue; fi
-  fi
   IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
     IMP=$(yq e '.info.image.import' "$c")
@@ -140,6 +132,14 @@ for c in $CONNECTORS; do
     cp "$(dirname "$c")/$IMG" "$DIR"
     yq --inplace e '.info.image.pins = .info.pins' "$c"
     yq --inplace e 'del(.info.pins)' "$c"
+  fi
+  if [ -f "$DIR/index.html" ]; then
+    bash "$SCRIPTDIR"/append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+  else
+    bash "$SCRIPTDIR"/gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+  fi
+  if [ $? -ne 0 ]; then
+    if ! handle_warning "unset" "WARNING: Failed to generate or append to pinout"; then continue; fi
   fi
 done
 
