@@ -133,10 +133,13 @@ for c in $CONNECTORS; do
       IMG=$(yq e '.image.file' "$(dirname "$c")/$IMP")
       echo "Image: $IMG"
       cp "$(dirname $(dirname "$c")/$IMP)/$IMG" "$DIR"
+      yq --inplace ea '.info.image = .image | select(fi == 0)' "$c" "$(dirname "$c")/$IMP"
     fi
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
+    yq e '.info.image.pins = .info.pins' "$c"
+    yq e 'del(.info.pins)' "$c"
   fi
 done
 
