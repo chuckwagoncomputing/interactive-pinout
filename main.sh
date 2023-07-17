@@ -126,7 +126,14 @@ for c in $CONNECTORS; do
   fi
   IMG=$(yq e '.info.image.file' "$c")
   if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
-    if ! handle_warning "$WARNING_NO_IMAGE" "WARNING: $c missing image"; then continue; fi
+    IMP=$(yq e '.info.image.import' "$c")
+    if [ $? -ne 0 ] || [ "$IMP" = "null" ]; then
+      if ! handle_warning "$WARNING_NO_IMAGE" "WARNING: $c missing image"; then continue; fi
+    else
+      IMG=$(yq e '.image.file' "$(dirname "$c")/$IMP")
+      echo "Image: $IMG"
+      cp "$(dirname $(dirname "$c")/$IMP)/$IMG" "$DIR"
+    fi
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
