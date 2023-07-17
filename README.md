@@ -37,13 +37,20 @@ The 'info' section contains information which is used to generate the interactiv
 |field    |description|
 |---------|-----------|
 |cid      |a short name for the connector, to be used in the URL when linking to a particular pin, for pages with more than one connector|
-|image    |subsection which contains a single field, 'file', which contains the filename of the image, which is stored in the same directory as the YAML|
-|pins     |subsection with a list of the pins' locations on the image. Its fields are 'pin', which matches to an 'id' in the main 'pins' section, 'x' and 'y', which are the coordinates on the image|
+|image    |subsection which contains image source and pin coordinates|
 |title    |the title for the page. Only one connector for a particular board needs this field|
 |directory|the target directory for the page. Only one connector for a particular board needs this field|
 |board_url|a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
 |name     |a human-readable name for the connector|
 |order    |an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
+
+The 'image' subsections contains the following fields  
+
+|field    |description|
+|---------|-----------|
+|file     |the image filename, which is stored in the same directory as the YAML|
+|pins     |subsection with a list of the pins' locations on the image. Its fields are 'pin', which matches to an 'id' in the main 'pins' section, 'x' and 'y', which are the coordinates on the image|
+|import   |replaces 'file' and 'pins' - References a YAML file which has 'image' as its top-level section, and has 'file' and 'pins' fields. The file path is relative to the referenced YAML file.|
 
 ### Example YAML
 
@@ -75,19 +82,19 @@ info:
   cid: c1
   image:
     file: connector.jpg
-  pins:
-    - pin: 1
-      x: 1508
-      y: 958
-    - pin: 2
-      x: 1508
-      y: 787
-    - pin: 3
-      x: 1508
-      y: 616
-    - pin: 4
-      x: 1508
-      y: 445
+    pins:
+      - pin: 1
+        x: 1508
+        y: 958
+      - pin: 2
+        x: 1508
+        y: 787
+      - pin: 3
+        x: 1508
+        y: 616
+      - pin: 4
+        x: 1508
+        y: 445
 ```
 
 ## Using this Action in Your Workflow
