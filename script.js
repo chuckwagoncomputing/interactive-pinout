@@ -193,7 +193,7 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   //    without overlapping pins.
   var closest = 1000000;
   for (var ii = 0; ii < connector.info.image.pins.length; ii++) {
-    var tinfo = connector.image.info.image.pins[ii];
+    var tinfo = connector.info.image.pins[ii];
     var distance = Math.pow((tinfo.x - pinfo.x), 2) + Math.pow((tinfo.y - pinfo.y), 2);
     if (tinfo.pin != pin.pin && (!closest || distance < closest)) {
       closest = distance;
