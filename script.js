@@ -192,8 +192,8 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   // Find the closest pin, to maximize the pin size for best readability,
   //    without overlapping pins.
   var closest = 1000000;
-  for (var ii = 0; ii < connector.info.pins.length; ii++) {
-    var tinfo = connector.info.pins[ii];
+  for (var ii = 0; ii < connector.info.image.pins.length; ii++) {
+    var tinfo = connector.image.info.image.pins[ii];
     var distance = Math.pow((tinfo.x - pinfo.x), 2) + Math.pow((tinfo.y - pinfo.y), 2);
     if (tinfo.pin != pin.pin && (!closest || distance < closest)) {
       closest = distance;
@@ -276,9 +276,9 @@ window.addEventListener("load", function() {
         }
         // Get the pin info from the info section (i.e. x/y coordinates)
         var pinfo = {};
-        for (var ii = 0; ii < connector.info.pins.length; ii++) {
-          if (connector.info.pins[ii].pin == pin.pin) {
-            pinfo = connector.info.pins[ii];
+        for (var ii = 0; ii < connector.info.image.pins.length; ii++) {
+          if (connector.info.image.pins[ii].pin == pin.pin) {
+            pinfo = connector.info.image.pins[ii];
             break;
           }
         }
