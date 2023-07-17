@@ -147,4 +147,4 @@ find pinouts/ -type f -name 'index.html' -print0 | while IFS= read -r -d '' f; d
   fi
 done
 
-echo "Completed processing $(echo -n "$CONNECTORS" | wc -l) mappings"
+echo "Completed processing $(echo "$CONNECTORS" | wc -l) mappings"
