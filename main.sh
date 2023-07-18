@@ -35,15 +35,16 @@ handle_warning ()
 
 # Sort all the yaml files by the order field they may contain.
 CONNECTORS=$(find . -path "$MAPPING_PATH")
+if [ "$DEBUG" = "true" ]; then
+  echo "Search Path: $MAPPING_PATH"
+  echo "Found YAMLs: $CONNECTORS"
+fi
+
 FILES=$(for f in $CONNECTORS; do
   ORDER=$(yq e '.info.order' "$f")
   echo "$f $ORDER"
 done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
-
-if [ "$DEBUG" = "true" ]; then
-  echo "Found YAMLs: $CONNECTORS"
-fi
 
 # Make a temp directory for symlinks to actual files.
 mkdir -p pinoutstmp
