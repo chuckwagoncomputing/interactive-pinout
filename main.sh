@@ -34,7 +34,7 @@ handle_warning ()
 }
 
 # Sort all the yaml files by the order field they may contain.
-CONNECTORS=$(find . -path "$MAPPING_PATH")
+CONNECTORS=$(echo "$MAPPING_PATH" | while read p; do find . -path "$p"; done)
 if [ "$DEBUG" = "true" ]; then
   echo "Search Path: $MAPPING_PATH"
   echo "Found YAMLs: $CONNECTORS"
