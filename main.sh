@@ -41,6 +41,11 @@ if [ "$DEBUG" = "true" ]; then
   echo "Found YAMLs: $CONNECTORS"
 fi
 
+if [ $(echo -n "$CONNECTORS" | wc -l) -eq 0 ]; then
+  echo "No connectors found"
+  exit
+fi
+
 FILES=$(for f in $CONNECTORS; do
   ORDER=$(yq e '.info.order' "$f")
   echo "$f $ORDER"
