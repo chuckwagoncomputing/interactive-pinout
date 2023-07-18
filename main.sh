@@ -41,6 +41,10 @@ FILES=$(for f in $CONNECTORS; do
 done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
 
+if [ "$DEBUG" = "true" ]; then
+  echo "Found YAMLs: $CONNECTORS"
+fi
+
 # Make a temp directory for symlinks to actual files.
 mkdir -p pinoutstmp
 
