@@ -120,7 +120,7 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
 - name: Generate Pinouts
   uses: chuckwagoncomputing/interactive-pinout
   with:
-    mapping-path: ./firmware/config/boards/*/connectors/*.yaml
+    mapping-path: firmware/config/boards/*/connectors/*.yaml
     warnings: skip
     columns: |
       {
@@ -185,7 +185,7 @@ After exporting these environmnet variables, execute main.sh.
 Example:
 
 ```
-$ export MAPPING_PATH="./firmware/config/boards/*/connectors/*.yaml"
+$ export MAPPING_PATH="firmware/config/boards/*/connectors/*.yaml"
 $ export WARNINGS="skip"
 $ export COLS='{"pin":"Pin Number","ts_name":"TS Name","type":"Type","function":"Typical Function","color":"Pigtail Color"}'
 $ export PRINT_COLS='["function"]'
