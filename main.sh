@@ -6,6 +6,7 @@
 #   skip if "skip"
 # env WARNING_NO_CID
 # env WARNING_NO_IMAGE
+# env WARNING_NO_CONNECTORS
 # env WARNING_DUPE
 #   same options as WARNINGS
 
@@ -13,6 +14,8 @@ if [ "$DEBUG" = "true" ]; then
   echo "WARNINGS: $WARNINGS"
   echo "WARNING_NO_CID: $WARNING_NO_CID"
   echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
+  echo "WARNING_NO_CONNECTORS: $WARNING_NO_CONNECTORS"
+  echo "WARNING_DUPE: $WARNING_DUPE"
 fi
 
 SCRIPTDIR=$(dirname "$0")
@@ -42,7 +45,7 @@ if [ "$DEBUG" = "true" ]; then
 fi
 
 if [ $(echo -n "$CONNECTORS" | wc -l) -eq 0 ]; then
-  echo "No connectors found"
+  handle_warning "$WARNING_NO_CONNECTORS" "WARNING: No connectors found"
   exit
 fi
 
