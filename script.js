@@ -10,6 +10,8 @@ var printColumns = ///PRINT_COLS///
 
 var infoColumn = "///INFO_COL///";
 
+var templates = ///TEMPLATES///
+
 // We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
   var rows = table.querySelector("tbody").children;
@@ -88,7 +90,13 @@ function getRow(table, pin) {
       el.classList.add("print-column");
     }
     // Sometimes the data is an array instead of a string, so we might need to join it.
-    el.textContent = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
+    var text = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
+    if (typeof templates === "object") {
+      for (const template in templates) {
+        text = text.replace(template, pin[templates[template]])
+      }
+    }
+    el.textContent = text
     el.dataset.field = column
     row.appendChild(el);
   }

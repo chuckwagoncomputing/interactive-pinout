@@ -59,6 +59,10 @@ inputs:
     required: false
     description: |
       A column whose value will be displayed when hovering over a pin.
+  templates:
+    required: true
+    description: |
+      A JSON mapping of strings to fields which will replace them.
   colors:
     required: false
     description: |
@@ -81,6 +85,7 @@ runs:
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
     INFO_COL: ${{ inputs.info-column }}
+    TEMPLATES: ${{ inputs.templates }}
     COLORS: ${{ inputs.colors }}
     DEBUG: ${{ inputs.debug }}
 branding:

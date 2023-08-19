@@ -134,6 +134,10 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
       [
       "function"
       ]
+    templates: |
+      {
+      "___": "pin"
+      }
     colors: |
       {
       "12v":"yellow";
@@ -177,6 +181,7 @@ WARNING_DUPE
 COLS
 PRINT_COLS
 INFO_COL
+TEMPLATES
 COLORS
 DEBUG
 ```
