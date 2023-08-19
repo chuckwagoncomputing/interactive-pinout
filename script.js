@@ -91,7 +91,7 @@ function getRow(table, pin) {
     }
     // Sometimes the data is an array instead of a string, so we might need to join it.
     var text = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
-    if (typeof templates === "object") {
+    if (typeof templates === "object" && typeof text === "string") {
       for (const template in templates) {
         text = text.replace(template, pin[templates[template]])
       }
