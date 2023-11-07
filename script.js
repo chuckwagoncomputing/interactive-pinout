@@ -10,7 +10,7 @@ var printColumns = ///PRINT_COLS///
 
 var infoColumn = "///INFO_COL///";
 
-var templates = ///TEMPLATES///
+var templates = ///TEMPLATES///;
 
 // We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
