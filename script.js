@@ -8,7 +8,7 @@ var columns = ///COLS///
 
 var printColumns = ///PRINT_COLS///
 
-var templates = ///TEMPLATES///
+var templates = ///TEMPLATES///;
 
 var infoColumn = "///INFO_COL///";
 
