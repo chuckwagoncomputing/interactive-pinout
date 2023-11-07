@@ -17,6 +17,10 @@ for C in $COLORS; do
 done
 export CSS
 
+if [ -z "$TEMPLATES" ]; then
+  TEMPLATES = "{}"
+fi
+
 export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' -pe 's/\/\/\/INFO_COL\/\/\//$ENV{INFO_COL}/;' -pe 's/\/\/\/TEMPLATES\/\/\//$ENV{TEMPLATES}/;' $DIR/script.js)
 
 if [ "$DEBUG" = "true" ]; then
