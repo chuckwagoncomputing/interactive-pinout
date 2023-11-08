@@ -2,11 +2,11 @@
 
 minify --version
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
-if [ "$DEBUG" = "true" ]; then
-  export JSON="$(echo "$1" | sed 's/\\/\\\\/g')"
-else
+#if [ "$DEBUG" = "true" ]; then
+#  export JSON="$(echo "$1" | sed 's/\\/\\\\/g')"
+#else
   export JSON="$(echo $1 | minify --type json | sed 's/\\/\\\\/g')"
-fi
+#fi
 
 CSS=$(cat $DIR/style.css)
 for C in $COLORS; do
