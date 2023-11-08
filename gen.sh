@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+minify --version
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
 if [ "$DEBUG" = "true" ]; then
   export JSON="$(echo "$1" | sed 's/\\/\\\\/g')"
