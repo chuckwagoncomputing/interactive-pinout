@@ -24,11 +24,11 @@ fi
 
 export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' -pe 's/\/\/\/INFO_COL\/\/\//$ENV{INFO_COL}/;' -pe 's/\/\/\/TEMPLATES\/\/\//$ENV{TEMPLATES}/;' $DIR/script.js)
 
-if [ "$DEBUG" = "true" ]; then
-  export JS=$'var debug = true;\n'"$JS"
-else
+#if [ "$DEBUG" = "true" ]; then
+#  export JS=$'var debug = true;\n'"$JS"
+#else
   export JS=$(echo '(function() {'"$JS"'})()' | perl -0pe 's/\/\/ \@ifdef DEBUG.*?\/\/ \@endif//s;')
-fi
+#fi
 
 if [ "$DEBUG" = "true" ]; then
   TEXT=$(perl -0pe 's/###JS###/$ENV{JS}/;' -pe 's/###CSS###/$ENV{CSS}/;' $DIR/pinout.html | perl -0pe 's/}`,\n]/}`,\n\/\*DATA\*\/\n]/;')
