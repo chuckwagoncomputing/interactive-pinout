@@ -60,7 +60,7 @@ inputs:
     description: |
       A column whose value will be displayed when hovering over a pin.
   templates:
-    required: true
+    required: false
     description: |
       A JSON mapping of strings to fields which will replace them.
   colors:
