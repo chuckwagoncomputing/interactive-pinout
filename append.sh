@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)"/"
-if [ "$DEBUG" = "true" ]; then
-  export JSON="$(echo "$1" | sed 's/\\/\\\\/g')"
-else
+#if [ "$DEBUG" = "true" ]; then
+#  export JSON="$(echo "$1" | sed 's/\\/\\\\/g')"
+#else
   export JSON="$(echo $1 | minify --type json | sed 's/\\/\\\\/g')"
-fi
+#fi
 
 if [ "$DEBUG" = "true" ]; then
   TEXT=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,\n\/\*DATA\*\//;' $2)
