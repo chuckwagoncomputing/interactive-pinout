@@ -44,7 +44,7 @@ if [ "$DEBUG" = "true" ]; then
   echo "Found YAMLs: $CONNECTORS"
 fi
 
-if [ $(echo -n "$CONNECTORS" | wc -l) -eq 0 ]; then
+if [ $(echo "$CONNECTORS" | grep -v ^$ | wc -l) -eq 0 ]; then
   handle_warning "$WARNING_NO_CONNECTORS" "WARNING: No connectors found"
   exit
 fi
@@ -172,4 +172,4 @@ find pinouts/ -type f -name 'index.html' -print0 | while IFS= read -r -d '' f; d
   fi
 done
 
-echo "Completed processing $(echo "$CONNECTORS" | wc -l) mappings"
+echo "Completed processing $(echo "$CONNECTORS" | grep -v ^$ | wc -l) mappings"
