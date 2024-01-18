@@ -243,7 +243,8 @@ function setupColorToggle(sdiv) {
   if (colored.length > 0) {
     sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
     var ctog = sdiv.querySelector(".color-toggle");
-    ctog.addEventListener("change", function(colored) {
+    ctog.addEventListener("change", function() {
+      var colored = document.querySelectorAll("[data-color]")
       for (var i = 0; i < colored.length; i++) {
         if (this.checked) {
           colored[i].style.borderColor = colored[i].dataset.color.replace(/\s/g, "");
@@ -251,7 +252,7 @@ function setupColorToggle(sdiv) {
           colored[i].style.borderColor = ""
         }
       }
-    }.bind(null, colored));
+    });
   }
 }
 
