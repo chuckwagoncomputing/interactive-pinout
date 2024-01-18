@@ -109,6 +109,7 @@ There is a `warnings` option to set how warnings are handled, and more options t
 |field|trigger|
 |-----|-------|
 |`warning-no-cid`|A missing `cid` field in the `info` section|
+|`warning-no-connectors`|No definition files were found|
 |`warning-no-image`|A missing `file` field in the `image` subsection of the `info` section|
 |`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
 
@@ -176,6 +177,7 @@ Here is the complete list of variables:
 MAPPING_PATH
 WARNINGS
 WARNING_NO_CID
+WARNING_NO_CONNECTORS
 WARNING_NO_IMAGE
 WARNING_DUPE
 COLS
