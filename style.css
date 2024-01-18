@@ -95,6 +95,10 @@ body {
   width: 50%;
 }
 
+.switch-wrapper {
+  display: none;
+}
+
 .switch-wrapper span {
   padding-right: 15px;
 }

@@ -102,6 +102,9 @@ function getRow(table, pin) {
   }
   // Set the type of the pin so it will be colored in print view.
   clone.querySelector('[data-field="pin"]').dataset.type = pin.type;
+  if (pin.color) {
+    clone.querySelector('[data-field="pin"]').dataset.color = pin.color;
+  }
   return clone;
 }
 
@@ -306,6 +309,9 @@ window.addEventListener("load", function() {
         pdiv.style.top = ((pinfo.y / imgHeight) * 100) + "%";
         pdiv.style.left = ((pinfo.x / imgWidth) * 100) + "%";
         pdiv.dataset.type = pin.type;
+        if (pin.color) {
+          pdiv.dataset.color = pin.color;
+        }
         // Associate the pin's element with the pin object
         pin.pdiv = pdiv;
         pdiv.addEventListener("click", function(table, pin, cid) {
