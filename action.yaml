@@ -23,13 +23,6 @@ inputs:
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
     default: "unset"
-  warning-no-image:
-    required: false
-    description: |
-      Set to "skip" to skip to the next mapping file,
-      "notice" to warn on the Actions page,
-      or "error" to fail the workflow step.
-    default: "unset"
   warning-no-connectors:
     required: false
     description: |
@@ -37,6 +30,19 @@ inputs:
       "notice" to warn on the Actions page,
       or "error" to fail the workflow step.
     default: "unset"
+  warning-no-image:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      "notice" to warn on the Actions page,
+      or "error" to fail the workflow step.
+    default: "unset"
+  warning-no-pins:
+    required: false
+    description: |
+      Set to "skip" to skip to the next mapping file,
+      "notice" to warn on the Actions page,
+      or "error" to fail the workflow step.
   warning-dupe:
     required: false
     description: |

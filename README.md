@@ -111,6 +111,7 @@ There is a `warnings` option to set how warnings are handled, and more options t
 |`warning-no-cid`|A missing `cid` field in the `info` section|
 |`warning-no-connectors`|No definition files were found|
 |`warning-no-image`|A missing `file` field in the `image` subsection of the `info` section|
+|`warning-no-pins`|No pins found in definition file|
 |`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
 
 ### Example Workflow Step
@@ -179,6 +180,7 @@ WARNINGS
 WARNING_NO_CID
 WARNING_NO_CONNECTORS
 WARNING_NO_IMAGE
+WARNING_NO_PINS
 WARNING_DUPE
 COLS
 PRINT_COLS

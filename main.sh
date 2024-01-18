@@ -5,16 +5,18 @@
 #   fail if "error"
 #   skip if "skip"
 # env WARNING_NO_CID
-# env WARNING_NO_IMAGE
 # env WARNING_NO_CONNECTORS
+# env WARNING_NO_IMAGE
+# env WARNING_NO_PINS
 # env WARNING_DUPE
 #   same options as WARNINGS
 
 if [ "$DEBUG" = "true" ]; then
   echo "WARNINGS: $WARNINGS"
   echo "WARNING_NO_CID: $WARNING_NO_CID"
-  echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
   echo "WARNING_NO_CONNECTORS: $WARNING_NO_CONNECTORS"
+  echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
+  echo "WARNING_NO_PINS: $WARNING_NO_PINS"
   echo "WARNING_DUPE: $WARNING_DUPE"
 fi
 
@@ -60,6 +62,9 @@ mkdir -p pinoutstmp
 
 for c in $CONNECTORS; do
   echo "Processing: $c"
+  if [ $(yq e '.pins.[].pin' "$c" | wc -c) < 1 ]; then
+    if ! handle_warning "$WARNING_NO_PINS" "WARNING: No pins found in definition $c"; then continue; fi
+  fi
   DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d | tr -d '\n')
   if [ -n "$DUPES" ]; then
     if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pins in $c: $DUPES"; then continue; fi
