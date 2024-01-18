@@ -95,8 +95,13 @@ body {
   width: 50%;
 }
 
+.switch-wrapper span {
+  padding-right: 15px;
+}
+
 .switch-block {
   width: 300px;
+  float: right;
 }
 
 .switch {
@@ -113,7 +118,17 @@ body {
 }
 
 .switch > span {
+  background-color: #2d3035;
+  border-radius: 3px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.2);
   text-align: left;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  min-height: 2em;
+  padding: 0;
+  text-align: left;
+  line-height: 2em;
 }
 
 .switch input ~ span span:first-child {
@@ -140,7 +155,6 @@ body {
   position: absolute;
   opacity: 0;
   z-index: 3;
-  box-sizing: border-box;
 }
 
 .switch a {
