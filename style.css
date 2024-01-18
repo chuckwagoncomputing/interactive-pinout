@@ -89,6 +89,77 @@ body {
   min-width: 100%;
 }
 
+.connector-name,
+.switch-wrapper {
+  display: inline-block;
+  width: 50%;
+}
+
+.switch-block {
+  width: 300px;
+}
+
+.switch {
+  position: relative;
+  display: block;
+}
+
+.switch * {
+  box-sizing: border-box;
+}
+
+.switch span {
+  line-height: 2em;
+}
+
+.switch > span {
+  text-align: left;
+}
+
+.switch input ~ span span:first-child {
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.switch span span {
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  display: block;
+  float: left;
+  width: 50%;
+  user-select: none;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 1px #191b1e;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  z-index: 3;
+  box-sizing: border-box;
+}
+
+.switch a {
+  border: 1px solid #333;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  background-color: #70c66b;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
+  position: absolute;
+  right: 50%;
+  top: 0;
+  z-index: 1;
+  display: block;
+  width: 50%;
+  height: 100%;
+  padding: 0;
+  transition: all 0.2s ease-out;
+}
+
 table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
