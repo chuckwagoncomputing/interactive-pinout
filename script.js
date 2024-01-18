@@ -370,5 +370,19 @@ window.addEventListener("load", function() {
       }
       hideEmptyColumns(sdiv.querySelector(".pinout-table"));
     }
+    var colored = document.querySelectorAll("[data-color]")
+    if (colored.length > 0) {
+      sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
+      var ctog = sdiv.querySelector(".color-toggle");
+      ctog.addEventListener("change", function(colored) {
+        for (c in colored) {
+          if (this.checked) {
+            c.style.borderColor = c.dataset.color.replace(/\s/g, "");
+          } else {
+            c.style.borderColor = ""
+          }
+        }
+      }.bind(null, colored));
+    }
   }
 });
