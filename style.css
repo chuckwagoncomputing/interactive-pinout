@@ -131,7 +131,8 @@ body {
   line-height: 2em;
 }
 
-.switch input ~ span span:first-child {
+.switch input ~ span span:first-child,
+.switch input:checked ~ span span:nth-child(2) {
   color: #333;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
