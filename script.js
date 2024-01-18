@@ -238,6 +238,23 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   }.bind(null, pin.pdiv, pxheight));
 }
 
+function setupColorToggle(sdiv) {
+  var colored = document.querySelectorAll("[data-color]")
+  if (colored.length > 0) {
+    sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
+    var ctog = sdiv.querySelector(".color-toggle");
+    ctog.addEventListener("change", function(colored) {
+      for (c in colored) {
+        if (this.checked) {
+          c.style.borderColor = c.dataset.color.replace(/\s/g, "");
+        } else {
+          c.style.borderColor = ""
+        }
+      }
+    }.bind(null, colored));
+  }
+}
+
 window.addEventListener("load", function() {
   // Manage history navigation
   window.onpopstate = function(ev) {
@@ -326,6 +343,7 @@ window.addEventListener("load", function() {
         addRow(fullTable, pin, cid);
       }
       hideEmptyColumns(sdiv.querySelector(".pinout-table"));
+      setupColorToggle(sdiv);
       // Check if we have loaded all the images.
       checkImagesLoaded();
     }.bind(null, connector, sdiv, img));
@@ -369,20 +387,7 @@ window.addEventListener("load", function() {
         fullTableHeader.appendChild(el.cloneNode(true));
       }
       hideEmptyColumns(sdiv.querySelector(".pinout-table"));
-    }
-    var colored = document.querySelectorAll("[data-color]")
-    if (colored.length > 0) {
-      sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
-      var ctog = sdiv.querySelector(".color-toggle");
-      ctog.addEventListener("change", function(colored) {
-        for (c in colored) {
-          if (this.checked) {
-            c.style.borderColor = c.dataset.color.replace(/\s/g, "");
-          } else {
-            c.style.borderColor = ""
-          }
-        }
-      }.bind(null, colored));
+      setupColorToggle(sdiv);
     }
   }
 });
