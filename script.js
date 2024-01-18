@@ -244,11 +244,11 @@ function setupColorToggle(sdiv) {
     sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
     var ctog = sdiv.querySelector(".color-toggle");
     ctog.addEventListener("change", function(colored) {
-      for (c in colored) {
+      for (var i = 0; i < colored.length; i++) {
         if (this.checked) {
-          c.style.borderColor = c.dataset.color.replace(/\s/g, "");
+          colored[i].style.borderColor = colored[i].dataset.color.replace(/\s/g, "");
         } else {
-          c.style.borderColor = ""
+          colored[i].style.borderColor = ""
         }
       }
     }.bind(null, colored));
