@@ -90,6 +90,10 @@ body {
   min-width: 100%;
 }
 
+.name-wrapper {
+  white-space: nowrap;
+}
+
 .connector-name,
 .switch-wrapper {
   display: inline-block;
