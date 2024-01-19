@@ -76,6 +76,9 @@ for c in $CONNECTORS; do
   DIR="pinoutstmp/"$(dirname "$c" | sed -e 's/^\.\///' -e 's/^\///')
   # If we have a directory field
   if [ "$DIRECTORY" != "null" ]; then
+    if [ "$DEBUG" = "true" ]; then
+      echo "Found Directory: $DIRECTORY"
+    fi
     # If temp dir exists
     if [ -d "$DIR" ]; then
       # If temp dir isn't symbolic link
@@ -104,6 +107,9 @@ for c in $CONNECTORS; do
     fi
   # If we have a title field but not directory
   elif [ "$TITLE" != "null" ]; then
+    if [ "$DEBUG" = "true" ]; then
+      echo "Found Title: $TITLE"
+    fi
     # If temp dir exists
     if [ -d "$DIR" ]; then
       # If temp dir isn't symbolic link
