@@ -112,7 +112,7 @@ body {
 }
 
 .switch-block {
-  width: 300px;
+  min-width: 300px;
   float: right;
 }
 
@@ -141,6 +141,7 @@ body {
   padding: 0;
   text-align: left;
   line-height: 2em;
+  white-space: normal;
 }
 
 .switch input ~ span span:first-child,
