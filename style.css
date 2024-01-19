@@ -228,6 +228,10 @@ table td, table th {
   padding: 8px;
 }
 
+table tr {
+  color: #333
+}
+
 table tr:nth-child(even){
   background-color: #fc935a;
 }
@@ -266,12 +270,14 @@ table th {
 
   table tr:nth-child(even){
     background-color: #230c00;
+  }
+
+  table tr:not(:hover) {
     color: #eee;
   }
 
   table tr:hover {
     background-color: #f15a24;
-    color: #333
   }
 
   a {
