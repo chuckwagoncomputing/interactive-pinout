@@ -217,7 +217,7 @@ table.pinout-table tbody tr {
 
 @media screen {
   td[data-field="pin"] {
-    border-color: #333 !important;
+    border-color: #aaa !important;
   }
 }
 
