@@ -237,6 +237,7 @@ table tr:hover {
 }
 
 table th {
+  background-image: linear-gradient(rgba(255,255,255,.2),transparent);
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
