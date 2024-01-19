@@ -62,7 +62,7 @@ mkdir -p pinoutstmp
 
 for c in $CONNECTORS; do
   echo "Processing: $c"
-  if [ $(yq e '.pins.[].pin' "$c" | wc -c) < 1 ]; then
+  if [ $(yq e '.pins.[].pin' "$c" | wc -c) -lt 1 ]; then
     if ! handle_warning "$WARNING_NO_PINS" "WARNING: No pins found in definition $c"; then continue; fi
   fi
   DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d | tr -d '\n')
