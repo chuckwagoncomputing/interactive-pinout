@@ -83,6 +83,9 @@ for c in $CONNECTORS; do
     if [ -d "$DIR" ]; then
       # If temp dir isn't symbolic link
       if [ ! -L "$DIR" ]; then
+        if [ "$DEBUG" = "true" ]; then
+          echo "Found Directory is normal directory"
+        fi
         # It must be a real directory, move it to the final dir and link it
         mkdir -p "pinouts/$DIRECTORY"
         mv "$DIR"/* "pinouts/$DIRECTORY"
@@ -90,6 +93,9 @@ for c in $CONNECTORS; do
         ln -rs "pinouts/$DIRECTORY" "$DIR"
       # If temp dir is a link, but not to the specified directory
       elif TARGET=$(readlink "$DIR") && [ "$TARGET" != "pinouts/$DIRECTORY" ]; then
+        if [ "$DEBUG" = "true" ]; then
+          echo "Found Directory is link to another directory"
+        fi
         # Make specified directory
         mkdir -p "pinouts/$DIRECTORY"
         # Move the contents of the directory the link points to, and remove that directory
