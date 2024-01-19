@@ -241,7 +241,8 @@ table th {
   padding-bottom: 12px;
   text-align: left;
   background-color: #f15a24;
-  color: #111;
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
 .info-table {
@@ -260,10 +261,6 @@ table th {
 
   table td, table th {
     border: 1px solid #aaa;
-  }
-
-  table th {
-    color: #eee;
   }
 
   table tr:nth-child(even){
