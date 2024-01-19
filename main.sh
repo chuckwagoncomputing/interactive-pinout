@@ -94,7 +94,7 @@ for c in $CONNECTORS; do
       # If temp dir is a link, but not to the specified directory
       elif TARGET=$(readlink "$DIR") && [ "$TARGET" != "$(readlink "pinouts/$DIRECTORY")" ]; then
         if [ "$DEBUG" = "true" ]; then
-          echo "Found Directory is link to another directory: $TARGET"
+          echo "Found Directory is link to another directory: $TARGET vs $(readlink "pinouts/$DIRECTORY")"
         fi
         # Make specified directory
         mkdir -p "pinouts/$DIRECTORY"
