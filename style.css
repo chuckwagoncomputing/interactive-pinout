@@ -271,6 +271,7 @@ table th {
 
   table tr:hover {
     background-color: #f15a24;
+    color: #333
   }
 
   a {
