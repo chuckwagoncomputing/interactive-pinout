@@ -295,34 +295,47 @@ table th {
     display: flex;
     flex-direction: column;
   }
+
+  .switch-wrapper {
+    display: none !important;;
+  }
+
   td:not(.print-column), .info-table, thead, #board-link {
     display: none;
   }
+
   .connector-container {
     flex: 0 1 100%;
     height: unset;
     min-height: 2in;
   }
+
   .connector-div {
     max-width: 100%;
     height: unset;
   }
+
   .connector-img {
     max-width: 100% !important;
     max-height: 3in;
   }
+
   h2 {
     font-size: 14px;
   }
+
   th {
     font-size: 12px;
   }
+
   td {
     font-size: 10px;
   }
+
   td:not([data-field="pin"]) {
     border: none !important;
   }
+
   td[data-field="pin"] {
     border-width: 3px;
     border-radius: 10px;
@@ -330,17 +343,21 @@ table th {
     margin: 0px;
     padding: 0px;
   }
+
   html, tr {
     background-color: #eee !important;
     color: #111 !important;
   }
+
   table {
     width: auto;
     border-collapse: separate;
   }
+
   .table-wrapper { 
     column-count: 4;
   }
+
   table, tbody, tr {
     display: block;
   }
