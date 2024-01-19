@@ -97,10 +97,12 @@ body {
 
 .switch-wrapper {
   display: none;
+  text-align: right;
 }
 
 .switch-wrapper span {
   padding-right: 15px;
+  line-height: 2em;
 }
 
 .switch-block {
