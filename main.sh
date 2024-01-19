@@ -92,9 +92,9 @@ for c in $CONNECTORS; do
         rmdir "$DIR"
         ln -rs "pinouts/$DIRECTORY" "$DIR"
       # If temp dir is a link, but not to the specified directory
-      elif TARGET=$(readlink "$DIR") && [ "$TARGET" != "pinouts/$DIRECTORY" ]; then
+      elif TARGET=$(readlink "$DIR") && [ "$TARGET" != $(readlink "pinouts/$DIRECTORY") ]; then
         if [ "$DEBUG" = "true" ]; then
-          echo "Found Directory is link to another directory"
+          echo "Found Directory is link to another directory: $TARGET"
         fi
         # Make specified directory
         mkdir -p "pinouts/$DIRECTORY"
