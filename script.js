@@ -254,6 +254,9 @@ function setupColorToggle(sdiv) {
       }
     }.bind(null, sdiv));
   }
+  if (typeof(columns["color"]) != "undefined") {
+    sdiv.querySelector(".color-label").innerText = columns["color"]
+  }
 }
 
 window.addEventListener("load", function() {
