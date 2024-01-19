@@ -98,6 +98,7 @@ body {
 .switch-wrapper {
   display: none;
   text-align: right;
+  margin-bottom: 15px;
 }
 
 .switch-wrapper span {
