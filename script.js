@@ -239,20 +239,20 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
 }
 
 function setupColorToggle(sdiv) {
-  var colored = document.querySelectorAll("[data-color]")
+  var colored = sdiv.querySelectorAll("[data-color]")
   if (colored.length > 0) {
     sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
     var ctog = sdiv.querySelector(".color-toggle");
-    ctog.addEventListener("change", function() {
-      var colored = document.querySelectorAll("[data-color]")
+    ctog.addEventListener("change", function(sdiv, e) {
+      var colored = sdiv.querySelectorAll("[data-color]")
       for (var i = 0; i < colored.length; i++) {
-        if (this.checked) {
+        if (e.target.checked) {
           colored[i].style.borderColor = colored[i].dataset.color.replace(/\s/g, "");
         } else {
           colored[i].style.borderColor = ""
         }
       }
-    });
+    }.bind(null, sdiv));
   }
 }
 
