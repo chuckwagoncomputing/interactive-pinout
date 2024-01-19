@@ -211,6 +211,10 @@ table {
     word-wrap: break-word;
     font-size: 2.5rem;
   }
+
+  #board-link, h2, .switch-wrapper {
+    font-size: 3rem;
+  }
 }
 
 table.pinout-table tbody tr {
@@ -230,6 +234,7 @@ table td, table th {
 
 table tr {
   color: #333
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
 table tr:nth-child(even){
