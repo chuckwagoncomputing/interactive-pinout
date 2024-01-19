@@ -255,7 +255,7 @@ table th {
   }
 
   td[data-field="pin"] {
-    border: 1px solid #aaa;
+    border: 1px solid #aaa !important;
   }
 
   table td, table th {
