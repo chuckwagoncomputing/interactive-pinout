@@ -163,7 +163,7 @@ body {
 
 .switch span span,
 .switch input:checked ~ span span:first-child {
-  color: #fff;
+  color: #aaa;
   text-shadow: 1px 1px 1px #191b1e;
 }
 
