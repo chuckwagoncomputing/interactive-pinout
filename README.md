@@ -30,7 +30,10 @@ The 'pins' section contains a list of pins, each having the following fields:
 |field   |description|
 |--------|-----------|
 |pin     |a numeric id corresponding to the physical pin on the connector|
-|type    |a short code to allow pins to be grouped and colored by type|
+|type    |optional - a short code to allow pins to be grouped and colored by type|
+|color   |optional - if your mapping has this field, a toggle will appear to switch between color-coding by type or this field. It should contain CSS colors, but you can add spaces if you like; e.g. "light green"|
+
+You can also add arbitrary fields with information for the table, and list them, along with a title for the column, in the `columns` section of your worflow file.
 
 The 'info' section contains information which is used to generate the interactive pinout. It contains the following fields:  
 
