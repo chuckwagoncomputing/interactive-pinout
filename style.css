@@ -133,9 +133,7 @@ body {
   display: block;
   min-height: 2em;
   padding: 0;
-  text-align: left;
   line-height: 2em;
-  white-space: normal;
 }
 
 .switch input ~ td td:first-child,
