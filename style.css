@@ -91,9 +91,15 @@ body {
 }
 
 .name-wrapper {
-  white-space: nowrap;
   flex-wrap: wrap;
   display: flex;
+}
+
+.connector-name,
+.toggle-label,
+.switch-block {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
 }
 
 .connector-name {
@@ -108,7 +114,6 @@ body {
 .switch-block {
   min-width: 300px;
   display: none;
-  margin-bottom: 15px;
   flex: 3 1 0;
 }
 
@@ -136,7 +141,7 @@ body {
   padding: 0;
   text-align: left;
   line-height: 2em;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .switch input ~ span span:first-child,
