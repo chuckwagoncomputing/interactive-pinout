@@ -135,6 +135,7 @@ body {
   padding: 0;
   text-align: left;
   white-space: nowrap;
+  width: 100%
 }
 
 .switch input ~ table td:first-child,
