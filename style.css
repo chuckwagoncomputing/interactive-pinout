@@ -154,6 +154,7 @@ body {
   float: left;
   width: 50%;
   user-select: none;
+  border: none;
 }
 
 .switch input {
