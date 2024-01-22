@@ -111,6 +111,7 @@ body {
 .toggle-label {
   padding-right: 15px;
   line-height: 2em;
+  display: none;
 }
 
 .switch-block {
