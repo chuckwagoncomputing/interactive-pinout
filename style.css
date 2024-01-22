@@ -100,20 +100,16 @@ body {
   flex: 2 1 auto;
 }
 
-.switch-wrapper {
-  display: none;
-  margin-bottom: 15px;
-  flex: 3 1 0;
-}
-
-.switch-wrapperk> span {
+.toggle-label {
   padding-right: 15px;
   line-height: 2em;
 }
 
 .switch-block {
   min-width: 300px;
-  float: right;
+  display: none;
+  margin-bottom: 15px;
+  flex: 3 1 0;
 }
 
 .switch {

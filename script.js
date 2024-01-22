@@ -241,7 +241,8 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
 function setupColorToggle(sdiv) {
   var colored = sdiv.querySelectorAll("[data-color]")
   if (colored.length > 0) {
-    sdiv.querySelector(".switch-wrapper").style.display = "inline-block"
+    sdiv.querySelector(".switch-block").style.display = "inline-block"
+    sdiv.querySelector(".toggle-label").style.display = "inline-block"
     var ctog = sdiv.querySelector(".color-toggle");
     ctog.addEventListener("change", function(sdiv, e) {
       var colored = sdiv.querySelectorAll("[data-color]")
