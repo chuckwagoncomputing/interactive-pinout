@@ -137,8 +137,8 @@ body {
   white-space: nowrap;
 }
 
-.switch input ~ td td:first-child,
-.switch input:checked ~ td td:nth-child(2) {
+.switch input ~ table td:first-child,
+.switch input:checked ~ table td:nth-child(2) {
   color: #333;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -265,8 +265,8 @@ table th {
     background-color: #2d3035;
   }
 
-  .switch span span,
-  .switch input:checked ~ span span:first-child {
+  .switch table td,
+  .switch input:checked ~ table td:first-child {
     color: #eee;
     text-shadow: 1px 1px 1px #191b1e;
   }
