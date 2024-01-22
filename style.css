@@ -154,7 +154,6 @@ body {
   float: left;
   width: 50%;
   user-select: none;
-  border: none;
 }
 
 .switch input {
@@ -184,13 +183,6 @@ body {
   right: 0%;
 }
 
-table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: clamp(100%, 100%, 1000px);
-  text-align: left;
-}
-
 @media (min-width: 1000px) {
   table {
     font-size: 1rem;
@@ -214,35 +206,42 @@ table {
   }
 }
 
-table.pinout-table tbody tr {
-  cursor: pointer;
-}
-
 @media screen {
   td[data-field="pin"] {
     border-color: #333 !important;
   }
 }
 
-table td, table th {
+.general-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: clamp(100%, 100%, 1000px);
+  text-align: left;
+}
+
+.pinout-table tbody tr {
+  cursor: pointer;
+}
+
+.general-table td, .general-table th {
   border: 1px solid #333;
   padding: 8px;
 }
 
-table tr {
+.general-table tr {
   color: #333
   text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-table tr:nth-child(even){
+.general-table tr:nth-child(even){
   background-color: #fc935a;
 }
 
-table tr:hover {
+.pinout-table tr:hover {
   background-color: #f15a24;
 }
 
-table th {
+.general-table th {
   background-image: linear-gradient(rgba(255,255,255,.2),transparent);
   padding-top: 12px;
   padding-bottom: 12px;
@@ -277,19 +276,19 @@ table th {
     border: 1px solid #aaa !important;
   }
 
-  table td, table th {
+  .general-table td, .general-table th {
     border: 1px solid #aaa;
   }
 
-  table tr:nth-child(even){
+  .general-table tr:nth-child(even){
     background-color: #230c00;
   }
 
-  table tr:not(:hover) {
+  .general-table tr:not(:hover) {
     color: #eee;
   }
 
-  table tr:hover {
+  .general-table tr:hover {
     background-color: #f15a24;
   }
 
@@ -358,7 +357,7 @@ table th {
     color: #111 !important;
   }
 
-  table {
+  .general-table {
     width: auto;
     border-collapse: separate;
   }
@@ -367,7 +366,7 @@ table th {
     column-count: 4;
   }
 
-  table, tbody, tr {
+  .general-table, tbody, tr {
     display: block;
   }
 }
