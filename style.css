@@ -110,7 +110,7 @@ body {
 
 .toggle-label {
   padding-right: 15px;
-  line-height: 2em;
+  font-size: 3rem;
   display: none;
 }
 
@@ -130,7 +130,7 @@ body {
 }
 
 .switch span {
-  line-height: 2em;
+  font-size: 3rem;
 }
 
 .switch > span {
