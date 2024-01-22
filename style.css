@@ -115,7 +115,7 @@ body {
 }
 
 .switch-block {
-  min-width: 300px;
+  min-width: fit-content;
   display: none;
   flex: 3 1 0;
 }
