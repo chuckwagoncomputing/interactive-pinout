@@ -92,21 +92,21 @@ body {
 
 .name-wrapper {
   white-space: nowrap;
+  flex-wrap: wrap;
+  display: flex;
 }
 
-.connector-name,
-.switch-wrapper {
-  display: inline-block;
-  width: 50%;
+.connector-name {
+  flex: 2 1 auto;
 }
 
 .switch-wrapper {
   display: none;
-  text-align: right;
   margin-bottom: 15px;
+  flex: 3 1 0;
 }
 
-.switch-wrapper span {
+.switch-wrapperk> span {
   padding-right: 15px;
   line-height: 2em;
 }
