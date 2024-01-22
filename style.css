@@ -211,7 +211,7 @@ table {
     font-size: 2.5rem;
   }
 
-  #board-link, h2, .toggle-label, .switch-block {
+  #board-link, h2, .connector-name, .toggle-label, .switch-block {
     font-size: 3rem;
   }
 }
