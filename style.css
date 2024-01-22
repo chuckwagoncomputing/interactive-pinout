@@ -136,7 +136,6 @@ body {
   position: relative;
   overflow: hidden;
   display: block;
-  min-height: 2em;
   padding: 0;
   text-align: left;
   white-space: nowrap;
