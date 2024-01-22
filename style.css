@@ -285,12 +285,9 @@ body {
     background-color: #230c00;
   }
 
-  .general-table tr:not(:hover) {
-    color: #eee;
-  }
-
   .general-table tr:hover {
     background-color: #f15a24;
+    color: #333;
   }
 
   #board-link, #board-link:visited {
