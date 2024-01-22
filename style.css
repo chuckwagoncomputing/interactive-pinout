@@ -93,13 +93,15 @@ body {
 .name-wrapper {
   flex-wrap: wrap;
   display: flex;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
 }
 
 .connector-name,
 .toggle-label,
 .switch-block {
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 .connector-name {
