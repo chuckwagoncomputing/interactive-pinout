@@ -264,6 +264,7 @@ body {
   .switch input:checked ~ table td:first-child {
     color: #eee;
     text-shadow: 1px 1px 1px #191b1e;
+    background-color: #2d3035;
   }
 
 
