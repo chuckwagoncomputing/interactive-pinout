@@ -144,7 +144,7 @@ body {
   width: 100%
 }
 
-.switch input ~ table td:first-child,
+.switch input:not(:checked) ~ table td:first-child,
 .switch input:checked ~ table td:nth-child(2) {
   color: #333;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -264,8 +264,6 @@ body {
   .switch input:checked ~ table td:first-child {
     color: #eee;
     text-shadow: 1px 1px 1px #191b1e;
-    background-color: #2d3035;
-    box-shadow: none;
   }
 
 
