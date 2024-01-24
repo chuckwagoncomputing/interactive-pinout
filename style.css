@@ -205,6 +205,11 @@ body {
   #board-link, h2, .connector-name, .toggle-label, .switch-block {
     font-size: 3rem;
   }
+
+  .switch > table {
+    table-layout: fixed;
+    width: 100%;
+  }
 }
 
 @media screen {
