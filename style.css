@@ -148,6 +148,9 @@ body {
 .switch input:checked ~ table td:nth-child(2) {
   color: #333;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  background-color: #f15a24;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
 }
 
 .switch td {
@@ -164,27 +167,6 @@ body {
   position: absolute;
   opacity: 0;
   z-index: 3;
-}
-
-.switch a {
-  border: 1px solid #333;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.45);
-  background-color: #f15a24;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
-  position: absolute;
-  right: 50%;
-  top: 0;
-  z-index: 1;
-  display: block;
-  width: 50%;
-  height: 100%;
-  padding: 0;
-  transition: all 0.2s ease-out;
-}
-
-.switch input:checked ~ a {
-  right: 0%;
 }
 
 @media (min-width: 1000px) {
