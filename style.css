@@ -161,6 +161,7 @@ body {
   z-index: 2;
   width: 50%;
   user-select: none;
+  transition: background-color 200ms ease-in-out;
 }
 
 .switch input {
