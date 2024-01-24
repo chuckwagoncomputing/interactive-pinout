@@ -122,7 +122,7 @@ body {
 .switch-block {
   min-width: fit-content;
   display: none;
-  flex: 3 1 0;
+  flex: 1 1 0;
 }
 
 .switch {
@@ -156,8 +156,6 @@ body {
   text-align: center;
   position: relative;
   z-index: 2;
-  display: block;
-  float: left;
   width: 50%;
   user-select: none;
 }
