@@ -93,8 +93,8 @@ body {
 .name-wrapper {
   flex-wrap: wrap;
   display: flex;
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .connector-name {
@@ -142,6 +142,7 @@ body {
   text-align: left;
   white-space: nowrap;
   width: 100%
+  line-height: 2em;
 }
 
 .switch input:not(:checked) ~ table td:first-child,
