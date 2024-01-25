@@ -115,6 +115,7 @@ body {
 }
 
 .toggle-label {
+  padding-left: 10px;
   padding-right: 15px;
   display: none;
 }
