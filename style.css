@@ -271,6 +271,10 @@ body {
     border: 1px solid #aaa !important;
   }
 
+  .general-table tbody tr {
+    color: #aaa;
+  }
+
   .general-table td, .general-table th {
     border: 1px solid #aaa;
   }
