@@ -163,6 +163,7 @@ body {
   width: 50%;
   user-select: none;
   transition: background-color 200ms ease-in-out;
+  padding: 0;
   padding-left: 15px;
   padding-right: 15px;
   min-width: fit-content;
