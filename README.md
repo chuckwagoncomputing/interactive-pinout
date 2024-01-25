@@ -193,7 +193,7 @@ COLORS
 DEBUG
 ```
 
-After exporting these environmnet variables, execute main.sh.
+After exporting these environment variables, execute main.sh.
 Example:
 
 ```
