@@ -142,7 +142,7 @@ body {
   text-align: left;
   white-space: nowrap;
   width: 100%;
-  line-height: 2em;
+  height: 2em;
 }
 
 .switch input:not(:checked) ~ table td:first-child,
