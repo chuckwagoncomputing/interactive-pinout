@@ -72,6 +72,7 @@ body {
 .connector-container {
   width: 100%;
   overflow-x: scroll;
+  overflow-y: hidden;
   position: relative;
   height: max(3in, 50vh);
 }
