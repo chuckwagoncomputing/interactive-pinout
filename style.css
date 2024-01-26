@@ -91,6 +91,49 @@ body {
   min-width: 100%;
 }
 
+.general-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: clamp(100%, 100%, 1000px);
+  text-align: left;
+}
+
+.general-table td, .general-table th {
+  border: 1px solid #333;
+  padding: 8px;
+}
+
+.general-table tr {
+  color: #333;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
+}
+
+.pinout-table tbody tr {
+  cursor: pointer;
+}
+
+.general-table tr:nth-child(even){
+  background-color: #fc935a;
+}
+
+.pinout-table tr:hover {
+  background-color: #f15a24;
+}
+
+.general-table th {
+  background-image: linear-gradient(rgb(255 255 255 / 20%),transparent);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f15a24;
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255 255 255 / 50%);
+}
+
+.info-table {
+  display: none;
+}
+
 .name-wrapper {
   flex-wrap: wrap;
   display: flex;
@@ -207,68 +250,10 @@ body {
   }
 }
 
-.general-table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: clamp(100%, 100%, 1000px);
-  text-align: left;
-}
-
-.pinout-table tbody tr {
-  cursor: pointer;
-}
-
-.general-table td, .general-table th {
-  border: 1px solid #333;
-  padding: 8px;
-}
-
-.general-table tr {
-  color: #333;
-  text-shadow: 0 1px 0 rgb(255 255 255 / 50%);
-}
-
-.general-table tr:nth-child(even){
-  background-color: #fc935a;
-}
-
-.pinout-table tr:hover {
-  background-color: #f15a24;
-}
-
-.general-table th {
-  background-image: linear-gradient(rgb(255 255 255 / 20%),transparent);
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #f15a24;
-  color: #333;
-  text-shadow: 0 1px 0 rgba(255 255 255 / 50%);
-}
-
-.info-table {
-  display: none;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     background-color: #111;
     color: #eee;
-  }
-
-  .switch > table {
-    background-color: #2d3035;
-  }
-
-  .switch table td,
-  .switch input:checked ~ table td:first-child {
-    color: #eee;
-    text-shadow: 1px 1px 1px #191b1e;
-  }
-
-
-  td[data-field="pin"] {
-    border: 1px solid #aaa !important;
   }
 
   .general-table tbody tr {
@@ -288,6 +273,21 @@ body {
     color: #333;
   }
 
+  .switch > table {
+    background-color: #2d3035;
+  }
+
+  .switch table td,
+  .switch input:checked ~ table td:first-child {
+    color: #eee;
+    text-shadow: 1px 1px 1px #191b1e;
+  }
+
+
+  td[data-field="pin"] {
+    border: 1px solid #aaa !important;
+  }
+
   #board-link, #board-link:visited {
     color: #eee;
   }
@@ -302,10 +302,6 @@ body {
 
   .switch-wrapper {
     display: none !important;;
-  }
-
-  td:not(.print-column), .info-table, thead, #board-link {
-    display: none;
   }
 
   .connector-container {
@@ -336,8 +332,8 @@ body {
     font-size: 10px;
   }
 
-  td:not([data-field="pin"]) {
-    border: none !important;
+  td:not(.print-column), .info-table, thead, #board-link {
+    display: none;
   }
 
   td[data-field="pin"] {
@@ -346,6 +342,10 @@ body {
     width: 10px;
     margin: 0;
     padding: 0;
+  }
+
+  td:not([data-field="pin"]) {
+    border: none !important;
   }
 
   html, tr {
