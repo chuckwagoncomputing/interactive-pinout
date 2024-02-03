@@ -300,7 +300,8 @@ body {
     flex-direction: column;
   }
 
-  .switch-wrapper {
+  .switch-block,
+  .toggle-label {
     display: none !important;;
   }
 
