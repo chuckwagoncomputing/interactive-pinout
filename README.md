@@ -117,6 +117,17 @@ There is a `warnings` option to set how warnings are handled, and more options t
 |`warning-no-pins`|No pins found in definition file|
 |`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
 
+Listed below are the possible values for these fields.
+
+|value|behavior|
+|-----|-----|
+|false|Print warning|
+|notice|Print warning and put notice on workflow summary page|
+|error|Cause the workflow to fail immediately|
+|skip|Skip generating this pinout, but proceed with any other pinouts|
+
+If a specific `warning-*` field is not set, the value from the `warnings` field is used. You can use this to set the default behavior for warnings, and override specific types of warnings with their own field.
+
 ### Example Workflow Step
 
 For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/master/.github/workflows/gen-pinouts.yaml) uses interactive-pinouts in Github Actions.
