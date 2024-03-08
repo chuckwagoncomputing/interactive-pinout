@@ -65,9 +65,14 @@ for c in $CONNECTORS; do
   if [ $(yq e '.pins.[].pin' "$c" | wc -c) -lt 1 ]; then
     if ! handle_warning "$WARNING_NO_PINS" "WARNING: No pins found in definition $c"; then continue; fi
   fi
-  DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | uniq -d | tr -d '\n')
+  DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
   if [ -n "$DUPES" ]; then
     if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pins in $c: $DUPES"; then continue; fi
+  fi
+  POSDUPES=$(yq e '.info.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
+  POSDUPES+=$(yq e '.info.image.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
+  if [ -n "$POSDUPES" ]; then
+    if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pin positionss in $c: $POSDUPES"; then continue; fi
   fi
   # Get the directory and title, if they exist
   DIRECTORY=$(yq e '.info.directory' "$c")
