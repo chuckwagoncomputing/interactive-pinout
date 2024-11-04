@@ -238,6 +238,54 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
   }.bind(null, pin.pdiv, pxheight));
 }
 
+function findBounds(pins, i) {
+  var d = i;
+  var u = i;
+  for (; d > -1; d--) {
+    if (typeof(pins[d].x) != "undefined" && typeof(pins[d].y) != "undefined") {
+      break;
+    }
+  }
+  for (; u < pins.length; u++) {
+    if (typeof(pins[u].x) != "undefined" && typeof(pins[u].y) != "undefined") {
+      break;
+    }
+  }
+  return [pins[d], pins[u]]
+}
+
+function findBetween(a, b, p) {
+  var a_ns = a.pin.match(/\d+/g)
+  var b_ns = b.pin.match(/\d+/g)
+  var n_ns = p.pin.match(/\d+/g)
+  var n = 0;
+  for (var i = 0; i < a_ns.length; i++) {
+    if (a_ns[i] != b_ns[i]) {
+      a.n = a_ns[i];
+      b.n = b_ns[i];
+      n = n_ns[i];
+      break
+    }
+  }
+  return brange(a, b, n);
+}
+
+function range(x1, x2, n1, n2, n) {
+  n1 = parseInt(n1);
+  n2 = parseInt(n2);
+  x1 = parseInt(x1);
+  x2 = parseInt(x2);
+  n = parseInt(n);
+  return x1 + (x2 - x1) * ((n - n1) / (n2 - n1));
+}
+
+function brange(p1, p2, n) {
+  return {
+    x: range(p1.x, p2.x, p1.n, p2.n, n),
+    y: range(p1.y, p2.y, p1.n, p2.n, n)
+  };
+}
+
 function setupColorToggle(sdiv) {
   var colored = sdiv.querySelectorAll("[data-color]")
   if (colored.length > 0) {
