@@ -364,7 +364,7 @@ window.addEventListener("load", function() {
             if (!pinfo.x) {
               var bounds = findBounds(connector.info.image.pins, ii)
               if (typeof(bounds[0]) != "undefined" && typeof(bounds[1]) != "undefined") {
-                pinfo.push(findBetween(bounds[0], bounds[1], connector.info.image.pins[ii]))
+                Object.assign(pinfo, findBetween(bounds[0], bounds[1], connector.info.image.pins[ii]))
               }
             }
             break;
