@@ -255,9 +255,9 @@ function findBounds(pins, i) {
 }
 
 function findBetween(a, b, p) {
-  var a_ns = a.pin.match(/\d+/g)
-  var b_ns = b.pin.match(/\d+/g)
-  var n_ns = p.pin.match(/\d+/g)
+  var a_ns = ("" + a.pin).match(/\d+/g)
+  var b_ns = ("" + b.pin).match(/\d+/g)
+  var n_ns = ("" + p.pin).match(/\d+/g)
   var n = 0;
   for (var i = 0; i < a_ns.length; i++) {
     if (a_ns[i] != b_ns[i]) {
