@@ -360,11 +360,18 @@ window.addEventListener("load", function() {
         for (var ii = 0; ii < connector.info.image.pins.length; ii++) {
           if (connector.info.image.pins[ii].pin == pin.pin) {
             pinfo = connector.info.image.pins[ii];
+            // If we found a listing without coordinates
+            if (!pinfo.x) {
+              var bounds = findBounds(connector.info.image.pins, ii)
+              if (typeof(bounds[0]) != "undefined" && typeof(bounds[1]) != "undefined") {
+                pinfo.push(findBetween(bounds[0], bounds[1], connector.info.image.pins[ii]))
+              }
+            }
             break;
           }
         }
-        // If there aren't coordinates, just add to the table
-        if (!pinfo.x) {
+        // If we didn't find a listing in the image section, just add to the table
+        if (!pinfo.pin || !pinfo.x) {
           addRow(fullTable, connector.pins[i], cid);
           continue;
         }
