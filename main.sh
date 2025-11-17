@@ -9,6 +9,7 @@
 # env WARNING_NO_IMAGE
 # env WARNING_NO_PINS
 # env WARNING_DUPE
+# env WARNING_PARSE
 #   same options as WARNINGS
 
 if [ "$DEBUG" = "true" ]; then
@@ -18,6 +19,7 @@ if [ "$DEBUG" = "true" ]; then
   echo "WARNING_NO_IMAGE: $WARNING_NO_IMAGE"
   echo "WARNING_NO_PINS: $WARNING_NO_PINS"
   echo "WARNING_DUPE: $WARNING_DUPE"
+  echo "WARNING_PARSE: $WARNING_PARSE"
 fi
 
 SCRIPTDIR=$(dirname "$0")
@@ -52,31 +54,34 @@ if [ $(echo "$CONNECTORS" | grep -v ^$ | wc -l) -eq 0 ]; then
 fi
 
 FILES=$(for f in $CONNECTORS; do
-  ORDER=$(yq e '.info.order' "$f")
-  echo "$f $ORDER"
+          ORDER=$(yq e '.info.order' "$f")
+          [ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $f"
+          echo "$f $ORDER"
 done)
 CONNECTORS=$(echo "$FILES" | sort -k2 | cut -d ' ' -f 1)
 
 # Make a temp directory for symlinks to actual files.
 mkdir -p pinoutstmp
 
+
 for c in $CONNECTORS; do
   echo "Processing: $c"
-  if [ $(yq e '.pins.[].pin' "$c" | wc -c) -lt 1 ]; then
-    if ! handle_warning "$WARNING_NO_PINS" "WARNING: No pins found in definition $c"; then continue; fi
-  fi
+	PINCNT=$(yq e '.pins.[].pin' "$c" | wc -c)
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+  [ "$PINCNT" -gt 0 ] || handle_warning "$WARNING_NO_PINS" "WARNING: No pins found in definition $c" || continue
   DUPES=$(yq e '.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
-  if [ -n "$DUPES" ]; then
-    if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pins in $c: $DUPES"; then continue; fi
-  fi
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+  [ -z "$DUPES" ] || handle_warning "$WARNING_DUPE" "WARNING: Duplicate pins in $c: $DUPES" || continue
   POSDUPES=$(yq e '.info.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   POSDUPES+=$(yq e '.info.image.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
-  if [ -n "$POSDUPES" ]; then
-    if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate pin positionss in $c: $POSDUPES"; then continue; fi
-  fi
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+  [ -z "$POSDUPES" ] || handle_warning "$WARNING_DUPE" "WARNING: Duplicate pin positionss in $c: $POSDUPES" || continue
   # Get the directory and title, if they exist
   DIRECTORY=$(yq e '.info.directory' "$c")
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   TITLE=$(yq e '.info.title' "$c")
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   # Build the temp path, removing leading ./ and /
   DIR="pinoutstmp/"$(dirname "$c" | sed -e 's/^\.\///' -e 's/^\///')
   # If we have a directory field
@@ -149,35 +154,41 @@ for c in $CONNECTORS; do
   if [ "$DEBUG" = "true" ]; then
     echo "File Name: $NAME"
   fi
-  if [ "$(yq e '.info.cid' "$c")" == "null" ]; then
-    if ! handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c"; then continue; fi
-  fi
+	CID=$(yq e '.info.cid' "$c")
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+  [ "$CID" != "null" ] || handle_warning "$WARNING_NO_CID" "WARNING: Missing yaml cid field in info section of $c" || continue
   IMG=$(yq e '.info.image.file' "$c")
-  if [ $? -ne 0 ] || [ "$IMG" = "null" ]; then
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+  if [ "$IMG" = "null" ]; then
     IMP=$(yq e '.info.image.import' "$c")
-    if [ $? -ne 0 ] || [ "$IMP" = "null" ]; then
-      if ! handle_warning "$WARNING_NO_IMAGE" "WARNING: $c missing image"; then continue; fi
+		[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
+    if [ "$IMP" = "null" ]; then
+      handle_warning "$WARNING_NO_IMAGE" "WARNING: $c missing image" || continue
     else
       IMG=$(yq e '.image.file' "$(dirname "$c")/$IMP")
+			[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
       echo "Image: $IMG"
       cp "$(dirname $(dirname "$c")/$IMP)/$IMG" "$DIR"
       yq --inplace ea '.info.image = .image | select(fi == 0)' "$c" "$(dirname "$c")/$IMP"
+			[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
     fi
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
     # Patch legacy YAMLs by moving .info.pins to .info.image.pins
     yq --inplace e '.info.image.pins = .info.pins' "$c"
+		[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
     yq --inplace e 'del(.info.pins)' "$c"
+		[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   fi
+	JSON=$(yq -o=json e "$c")
+	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   if [ -f "$DIR/index.html" ]; then
-    bash "$SCRIPTDIR"/append.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+    bash "$SCRIPTDIR"/append.sh "$JSON" "$DIR/index.html"
   else
-    bash "$SCRIPTDIR"/gen.sh "$(yq -o=json e "$c")" "$DIR/index.html"
+    bash "$SCRIPTDIR"/gen.sh "$JSON" "$DIR/index.html"
   fi
-  if [ $? -ne 0 ]; then
-    if ! handle_warning "unset" "WARNING: Failed to generate or append to pinout"; then continue; fi
-  fi
+  [ $? -eq 0 ] || handle_warning "unset" "WARNING: Failed to generate or append to pinout" || continue
 done
 
 # Delete all symbolic links and empty directories from the temp dir.
@@ -190,7 +201,7 @@ find pinoutstmp -type d -empty -delete
 find pinouts/ -type f -name 'index.html' -print0 | while IFS= read -r -d '' f; do
   DUPES=$(grep "cid\": " "$f" | uniq -d | tr -d '\n')
   if [ -n "$DUPES" ]; then
-    if ! handle_warning "$WARNING_DUPE" "WARNING: Duplicate cids in $f: $DUPES"; then continue; fi
+    handle_warning "$WARNING_DUPE" "WARNING: Duplicate cids in $f: $DUPES" || continue
   fi
 done
 

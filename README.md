@@ -116,6 +116,7 @@ There is a `warnings` option to set how warnings are handled, and more options t
 |`warning-no-image`|A missing `file` field in the `image` subsection of the `info` section|
 |`warning-no-pins`|No pins found in definition file|
 |`warning-dupe`|More than one pin that share the same `pin` field in a single mapping|
+|`warning-parse`|An error parsing a connector definition file|
 
 Listed below are the possible values for these fields.
 
@@ -196,6 +197,7 @@ WARNING_NO_CONNECTORS
 WARNING_NO_IMAGE
 WARNING_NO_PINS
 WARNING_DUPE
+WARNING_PARSE
 COLS
 PRINT_COLS
 INFO_COL
