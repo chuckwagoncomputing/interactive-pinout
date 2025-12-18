@@ -157,9 +157,26 @@ function clickPin(table, pin, cid) {
   container.scrollIntoView()
 }
 
+function highlightType(type) {
+	var pins = document.querySelectorAll(".pin-marker");
+  for (var i = 0; i < pins.length; i++) {
+    if (pins[i].dataset.type == type) {
+      pins[i].classList.add("highlight");
+    } else {
+      pins[i].classList.remove("highlight");
+    }
+    pins[i].classList.remove("selected");
+  }
+}
+
 // Check URL parameters for a selected pin
 function checkparams() {
   var params = new URLSearchParams(window.location.search);
+	var type = params.get("type");
+	if (type != null) {
+		highlightType(type);
+		return;
+	}
   var connector = params.get("connector");
   var pin = params.get("pin");
   if (pin == null) {
