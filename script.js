@@ -158,6 +158,7 @@ function clickPin(table, pin, cid) {
 }
 
 function highlightType(type) {
+	// Highlight pins matching type
 	var pins = document.querySelectorAll(".pin-marker");
   for (var i = 0; i < pins.length; i++) {
     if (pins[i].dataset.type == type) {
@@ -169,6 +170,7 @@ function highlightType(type) {
   }
 
 	let foundAll = false;
+	// Add pins matching type to their connector table
   for (var i = 0; i < connectorData.length; i++) {
 		var cdata = connectorData[i];
 		var table = document.querySelectorAll(".info-table tbody")[i];
@@ -176,6 +178,7 @@ function highlightType(type) {
 		for (var iii = 0; iii < cdata.pins.length; iii++) {
 			if (cdata.pins[iii].type == type) {
 				if (!foundAll) {
+					// scroll to the connector of the first found matching pin
 					table.closest(".container").scrollIntoView();
 					foundAll = true;
 				}
