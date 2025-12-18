@@ -167,6 +167,26 @@ function highlightType(type) {
     }
     pins[i].classList.remove("selected");
   }
+
+	let foundAll = false;
+  for (var i = 0; i < connectorData.length; i++) {
+		var cdata = connectorData[i];
+		var table = document.querySelectorAll(".info-table tbody")[i];
+		let found = false;
+		for (var iii = 0; iii < cdata.pins.length; iii++) {
+			if (cdata.pins[iii].type == type) {
+				if (!foundAll) {
+					table.closest(".container").scrollIntoView();
+					foundAll = true;
+				}
+				found = true;
+				addRow(table, cdata.pins[iii], i);
+			}
+		}
+		if (found) {
+			table.parentElement.style.display = "table";
+		}
+  }
 }
 
 // Check URL parameters for a selected pin
