@@ -151,6 +151,7 @@ function clickPin(table, pin, c) {
     var url = new URL(window.location);
     url.searchParams.set("connector", connectorData[c].info.cid);
     url.searchParams.set("pin", pin.pin);
+		url.searchParams.delete("type");
     // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
       window.history.pushState({}, "", url)
@@ -159,6 +160,7 @@ function clickPin(table, pin, c) {
     var url = new URL(window.location);
     url.search = "";
     url.searchParams.set("pin", pin.pin);
+		url.searchParams.delete("type");
     // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
       window.history.pushState({}, "", url)
