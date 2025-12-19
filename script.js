@@ -4,11 +4,11 @@ var connectorData = [
 ];
 
 // gen.sh replaces COLS and PRINT_COLS with the apropriate JSON objects
-var columns = ///COLS///
+var globalColumns = ///COLS///
 
-var printColumns = ///PRINT_COLS///
+var globalPrintColumns = ///PRINT_COLS///
 
-var infoColumn = "///INFO_COL///";
+var globalInfoColumn = "///INFO_COL///";
 
 var templates = ///TEMPLATES///
 
@@ -22,7 +22,7 @@ function hideEmptyColumns(table) {
     var empty = true;
     for (var ii = 0; ii < rows.length; ii++) {
       // If we find a row with text, the column isn't empty
-      if ( rows[ii].children[i].textContent.length > 0 ) {
+      if ( rows[ii].children[i] && rows[ii].children[i].textContent.length > 0 ) {
         empty = false;
         break;
       }
@@ -32,14 +32,18 @@ function hideEmptyColumns(table) {
     if (empty) {
       tableHead.querySelectorAll("th")[i].style.display = "none";
       for (var ii = 0; ii < rows.length; ii++) {
-        rows[ii].children[i].style.display = "none";
+				if (rows[ii].children[i]) {
+					rows[ii].children[i].style.display = "none";
+				}
       }
     // If not, we do the same procedure, but show instead of hide,
     //   in case they were previously hidden.
     } else {
       tableHead.querySelectorAll("th")[i].style.display = "";
       for (var ii = 0; ii < rows.length; ii++) {
-        rows[ii].children[i].style.display = "";
+				if (rows[ii].children[i]) {
+					rows[ii].children[i].style.display = "";
+				}
       }
     }
   }
@@ -47,15 +51,15 @@ function hideEmptyColumns(table) {
 
 // Add a row to a table
 function addRow(table, pin) {
-  var clone = getRow(table, pin)
+  var clone = getRow(pin)
   table.appendChild(clone);
 }
 
 // Add a row to a table, with an associated connector,
 //    so we can scroll the connector into view
-function addRow(table, pin, cid, click) {
+function addRow(table, pin, c, click) {
   click = typeof click !== 'undefined' ? click : true;
-  var clone = getRow(table, pin)
+  var clone = getRow(pin, connectorData[c]);
   var row = clone.querySelector(".data");
   // If we've been passed a reference to a pin on the connector view,
   //    make this row clickable.
@@ -63,29 +67,35 @@ function addRow(table, pin, cid, click) {
   //   - When no x/y coordinates were provided for the pin
   //   - When there is no image specified in the input YAML
   if (pin.pdiv && click) {
-    row.addEventListener("click", function(table, pin, cid) {
+    row.addEventListener("click", function(table, pin, c) {
       // Find the closest container up the tree.
       // We don't know how far it is, because the info and
       //   main tables are at different depths.
       var container = table.closest(".container");
       // Handle the click.
-      clickPin(container.querySelector(".info-table tbody"), pin, cid);
+      clickPin(container.querySelector(".info-table tbody"), pin, c);
       // Scroll so the connector view is visible.
       container.scrollIntoView()
-    }.bind(null, table, pin, cid));
+    }.bind(null, table, pin, c));
   }
   table.appendChild(clone);
 }
 
+function getRow(pin) {
+	getRow(pin, null);
+}
+
 // Build a row to add to a table
-function getRow(table, pin) {
+function getRow(pin, connector) {
   var template = document.getElementById("table-template");
   var clone = template.content.cloneNode(true);
   var row = clone.querySelector(".data");
   // Loop through the columns and create a data element for each
+	let columns = (connector && connector.info.columns && JSON.parse(connector.info.columns)) || globalColumns;
   for (const column in columns) {
     var el = document.createElement("td")
     // If we should print this column (We always print pins)
+		let printColumns = (connector && connector.info["print-columns"] && JSON.parse(connector.info["print-columns"])) || globalPrintColumns;
     if ( printColumns.indexOf(column) !== -1 || column == "pin" ) {
       el.classList.add("print-column");
     }
@@ -110,7 +120,7 @@ function getRow(table, pin) {
 
 // Called when we click on a pin, either in a table or in the connector view
 // table is always the info table
-function clickPin(table, pin, cid) {
+function clickPin(table, pin, c) {
   // Find the closest container up the tree.
   // We don't know how far it is, because table rows and
   //   pins in the connector view are at different depths.
@@ -119,7 +129,7 @@ function clickPin(table, pin, cid) {
   table.parentElement.style.display = "table";
   // Clear the table, then add the row
   table.innerHTML = "";
-  addRow(table, pin, cid, false);
+  addRow(table, pin, c, false);
   // Loop through the pins, and highlight those of the same type,
   //   remove highlights from any other previously highlighted pins,
   //   and remove selection from all pins.
@@ -137,9 +147,9 @@ function clickPin(table, pin, cid) {
   // Hide empty columns from the table
   hideEmptyColumns(table.parentElement);
   // If there's a connector id for this pin, go to this pin's URL
-  if (typeof(cid) != "undefined") {
+  if (typeof(c) != "undefined") {
     var url = new URL(window.location);
-    url.searchParams.set("connector", cid);
+    url.searchParams.set("connector", connectorData[c].info.cid);
     url.searchParams.set("pin", pin.pin);
     // Don't ruin the history if we're not going somewhere new.
     if ( url.toString() != new URL(window.location).toString() ) {
@@ -221,7 +231,7 @@ function checkparams() {
   for (var iii = 0; iii < cdata.pins.length; iii++) {
     if (cdata.pins[iii].pin == pin) {
       // Just pretend we clicked on it
-      clickPin(table, cdata.pins[iii], cdata.info.cid);
+      clickPin(table, cdata.pins[iii], c);
       return;
     }
   }
@@ -326,7 +336,7 @@ function brange(p1, p2, n) {
   };
 }
 
-function setupColorToggle(sdiv) {
+function setupColorToggle(sdiv, columns) {
   var colored = sdiv.querySelectorAll("[data-color]")
   if (colored.length > 0) {
     sdiv.querySelector(".switch-block").style.display = "block"
@@ -365,13 +375,15 @@ window.addEventListener("load", function() {
     // Parse the JSON, add connector to document body
     connectorData[c] = JSON.parse(connectorData[c]);
     var connector = connectorData[c];
+		let columns = (connector && connector.info.columns && JSON.parse(connector.info.columns)) || globalColumns;
     var template = document.getElementById("connector-template");
     var clone = template.content.cloneNode(true);
     document.body.appendChild(clone);
     var sdiv = document.body.lastElementChild;
     var img = sdiv.querySelector(".connector-img");
     // When the image is loaded, then handle the pins
-    img.addEventListener("load", function(connector, sdiv, img) {
+    img.addEventListener("load", function(c, sdiv, img) {
+			let connector = connectorData[c];
       var cdiv = sdiv.querySelector(".connector-div");
       var cid = connector.info.cid;
       var ptemplate = document.getElementById("pin-template");
@@ -412,7 +424,7 @@ window.addEventListener("load", function() {
         }
         // If we didn't find a listing in the image section, just add to the table
         if (!pinfo.pin || !pinfo.x) {
-          addRow(fullTable, connector.pins[i], cid);
+          addRow(fullTable, connector.pins[i], c);
           continue;
         }
         // Create the pin element and set its position and type
@@ -421,7 +433,7 @@ window.addEventListener("load", function() {
         pdiv.textContent = pinfo.pin;
         var piclone = pitemplate.content.cloneNode(true);
         var pidiv = piclone.querySelector(".pin-info");
-        pidiv.textContent = pin[infoColumn];
+        pidiv.textContent = pin[connector.info["info-column"] || globalInfoColumn];
         pdiv.appendChild(piclone);
         pdiv.style.top = ((pinfo.y / imgHeight) * 100) + "%";
         pdiv.style.left = ((pinfo.x / imgWidth) * 100) + "%";
@@ -431,32 +443,36 @@ window.addEventListener("load", function() {
         }
         // Associate the pin's element with the pin object
         pin.pdiv = pdiv;
-        pdiv.addEventListener("click", function(table, pin, cid) {
-          clickPin(table, pin, cid);
-        }.bind(null, infoTable, pin, cid));
+        pdiv.addEventListener("click", function(table, pin, c) {
+          clickPin(table, pin, c);
+        }.bind(null, infoTable, pin, c));
         calcPinSize(pin, cdiv, connector, pinfo)
         // Recalculate the size when the window is resized.
         window.addEventListener("resize", function(pin, cdiv, connector, pinfo) {
           calcPinSize(pin, cdiv, connector, pinfo)
         }.bind(null, pin, cdiv, connector, pinfo));
         cdiv.appendChild(pdiv);
-        addRow(fullTable, pin, cid);
+        addRow(fullTable, pin, c);
       }
       hideEmptyColumns(sdiv.querySelector(".pinout-table"));
-      setupColorToggle(sdiv);
+      setupColorToggle(sdiv, columns);
       // Check if we have loaded all the images.
       checkImagesLoaded();
-    }.bind(null, connector, sdiv, img));
+    }.bind(null, c, sdiv, img));
     // If there's info, use it.
     if (typeof(connector.info) != "undefined") {
       // Set the document title
       if (document.title.length == 0 && typeof(connector.info.title) != "undefined") {
         document.title = connector.info.title;
       }
+			// bacwards compatability
+			if (typeof(connector.info.board_url) != "undefined") {
+				connector.info["board-url"] = connector.info.board_url;
+			}
       // Add the board link
-      if (typeof(connector.info.board_url) != "undefined" && document.title.length > 0) {
+      if (typeof(connector.info["board-url"]) != "undefined" && document.title.length > 0) {
         document.getElementById("board-link").innerText = document.title;
-        document.getElementById("board-link").href = connector.info.board_url;
+        document.getElementById("board-link").href = connector.info["board-url"];
       }
       // Add the connector name
       if (typeof(connector.info.name) != "undefined") {
@@ -478,7 +494,7 @@ window.addEventListener("load", function() {
         if (!pin.pin) {
           continue;
         }
-        addRow(fullTable, pin);
+        addRow(fullTable, pin, c);
       }
       // Loop through our columns and add the headers for the main table
       for (const column in columns) {
@@ -487,7 +503,7 @@ window.addEventListener("load", function() {
         fullTableHeader.appendChild(el.cloneNode(true));
       }
       hideEmptyColumns(sdiv.querySelector(".pinout-table"));
-      setupColorToggle(sdiv);
+      setupColorToggle(sdiv, columns);
     }
   }
 });

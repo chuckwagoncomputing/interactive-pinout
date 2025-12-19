@@ -175,7 +175,7 @@ for c in $CONNECTORS; do
   else
     echo "Image: $IMG"
     cp "$(dirname "$c")/$IMG" "$DIR"
-    # Patch legacy YAMLs by moving .info.pins to .info.image.pins
+    # Patch legacy YAMLs for backwards compatability by moving .info.pins to .info.image.pins
     yq --inplace e '.info.image.pins = .info.pins' "$c"
 		[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
     yq --inplace e 'del(.info.pins)' "$c"

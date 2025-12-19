@@ -10,7 +10,7 @@ Generating pinouts requires:
 
 Multiple .yaml files within a directory are put into the same index.html page.  
 The results will be in a folder named "pinouts".  
-If you include the `directory` field within the `info` section of the yaml, the page will be placed within that subdirectory of the "pinouts" directory.  
+If you include the `directory` field within the `info` section of the YAML, the page will be placed within that subdirectory of the "pinouts" directory.  
 If none of the .yaml files within a directory have the `directory` field, the `title` field will be used instead.
 If none of the .yaml files within a directory have either field, they will be placed in a subdirectory structure matching that from which the action was run.  
 
@@ -43,9 +43,12 @@ The 'info' section contains information which is used to generate the interactiv
 |image    |subsection which contains image source and pin coordinates|
 |title    |the title for the page. Only one connector for a particular board needs this field|
 |directory|the target directory for the page. Only one connector for a particular board needs this field|
-|board_url|a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
+|board-url|a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
 |name     |a human-readable name for the connector|
 |order    |an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
+|columns|a JSON object; the keys should be the YAML field names and the values will be used as the display names for the columns - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
+|print-columns|a JSON array containing the YAML field names which will be shown on a paper printout of the page - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
+|info-column|a YAML field name which will be shown below the pin number when hovering over a pin - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
 
 The 'image' subsections contains the following fields  
 
@@ -81,7 +84,7 @@ info:
   title: Big Magic Box
   directory: big_magic
   name: Main Connector
-  board_url: https://example.com/documentation
+  board-url: https://example.com/documentation
   cid: c1
   image:
     file: connector.jpg
@@ -151,6 +154,7 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
       [
       "function"
       ]
+    info-column: "type"
     templates: |
       {
       "___": "pin"
