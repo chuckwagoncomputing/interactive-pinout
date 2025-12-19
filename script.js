@@ -363,9 +363,7 @@ function setupColorToggle(sdiv, columns) {
 window.addEventListener("load", function() {
   // Manage history navigation
   window.onpopstate = function(ev) {
-    if (event.state) {
-      checkparams();
-    }
+    checkparams();
   };
   // @ifdef DEBUG
   if (debug) {
