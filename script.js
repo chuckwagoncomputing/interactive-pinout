@@ -205,18 +205,6 @@ function checkImagesLoaded() {
 	}
 }
 
-let beforePrintHandlers = [];
-
-window.addEventListener("beforeprint", () => {
-	beforePrintHandlers.forEach((h) => h());
-});
-
-let afterPrintHandlers = [];
-
-window.addEventListener("afterprint", () => {
-	afterPrintHandlers.forEach((h) => h());
-});
-
 // This is a butchery and I hate it and never want to touch it again.
 function calcPinSize(pin, cdiv, connector, pinfo) {
 	// Find the closest pin, to maximize the pin size for best readability,
@@ -229,31 +217,28 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
 			closest = distance;
 		}
 	});
-	// Set the pin's size
 	closest = Math.sqrt(closest);
+	// Set the pin's size
 	const divheight = cdiv.clientHeight;
 	const divwidth = cdiv.clientWidth;
-	const mult = cdiv.querySelector("img").naturalHeight / divheight;
-	const newheight = (closest / mult)
-	let pxheight = divheight * 0.08;
-	if (newheight < pxheight) {
-		pxheight = newheight;
+	const scale = divheight / cdiv.querySelector("img").naturalHeight;
+	const newheight = closest * scale;
+	// Default height is 8% of div
+	let pinsize = divheight * 0.08;
+	if (newheight < pinsize) {
+		pinsize = newheight;
 	}
-	const height = (pxheight / divheight) * 100;
-	const width = (pxheight / divwidth) * 100;
-	pin.pdiv.style.height = "calc(" + height + "%)";
-	pin.pdiv.style.width = "calc(" +	width + "%)";
-	pin.pdiv.style.lineHeight = "calc(" + pxheight + "px - 0.21vw)";
+	// Use percent for scaling when printing
+	const height = (pinsize / divheight) * 100;
+	const width = (pinsize / divwidth) * 100;
+	pin.pdiv.style.height = height + "%";
+	pin.pdiv.style.width = width + "%";
+	// 0.5cqh achieves vertical centering, roughly
+	pin.pdiv.style.lineHeight = (height - 0.5) + "cqh";
+	// When using a percent for margins, the width value is used even for top and bottom
 	pin.pdiv.style.marginTop = "-" + (width / 2) + "%";
 	pin.pdiv.style.marginLeft = "-" + (width / 2) + "%";
-	pin.pdiv.style.fontSize = (pxheight * 0.5) + "px";
-	// Recalculate the size for printing.
-	beforePrintHandlers.push(() => {
-		pin.pdiv.style.fontSize = "calc(calc(" + width + "px * min(640, "	 + divwidth + ")) * 0.0055)";
-	});
-	afterPrintHandlers.push(() => {
-		pin.pdiv.style.fontSize = (pxheight * 0.5) + "px";
-	});
+	pin.pdiv.style.fontSize = (height * 0.5) + "cqh";
 }
 
 function findBounds(pins, i) {
@@ -327,6 +312,8 @@ function setupColorToggle(sdiv, columns) {
 
 function handleImageLoad(connector, c, sdiv, img, columns) {
 	const cdiv = sdiv.querySelector(".connector-div");
+	const cdc = sdiv.querySelector(".connector-div-container");
+	cdc.style.aspectRatio = img.naturalWidth / img.naturalHeight;
 	const ptemplate = document.getElementById("pin-template");
 	const pitemplate = document.getElementById("pin-info-template");
 	const imgHeight = img.naturalHeight;
