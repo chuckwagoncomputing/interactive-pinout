@@ -221,3 +221,9 @@ $ export PRINT_COLS='["function"]'
 $ export COLORS='{"12v":"yellow";"12V":"yellow";"5v":"red","5V":"red","at":"green","av":"brown","can":"blue","din":"lime","etb":"darkcyan","gnd":"darkgreen","gp_high":"aqua","gp_low":"aquamarine","gp_pp":"cyan","hall":"darkolivegreen","hl":"gold","hs":"indigo","ign":"magenta","inj":"maroon","ls":"lightgreen","mr":"firebrick","pgnd":"coral","sgnd":"olive","usb":"lightseagreen","vr":"sienna"}'
 $ bash ../interactive-pinout/main.sh
 ```
+
+## Errata
+
+Printing is currently not working properly in Firefox due to [this bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1979600).  
+Before commit adab46f, printing didn't work great in any browser.  
+Since that commit, printing works great in Chromium at least (I haven't tested others), but got worse in Firefox.
