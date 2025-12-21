@@ -225,5 +225,5 @@ $ bash ../interactive-pinout/main.sh
 ## Errata
 
 Printing is currently not working properly in Firefox due to [this bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1979600).  
-Before commit https://github.com/chuckwagoncomputing/interactive-pinout/commit/adab46f10fff8c019bd28615752e684a5749f6eb, printing didn't work great in any browser.  
+Before commit [adab46f](https://github.com/chuckwagoncomputing/interactive-pinout/commit/adab46f10fff8c019bd28615752e684a5749f6eb), printing didn't work great in any browser.  
 Since that commit, printing works great in Chromium at least (I haven't tested others), but got worse in Firefox.
