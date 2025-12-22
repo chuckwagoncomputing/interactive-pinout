@@ -104,7 +104,7 @@ function clickPin(table, pin, c) {
 	// Clear the table, then add the row
 	table.innerHTML = "";
 	addRow(table, pin, c, false);
-	highlightType(pin.type)
+	highlightMatches([["type", pin.type]])
 	// Select the clicked pin.
 	pin.pdiv.classList.add("selected");
 	// Hide empty columns from the table
@@ -114,7 +114,7 @@ function clickPin(table, pin, c) {
 		const url = new URL(window.location);
 		url.searchParams.set("connector", connectorData[c].info.cid);
 		url.searchParams.set("pin", pin.pin);
-		url.searchParams.delete("type");
+		url.searchParams.delete("highlight");
 		// Don't ruin the history if we're not going somewhere new.
 		if ( url.toString() != new URL(window.location).toString() ) {
 			window.history.pushState({}, "", url)
@@ -123,7 +123,7 @@ function clickPin(table, pin, c) {
 		const url = new URL(window.location);
 		url.search = "";
 		url.searchParams.set("pin", pin.pin);
-		url.searchParams.delete("type");
+		url.searchParams.delete("highlight");
 		// Don't ruin the history if we're not going somewhere new.
 		if ( url.toString() != new URL(window.location).toString() ) {
 			window.history.pushState({}, "", url)
@@ -132,27 +132,48 @@ function clickPin(table, pin, c) {
 	container.scrollIntoView();
 }
 
-function highlightType(type) {
+function checkFieldMatch(fieldmatches, pin) {
+	let found = false;
+	fieldmatches.forEach((fieldmatch) => {
+		const field = fieldmatch[0];
+		const match = fieldmatch[1];
+		const re = new RegExp("^" + match + "$")
+		if (pin[field] == match ||
+				re.test(pin[field]) ||
+								(Array.isArray(pin[field]) &&
+								 (pin[field].indexOf(match) >= 0 ||
+									pin[field].findIndex((fieldx) => re.test(fieldx)) >= 0))) {
+			found = true;
+		}
+	});
+	return found;
+}
+
+function highlightMatches(fieldmatches) {
 	// Loop through the pins, and highlight those of the same type,
 	//	 remove highlights from any other previously highlighted pins,
 	//	 and remove selection from all pins.
-	document.querySelectorAll(".pin-marker").forEach((pin) => {
-		if (pin.dataset.type == type) {
-			pin.classList.add("highlight");
-		} else {
-			pin.classList.remove("highlight");
-		}
-		pin.classList.remove("selected");
+	connectorData.forEach((cdata) => {
+		cdata.pins.forEach((pin) => {
+			if (pin.pdiv) {
+				if (checkFieldMatch(fieldmatches, pin)) {
+					pin.pdiv.classList.add("highlight");
+				} else {
+					pin.pdiv.classList.remove("highlight");
+				}
+				pin.pdiv.classList.remove("selected");					
+			}
+		});
 	});
 }
 
-function addTypeToTable(type) {
+function addMatchesToTable(fieldmatches) {
 	// Add pins matching type to their connector table
 	let found = false;
 	connectorData.forEach((cdata, i) => {
 		const table = document.querySelectorAll(".info-table tbody")[i];
 		cdata.pins.forEach((pin) => {
-			if (pin.type == type) {
+			if (checkFieldMatch(fieldmatches, pin)) {
 				if (!found) {
 					// scroll to the connector of the first found matching pin
 					table.closest(".container").scrollIntoView();
@@ -160,7 +181,7 @@ function addTypeToTable(type) {
 				}
 				table.parentElement.style.display = "table";
 				addRow(table, pin, i);
-			}
+			}		
 		});
 	});
 }
@@ -168,10 +189,12 @@ function addTypeToTable(type) {
 // Check URL parameters for a selected pin
 function checkparams() {
 	const params = new URLSearchParams(window.location.search);
-	const type = params.get("type");
-	if (type != null) {
-		highlightType(type);
-		addTypeToTable(type);
+	const hl = params.get("highlight");
+	if (hl != null) {
+		// matching instead of splitting to allow escaping of , and ~
+		const fieldmatches = hl.match(/(?:\\.|[^,])+/g).map((p) => p.match(/(?:\\.|[^~])+/g));
+		highlightMatches(fieldmatches);
+		addMatchesToTable(fieldmatches);
 		return;
 	}
 	const connector = params.get("connector");

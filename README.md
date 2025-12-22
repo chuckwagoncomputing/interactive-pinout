@@ -21,6 +21,18 @@ If one or both of the files has the `directory` field set to `quux`, the index.h
 If neither file has the `directory` field set, but one or both has the `title` field set to `Magic Board`, the index.html will be found at `pinouts/Magic Board/index.html`  
 If neither file has either field set, the index.html will be found at `pinouts/bar/baz/index.html`  
 
+## URL Parameters
+
+To select a pin, you can add `connector` and `pin` parameters to the URL, where `connector` matches the `cid` of the YAML info sectian and `pin` matches the `pin` field.
+
+Example: `https://rusefi.com/docs/pinouts/microrusefi/?connector=main&pin=9`
+
+You can also highlight pins with fields matching a query and populate the table below the picture with them. The match string can be a regex, which will have `^` and `$` added to the start and end to prevent overmatching. The field being matched is separated from the match string by a `~`. Multiple queries can be used, separated with `,`. If you need to use `,` or `~` in your match string, escape them with `\`.  If the field is an array, its elements will be checked for a match.
+
+Example: `https://rusefi.com/docs/pinouts/microrusefi/?highlight=class~.*inputs,type~12V`
+
+You cannot use both `highlight` and `connector`/`pin` simultaneously.
+
 ## Syntax of Connector YAML
 
 Each YAML file contains two sections: 'pins' and 'info'
