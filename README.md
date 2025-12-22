@@ -173,8 +173,8 @@ For a real-life example, [see how rusEFI](https://github.com/rusefi/rusefi/blob/
       }
     colors: |
       {
-      "12v":"yellow";
-      "12V":"yellow";
+      "12v":"yellow",
+      "12V":"yellow",
       "5v":"red",
       "5V":"red",
       "at":"green",
@@ -230,7 +230,7 @@ $ export MAPPING_PATH="firmware/config/boards/*/connectors/*.yaml"
 $ export WARNINGS="skip"
 $ export COLS='{"pin":"Pin Number","ts_name":"TS Name","type":"Type","function":"Typical Function","color":"Pigtail Color"}'
 $ export PRINT_COLS='["function"]'
-$ export COLORS='{"12v":"yellow";"12V":"yellow";"5v":"red","5V":"red","at":"green","av":"brown","can":"blue","din":"lime","etb":"darkcyan","gnd":"darkgreen","gp_high":"aqua","gp_low":"aquamarine","gp_pp":"cyan","hall":"darkolivegreen","hl":"gold","hs":"indigo","ign":"magenta","inj":"maroon","ls":"lightgreen","mr":"firebrick","pgnd":"coral","sgnd":"olive","usb":"lightseagreen","vr":"sienna"}'
+$ export COLORS='{"12v":"yellow","12V":"yellow","5v":"red","5V":"red","at":"green","av":"brown","can":"blue","din":"lime","etb":"darkcyan","gnd":"darkgreen","gp_high":"aqua","gp_low":"aquamarine","gp_pp":"cyan","hall":"darkolivegreen","hl":"gold","hs":"indigo","ign":"magenta","inj":"maroon","ls":"lightgreen","mr":"firebrick","pgnd":"coral","sgnd":"olive","usb":"lightseagreen","vr":"sienna"}'
 $ bash ../interactive-pinout/main.sh
 ```
 
