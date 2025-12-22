@@ -8,13 +8,8 @@ else
 fi
 
 CSS=$(cat $DIR/style.css)
-for C in $COLORS; do
-  CT=$(echo "$C" | cut -sd ':' -f 1)
-  CC=$(echo "$C" | cut -sd ':' -f 2 | cut -d ',' -f 1 | cut -d '"' -f 2)
-  if [ -n "$CT" ] && [ -n "$CC" ]; then
-    CSS+=$(echo -e "\n[data-type*=$CT] {\nborder-color: $CC;\n}")
-  fi
-done
+CSS+=$'\n'
+CSS+=$(echo "$COLORS" | jq -r 'keys[] as $k | "[data-type*=\"\($k)\"] {\nborder-color: \(.[$k]);\n}"')
 export CSS
 
 if [ -z "$TEMPLATES" ]; then
