@@ -9,14 +9,13 @@ fi
 
 CSS=$(cat $DIR/style.css)
 CSS+=$'\n'
-CSS+=$(echo "$COLORS" | jq -r 'keys[] as $k | "[data-type*=\"\($k)\"] {\nborder-color: \(.[$k]);\n}"')
+CSS+=$(echo "$COLORS" | jq -r 'keys[] as $k | ".general-table td[data-type*=\"\($k)\"], [data-type*=\"\($k)\"] {\nborder-color: \(.[$k]);\n}"')
 export CSS
 
-if [ -z "$TEMPLATES" ]; then
-  export TEMPLATES="{}"
-fi
+[ -z "$COLOR_COLS" ] && export COLOR_COLS="[]"
+[ -z "$TEMPLATES" ] && export TEMPLATES="{}"
 
-export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' -pe 's/\/\/\/INFO_COL\/\/\//$ENV{INFO_COL}/;' -pe 's/\/\/\/TEMPLATES\/\/\//$ENV{TEMPLATES}/;' $DIR/script.js)
+export JS=$(perl -0pe 's/\/\*DATA\*\//\`$ENV{JSON}\`,/;' -pe 's/\/\/\/COLS\/\/\//$ENV{COLS}/;' -pe 's/\/\/\/PRINT_COLS\/\/\//$ENV{PRINT_COLS}/;' -pe 's/\/\/\/COLOR_COLS\/\/\//$ENV{COLOR_COLS}/;' -pe 's/\/\/\/INFO_COL\/\/\//$ENV{INFO_COL}/;' -pe 's/\/\/\/TEMPLATES\/\/\//$ENV{TEMPLATES}/;' $DIR/script.js)
 
 if [ "$DEBUG" = "true" ]; then
   export JS=$'var debug = true;\n'"$JS"

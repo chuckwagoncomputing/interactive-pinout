@@ -68,6 +68,11 @@ inputs:
     description: |
       A JSON array of column IDs that will be visible in print mode. Provide at least one.
       The "pin" column is always visible.
+  color-columns:
+    required: false
+    description: |
+      A JSON array of column IDs that will be used as pin color sources.
+      If none is provided, the "color" column will be used.
   info-column:
     required: false
     description: |
@@ -98,6 +103,7 @@ runs:
     WARNING_PARSE: ${{ inputs.warning-parse }}
     COLS: ${{ inputs.columns }}
     PRINT_COLS: ${{ inputs.print-columns }}
+    COLOR_COLS: ${{ inputs.color-columns }}
     INFO_COL: ${{ inputs.info-column }}
     TEMPLATES: ${{ inputs.templates }}
     COLORS: ${{ inputs.colors }}

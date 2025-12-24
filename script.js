@@ -9,6 +9,9 @@ const globalColumns = ///COLS///;
 // gen.sh replaces PRINT_COLS with a JSON array
 const globalPrintColumns = ///PRINT_COLS///;
 
+// gen.sh replaces COLOR_COLS with a JSON array
+const globalColorColumns = ///COLOR_COLS///;
+
 // gen.sh replaces INFO_COL with a string
 const globalInfoColumn = "///INFO_COL///";
 
@@ -86,9 +89,6 @@ function getRow(pin, connector) {
 	}
 	// Set the type of the pin so it will be colored in print view.
 	clone.querySelector('[data-field="pin"]').dataset.type = pin.type;
-	if (pin.color) {
-		clone.querySelector('[data-field="pin"]').dataset.color = pin.color;
-	}
 	return clone;
 }
 
@@ -312,24 +312,51 @@ function brange(p1, p2, n) {
 	};
 }
 
-function setupColorToggle(sdiv, columns) {
-	const colored = sdiv.querySelectorAll("[data-color]")
-	if (colored.length > 0) {
+function selectCell(cell) {
+	Array.from(cell.parentElement.children).forEach((sibling) => {
+		sibling.classList.remove("selected");
+	});
+	cell.classList.add("selected");
+}
+
+function setupColorToggle(sdiv, connector, columns) {
+	let hasColorColumn = false;
+	const colorColumns = (connector && connector.info["color-columns"]) || (globalColorColumns.length > 0 && globalColorColumns) || ["color"];
+	colorColumns.forEach((col) => {
+		if (col in columns) {
+			hasColorColumn = true;
+			const ctab = sdiv.querySelector(".color-table tbody tr");
+			let d = document.createElement("td");
+			d.innerText = columns[col];
+			d.addEventListener("click", (e) => {
+				selectCell(d);
+				connector.pins.forEach((pin) => {
+					if ('pdiv' in pin) {
+						if (col in pin) {
+							let color = pin[col].replace(/\s/g, "").split("/");
+							pin.pdiv.style.borderColor = color[0];
+							if (color.length > 1) pin.pdiv.style.borderTopColor = color[1];
+						} else {
+							pin.pdiv.style.borderColor = "";
+						}
+					}
+				});
+			});
+			ctab.append(d);
+		}
+	});
+	if (hasColorColumn) {
 		sdiv.querySelector(".switch-block").style.display = "block"
 		sdiv.querySelector(".toggle-label").style.display = "block"
-		const ctog = sdiv.querySelector(".color-toggle");
-		ctog.addEventListener("change", (e) => {
-			sdiv.querySelectorAll("[data-color]").forEach((pin) => {
-				if (e.target.checked) {
-					pin.style.borderColor = pin.dataset.color.replace(/\s/g, "");
-				} else {
-					pin.style.borderColor = ""
+		const defaultColor = sdiv.querySelector(".default-color");
+		defaultColor.addEventListener('click', () => {
+			selectCell(defaultColor);
+			connector.pins.forEach((pin) => {
+				if ('pdiv' in pin) {
+					pin.pdiv.style.borderColor = "";
 				}
 			});
 		});
-	}
-	if (typeof(columns["color"]) != "undefined") {
-		sdiv.querySelector(".color-label").innerText = columns["color"]
 	}
 }
 
@@ -383,9 +410,6 @@ function handleImageLoad(connector, c, sdiv, img, columns) {
 		pdiv.style.top = ((pinfo.y / imgHeight) * 100) + "%";
 		pdiv.style.left = ((pinfo.x / imgWidth) * 100) + "%";
 		pdiv.dataset.type = pin.type;
-		if (pin.color) {
-			pdiv.dataset.color = pin.color;
-		}
 		// Associate the pin's element with the pin object
 		pin.pdiv = pdiv;
 		pdiv.addEventListener("click", () => {
@@ -400,7 +424,7 @@ function handleImageLoad(connector, c, sdiv, img, columns) {
 		addRow(fullTable, pin, c);
 	});
 	hideEmptyColumns(sdiv.querySelector(".pinout-table"));
-	setupColorToggle(sdiv, columns);
+	setupColorToggle(sdiv, connector, columns);
 	// Check if we have loaded all the images.
 	checkImagesLoaded();
 }
@@ -457,7 +481,7 @@ function buildConnector(connector, c) {
 			fullTableHeader.appendChild(el.cloneNode(true));
 		}
 		hideEmptyColumns(sdiv.querySelector(".pinout-table"));
-		setupColorToggle(sdiv, columns);
+		setupColorToggle(sdiv, connector, columns);
 	}
 }
 
@@ -485,6 +509,9 @@ window.addEventListener("load", function() {
 			}
 			if (connector.info["print-columns"]) {
 				connector.info["print-columns"] = JSON.parse(connector.info["print-columns"]);
+			}
+			if (connector.info["color-columns"]) {
+				connector.info["color-columns"] = JSON.parse(connector.info["color-columns"]);
 			}
 		}
 	}
