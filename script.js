@@ -336,7 +336,9 @@ function setupColorToggle(sdiv, connector, columns) {
 	const colorColumns = (connector && connector.info["color-columns"]) || (globalColorColumns.length > 0 && globalColorColumns) || ["color"];
 	colorColumns.forEach((col) => {
 		if (col in columns) {
-			hasColorColumn = true;
+			if (connector.pins.some((pin) => col in pin)) {
+				hasColorColumn = true;
+			}
 			const ctab = sdiv.querySelector(".color-table tbody tr");
 			let d = document.createElement("td");
 			d.innerText = columns[col];
