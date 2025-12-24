@@ -79,7 +79,7 @@ function getRow(pin, connector) {
 			el.classList.add("print-column");
 		}
 		// Sometimes the data is an array instead of a string, so we might need to join it.
-		let text = Array.isArray(pin[column]) ? pin[column].join(", ") : pin[column];
+		let text = Array.isArray(pin[column]) ? pin[column].join(", ") : (pin[column] ?? "");
 		if (typeof templates === "object" && typeof text === "string") {
 			for (const template in templates) {
 				text = text.replace(template, pin[templates[template]])
@@ -163,7 +163,7 @@ function highlightMatches(fieldmatches) {
 				} else {
 					pin.pdiv.classList.remove("highlight");
 				}
-				pin.pdiv.classList.remove("selected");					
+				pin.pdiv.classList.remove("selected");
 			}
 		});
 	});
@@ -183,7 +183,7 @@ function addMatchesToTable(fieldmatches) {
 				}
 				table.parentElement.style.display = "table";
 				addRow(table, pin, i);
-			}		
+			}
 		});
 	});
 }
@@ -206,6 +206,7 @@ function checkparams() {
 	}
 
 	// Loop through the connectors and find if there's one that matches.
+	// If none match, default to the first connector.
 	let c =	connectorData.findIndex((data) => (typeof(data.info.cid) != "undefined" && data.info.cid == connector)) || 0;
 	const cdata = connectorData[c];
 	const table = document.querySelectorAll(".info-table tbody")[c];
@@ -322,6 +323,14 @@ function selectCell(cell) {
 	cell.classList.add("selected");
 }
 
+function setPinColor(pin, col, el) {
+	if (col in pin) {
+		el.dataset.color = pin[col].replace(/\s/g, "")
+	} else {
+		el.dataset.color = "";
+	}
+}
+
 function setupColorToggle(sdiv, connector, columns) {
 	let hasColorColumn = false;
 	const colorColumns = (connector && connector.info["color-columns"]) || (globalColorColumns.length > 0 && globalColorColumns) || ["color"];
@@ -331,27 +340,21 @@ function setupColorToggle(sdiv, connector, columns) {
 			const ctab = sdiv.querySelector(".color-table tbody tr");
 			let d = document.createElement("td");
 			d.innerText = columns[col];
-			d.addEventListener("click", (e) => {
+			d.addEventListener("click", () => {
 				selectCell(d);
+				let pinCells = sdiv.querySelectorAll(".general-table tbody tr td:first-child");
 				connector.pins.forEach((pin) => {
 					let cell = null;
-					sdiv.querySelectorAll(".general-table tbody tr td:first-child").forEach((p) => {
+					pinCells.forEach((p) => {
 						if (p.innerText == pin.pin) cell = p;
 					});
+
 					if (cell) {
-						if (col in pin) {
-							cell.dataset.color = pin[col].replace(/\s/g, "")
-						} else {
-							cell.dataset.color = "";
-						}
+						setPinColor(pin, col, cell);
 					}
 
 					if ('pdiv' in pin) {
-						if (col in pin) {
-							pin.pdiv.dataset.color = pin[col].replace(/\s/g, "")
-						} else {
-							pin.pdiv.dataset.color = "";
-						}
+						setPinColor(pin, col, pin.pdiv)
 					}
 				});
 			});
@@ -386,14 +389,26 @@ function addPossibleColor(connector, pin) {
 }
 
 function generateColorStyles() {
-	let styleSheet = document.createElement("style")
-	styleSheet.textContent = possibleColors.reduce((a, c) => {
-		let color = c.split("/");
-		if (color.length == 1) {
-			return a + '[data-color="' + color[0] + '"] {\nborder-color: ' + color[0] + ' !important;\n}\n';
-		} else {
-			return a + '[data-color="' + color[0] + "/" + color[1] + '"] {\nborder-color: ' + color[0] + ' !important;\nborder-top-color: ' + color[1] + ' !important;\n}\n';
+	let styleSheet = document.createElement("style");
+	styleSheet.textContent = possibleColors.reduce((a, color) => {
+		let c = color.split("/");
+
+		const cm = new Option().style;
+		cm.color = c[0];
+		if (cm.color == "") return a;
+
+		if (c.length == 1) {
+			return a + '[data-color="' + cm.color + '"] {\n' +
+				'border-color: ' + cm.color + ' !important;\n}\n';
 		}
+
+		const cs = new Option().style;
+		cs.color = c[1];
+		if (cs.color == "") return a;
+
+		return a + '[data-color="' + cm.color + "/" + cs.color + '"] {\n' +
+			'border-color: ' + cm.color + ' !important;\n' +
+			'border-top-color: ' + cs.color + ' !important;\n}\n';
 	}, "");
 	document.head.appendChild(styleSheet);
 }
