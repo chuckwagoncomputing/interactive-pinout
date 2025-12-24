@@ -498,12 +498,12 @@ function buildConnector(connector, c) {
 		}
 		// bacwards compatability
 		if (typeof(connector.info.board_url) != "undefined") {
-			connector.info["board-url"] = connector.info.board_url;
+			connector.info.url = connector.info.board_url;
 		}
 		// Add the board link
-		if (typeof(connector.info["board-url"]) != "undefined" && document.title.length > 0) {
+		if (typeof(connector.info.url) != "undefined" && document.title.length > 0) {
 			document.getElementById("board-link").innerText = document.title;
-			document.getElementById("board-link").href = connector.info["board-url"];
+			document.getElementById("board-link").href = connector.info.url;
 		}
 		// Add the connector name
 		if (typeof(connector.info.name) != "undefined") {

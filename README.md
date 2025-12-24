@@ -55,7 +55,7 @@ The 'info' section contains information which is used to generate the interactiv
 |image    |subsection which contains image source and pin coordinates|
 |title    |the title for the page. Only one connector for a particular board needs this field|
 |directory|the target directory for the page. Only one connector for a particular board needs this field|
-|board-url|a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
+|url      |a URL for documentation, which will be placed as a link on the top of the page. Only one connector for a particular board needs this field|
 |name     |a human-readable name for the connector|
 |order    |an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
 |columns|a JSON object; the keys should be the YAML field names and the values will be used as the display names for the columns - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
@@ -96,7 +96,7 @@ info:
   title: Big Magic Box
   directory: big_magic
   name: Main Connector
-  board-url: https://example.com/documentation
+  url: https://example.com/documentation
   cid: c1
   image:
     file: connector.jpg
