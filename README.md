@@ -60,6 +60,7 @@ The 'info' section contains information which is used to generate the interactiv
 |order    |an index to order the connectors on the page. The lower the number, the nearer the top of the page. If the 'order' field is not present, order is undefined, but will probably be sorted alphabetically by the file name|
 |columns|a JSON object; the keys should be the YAML field names and the values will be used as the display names for the columns - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
 |print-columns|a JSON array containing the YAML field names which will be shown on a paper printout of the page - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
+|color-columns|a JSON array containing columns with CSS colors of the pins. Each column will get a color selector mode. - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
 |info-column|a YAML field name which will be shown below the pin number when hovering over a pin - overrides (for this connector only) the parameter set in the workflow or passed as an environment variable|
 
 The 'image' subsections contains the following fields  
