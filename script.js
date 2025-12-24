@@ -18,6 +18,8 @@ const globalInfoColumn = "///INFO_COL///";
 // gen.sh replaces TEMPLATES with a JSON object
 const templates = ///TEMPLATES///;
 
+var possibleColors = [];
+
 // We call this function after creating the main table, and when showing a pin in the info table.
 function hideEmptyColumns(table) {
 	const rows = Array.from(table.querySelector("tbody").children);
@@ -225,6 +227,7 @@ function checkImagesLoaded() {
 	images -= 1;
 	if (images == 0) {
 		checkparams();
+		generateColorStyles();
 	}
 }
 
@@ -331,13 +334,23 @@ function setupColorToggle(sdiv, connector, columns) {
 			d.addEventListener("click", (e) => {
 				selectCell(d);
 				connector.pins.forEach((pin) => {
+					let cell = null;
+					sdiv.querySelectorAll(".general-table tbody tr td:first-child").forEach((p) => {
+						if (p.innerText == pin.pin) cell = p;
+					});
+					if (cell) {
+						if (col in pin) {
+							cell.dataset.color = pin[col].replace(/\s/g, "")
+						} else {
+							cell.dataset.color = "";
+						}
+					}
+
 					if ('pdiv' in pin) {
 						if (col in pin) {
-							let color = pin[col].replace(/\s/g, "").split("/");
-							pin.pdiv.style.borderColor = color[0];
-							if (color.length > 1) pin.pdiv.style.borderTopColor = color[1];
+							pin.pdiv.dataset.color = pin[col].replace(/\s/g, "")
 						} else {
-							pin.pdiv.style.borderColor = "";
+							pin.pdiv.dataset.color = "";
 						}
 					}
 				});
@@ -353,11 +366,36 @@ function setupColorToggle(sdiv, connector, columns) {
 			selectCell(defaultColor);
 			connector.pins.forEach((pin) => {
 				if ('pdiv' in pin) {
-					pin.pdiv.style.borderColor = "";
+					pin.pdiv.dataset.color = "";
 				}
+			});
+			sdiv.querySelectorAll(".general-table tbody tr td:first-child").forEach((p) => {
+				p.dataset.color = ""
 			});
 		});
 	}
+}
+
+function addPossibleColor(connector, pin) {
+	const colorColumns = (connector && connector.info["color-columns"]) || (globalColorColumns.length > 0 && globalColorColumns) || ["color"];
+	colorColumns.forEach((col) => {
+		if (col in pin && ! possibleColors.includes(pin[col])) {
+			possibleColors.push(pin[col].replace(/\s/g, ""));
+		}
+	});
+}
+
+function generateColorStyles() {
+	let styleSheet = document.createElement("style")
+	styleSheet.textContent = possibleColors.reduce((a, c) => {
+		let color = c.split("/");
+		if (color.length == 1) {
+			return a + '[data-color="' + color[0] + '"] {\nborder-color: ' + color[0] + ' !important;\n}\n';
+		} else {
+			return a + '[data-color="' + color[0] + "/" + color[1] + '"] {\nborder-color: ' + color[0] + ' !important;\nborder-top-color: ' + color[1] + ' !important;\n}\n';
+		}
+	}, "");
+	document.head.appendChild(styleSheet);
 }
 
 function handleImageLoad(connector, c, sdiv, img, columns) {
@@ -384,6 +422,7 @@ function handleImageLoad(connector, c, sdiv, img, columns) {
 		if (!pin.pin) {
 			return;
 		}
+		addPossibleColor(connector, pin);
 		// Get the pin info from the info section (i.e. x/y coordinates)
 		const pinfoidx = connector.info.image.pins.findIndex((e) => e.pin == pin.pin);
 		const pinfo = connector.info.image.pins[pinfoidx];
@@ -436,8 +475,6 @@ function buildConnector(connector, c) {
 	document.body.appendChild(clone);
 	const sdiv = document.body.lastElementChild;
 	const img = sdiv.querySelector(".connector-img");
-	// When the image is loaded, then handle the pins
-	img.addEventListener("load", () => handleImageLoad(connector, c, sdiv, img, columns));
 	// If there's info, use it.
 	if (typeof(connector.info) != "undefined") {
 		// Set the document title
@@ -458,8 +495,11 @@ function buildConnector(connector, c) {
 			sdiv.querySelector(".connector-name").innerText = connector.info.name;
 		}
 	}
-	// Add the image to load it
+	// Check if there is an image
 	if (typeof(connector.info) != "undefined" && typeof(connector.info.image) != "undefined") {
+		// When the image is loaded, then handle the pins
+		img.addEventListener("load", () => handleImageLoad(connector, c, sdiv, img, columns));
+		// Add the image to load it
 		img.src = connector.info.image.file;
 		// Increment "images we need to load" counter
 		images += 1;
@@ -473,6 +513,7 @@ function buildConnector(connector, c) {
 				return;
 			}
 			addRow(fullTable, pin, c);
+			addPossibleColor(connector, pin);
 		});
 		// Loop through our columns and add the headers for the main table
 		for (const column in columns) {
