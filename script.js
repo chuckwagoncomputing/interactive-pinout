@@ -522,7 +522,7 @@ function buildConnector(connector, c) {
 		images += 1;
 		// If there's no image, just build the table.
 	} else {
-		img.parentElement.parentElement.style.height = 0;
+		img.parentElement.parentElement.parentElement.style.height = 0;
 		const fullTable = sdiv.querySelector(".pinout-table").querySelector("tbody");
 		const fullTableHeader = sdiv.querySelector(".pinout-table").querySelector("thead>tr");
 		connector.pins.forEach((pin) => {
