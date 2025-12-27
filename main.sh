@@ -76,7 +76,7 @@ for c in $CONNECTORS; do
 	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
   POSDUPES+=$(yq e '.info.image.pins.[].pin' "$c" | grep -v "null" | sort | uniq -d | tr -d '\n')
 	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
-  [ -z "$POSDUPES" ] || handle_warning "$WARNING_DUPE" "WARNING: Duplicate pin positionss in $c: $POSDUPES" || continue
+  [ -z "$POSDUPES" ] || handle_warning "$WARNING_DUPE" "WARNING: Duplicate pin positions in $c: $POSDUPES" || continue
   # Get the directory and title, if they exist
   DIRECTORY=$(yq e '.info.directory' "$c")
 	[ $? -eq 0 ] || handle_warning "$WARNING_PARSE" "WARNING: parse error in definition $c" || continue
