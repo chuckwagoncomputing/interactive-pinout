@@ -258,14 +258,17 @@ function calcPinSize(pin, cdiv, connector, pinfo) {
 	// Use percent for scaling when printing
 	const height = (pinsize / divheight) * 100;
 	const width = (pinsize / divwidth) * 100;
-	pin.pdiv.style.height = height + "%";
-	pin.pdiv.style.width = width + "%";
-	// 0.5cqh achieves vertical centering, roughly
-	pin.pdiv.style.lineHeight = (height - 0.5) + "cqh";
-	// When using a percent for margins, the width value is used even for top and bottom
-	pin.pdiv.style.marginTop = "-" + (width / 2) + "%";
-	pin.pdiv.style.marginLeft = "-" + (width / 2) + "%";
-	pin.pdiv.style.fontSize = (height * 0.5) + "cqh";
+	const style = {
+		height: height + "%",
+		width: width + "%",
+		// 0.5cqh achieves vertical centering, roughly
+		lineHeight: (height - 0.5) + "cqh",
+		// When using a percent for margins, the width value is used even for top and bottom
+		marginTop: "-" + (width / 2) + "%",
+		marginLeft: "-" + (width / 2) + "%",
+		fontSize: (height * 0.5) + "cqh"
+	}
+	Object.assign(pin.pdiv.style, style);
 }
 
 function findBounds(pins, i) {
