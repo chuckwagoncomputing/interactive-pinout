@@ -488,12 +488,48 @@ function handleImageLoad(connector, c, sdiv, img, columns) {
 	checkImagesLoaded();
 }
 
+function escapeCSV(value) {
+	const str = String(value);
+	if (/[",\n]/.test(str)) {
+		return '"' + str.replace(/"/g, '""') + '"';
+	}
+	return str;
+}
+
+function generateCSV(pins, name, elem) {
+	let csv = "";
+
+	const headers = [...new Set(pins.flatMap(pin => Object.keys(pin)))];
+	csv += headers.join(',') + '\n';
+
+	pins.forEach(pin => {
+		const values = headers.map(header => {
+			if (Array.isArray(pin[header])) {
+				return escapeCSV(pin[header].join(", "));
+			} else if (typeof(pin[header]) == "undefined") {
+				return "";
+			} else {
+				return escapeCSV(pin[header]);
+			}
+		});
+		csv += values.join(',') + '\n';
+	});
+
+	elem.href = window.URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
+	elem.download = name + ".csv";
+}
+
 function buildConnector(connector, c) {
 	const columns = (connector && connector.info.columns) || globalColumns;
 	const template = document.getElementById("connector-template");
 	const clone = template.content.cloneNode(true);
 	document.body.appendChild(clone);
 	const sdiv = document.body.lastElementChild;
+	if (typeof(connector.info) != "undefined" && typeof(connector.info.name) != "undefined") {
+		generateCSV(connector.pins, connector.info.name, sdiv.querySelector(".csv-button"));
+	} else {
+		generateCSV(connector.pins, "pinout", sdiv.querySelector(".csv-button"));
+	}
 	const img = sdiv.querySelector(".connector-img");
 	// If there's info, use it.
 	if (typeof(connector.info) != "undefined") {
